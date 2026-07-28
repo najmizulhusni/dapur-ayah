@@ -28,6 +28,19 @@ No CI/build pipeline is needed since there's nothing to compile.
 
 ## Editing content
 
-- Menu items: `.menu-grid` section in `index.html`.
-- Weekly schedule: `#scheduleTable` rows (each `<tr>` has `data-day` (0=Ahad..6=Sabtu) and `data-map` attributes).
-- WhatsApp number: search for `60197309787` and replace all occurrences.
+Most content lives in the `<script>` at the bottom of `index.html`:
+
+- **Menu & prices** — the `MENU` array. The menu board and the order-form
+  item pickers are both rendered from it, so edit in one place.
+- **Weekly schedule** — the `SCHEDULE` array (`day`: 0=Ahad … 6=Sabtu). It
+  drives the schedule table, the "today" highlight, the live open/closed
+  banner, and the pickup-location dropdowns in the order form.
+- **WhatsApp number** — the `WA` constant (and search `60197309787` for the
+  plain `tel:`/`wa.me` links in the markup).
+
+## Order form
+
+Clicking any "Order" button opens a modal with three modes — **Biasa**
+(retail), **Borong** (bulk, min. 10), and **Katering** (event enquiry). It
+builds a formatted WhatsApp message and opens `wa.me`; nothing is stored or
+sent server-side.
