@@ -33,7 +33,7 @@
     --font-body:'Work Sans', sans-serif;
     --font-mono:'Space Mono', monospace;
 
-    --max:1080px;
+    --max:1200px;
     --pad:20px;
     --r:14px;
     --r-sm:9px;
@@ -340,7 +340,16 @@
   .modal .m-foot{ padding:14px 20px calc(16px + env(safe-area-inset-bottom)); border-top:1px solid var(--line); background:var(--bg); }
   .hint{ font-size:12px; color:var(--ink-soft); text-align:center; margin:10px 0 0; }
   .req{ color:var(--chili); }
+
   .mode-only{ display:none; }
+  .mode-only.show{ display:block; }
+  .summary.mode-only.show{ display:flex; }
+
+  .notice{ text-align:center; padding:28px 20px 24px; background:var(--panel); border:1px solid var(--line); border-radius:12px; }
+  .notice svg{ width:42px; height:42px; margin:0 auto 12px; color:var(--accent); }
+  .notice h4{ font-family:var(--font-display); font-weight:400; font-size:22px; margin:0 0 8px; text-transform:uppercase; letter-spacing:.01em; }
+  .notice p{ color:var(--ink-soft); font-size:14.5px; line-height:1.55; margin:0 auto 18px; max-width:340px; }
+  .notice-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
 
 </style>
 </head>
@@ -381,7 +390,7 @@
   <div class="hero-inner">
     <div>
       <p class="kicker">Skudai &amp; Sekitar · Johor</p>
-      <h1>Sedap.<br>Halal.<br><em>RM7</em> je.</h1>
+      <h1>Semua<br><em>RM7</em> je.</h1>
       <p class="lede">Nasi ayam, mee kari, nasi lemak dan lain-lain — segar dimasak setiap hari pasar. Menerima pelbagai tempahan masakan untuk borong &amp; majlis.</p>
       <div class="hero-ctas">
         <button class="btn btn-chili" type="button" data-order="biasa">
@@ -543,10 +552,10 @@
         <a href="tel:+60197309787" style="display:block;text-align:center;margin-top:12px;font-family:var(--font-mono);font-size:12.5px;color:var(--ink-soft);">atau telefon terus · 019-730 9787</a>
       </div>
 
-      <div class="card" style="justify-content:center;align-items:center;text-align:center;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" style="width:52px;height:52px;color:var(--accent);margin-bottom:14px;"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+      <div class="card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" style="width:44px;height:44px;color:var(--accent);margin-bottom:14px;"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
         <h3 style="font-size:22px;">Balas Cepat</h3>
-        <p style="text-align:center;margin-bottom:0;">Order, tanya menu hari ini, atau tempah untuk majlis — semua boleh terus di WhatsApp.</p>
+        <p style="margin-bottom:0;">Order, tanya menu hari ini, atau tempah untuk majlis — semua boleh terus di WhatsApp.</p>
       </div>
     </div>
   </div>
@@ -585,20 +594,31 @@
     </div>
 
     <div class="m-body">
-      <div class="segmented" role="tablist" aria-label="Jenis order">
+      <div class="segmented" role="tablist" aria-label="Jenis tempahan">
         <button type="button" data-mode="biasa" class="active">Biasa</button>
         <button type="button" data-mode="borong">Borong</button>
         <button type="button" data-mode="katering">Katering</button>
       </div>
 
-      <!-- item picker (biasa + borong) -->
-      <div class="mode-only" data-for="biasa borong" style="display:block;">
+      <!-- BIASA: single orders paused for now -->
+      <div class="notice mode-only" data-for="biasa">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <h4>Order satu-satu belum dibuka</h4>
+        <p>Buat masa ini kami hanya terima <b>tempahan borong</b> (min. 10 bungkus) dan <b>katering majlis</b>. Terima kasih!</p>
+        <div class="notice-actions">
+          <button class="btn btn-chili btn-sm" type="button" data-goto="borong">Tempah Borong</button>
+          <button class="btn btn-outline btn-sm" type="button" data-goto="katering">Tanya Katering</button>
+        </div>
+      </div>
+
+      <!-- BORONG: item picker -->
+      <div class="mode-only" data-for="borong">
         <div class="field"><label>Pilih menu &amp; kuantiti</label>
           <div class="items" id="itemPicker"></div>
         </div>
       </div>
 
-      <!-- katering fields -->
+      <!-- KATERING fields -->
       <div class="mode-only" data-for="katering">
         <div class="field"><label>Bilangan tetamu <span class="req">*</span></label>
           <input type="number" id="fGuests" min="1" inputmode="numeric" placeholder="cth. 100">
@@ -611,13 +631,6 @@
         </div>
       </div>
 
-      <!-- pickup (biasa) -->
-      <div class="mode-only" data-for="biasa" style="display:block;">
-        <div class="field"><label>Ambil di pasar tani mana?</label>
-          <select id="fPickup"></select>
-        </div>
-      </div>
-
       <!-- date (borong + katering) -->
       <div class="mode-only" data-for="borong katering">
         <div class="field"><label id="dateLbl">Tarikh diperlukan</label>
@@ -625,21 +638,25 @@
         </div>
       </div>
 
-      <!-- pickup for borong -->
+      <!-- pickup (borong) -->
       <div class="mode-only" data-for="borong">
         <div class="field"><label>Ambil di pasar tani mana?</label>
           <select id="fPickup2"></select>
         </div>
       </div>
 
-      <div class="field"><label>Nama anda</label>
-        <input type="text" id="fName" placeholder="cth. Encik Ali">
-      </div>
-      <div class="field"><label>Catatan (pilihan)</label>
-        <textarea id="fNote" placeholder="cth. kurang pedas, tanpa telur…"></textarea>
+      <!-- common: name + notes (borong + katering) -->
+      <div class="mode-only" data-for="borong katering">
+        <div class="field"><label>Nama anda</label>
+          <input type="text" id="fName" placeholder="cth. Encik Ali">
+        </div>
+        <div class="field"><label>Catatan (pilihan)</label>
+          <textarea id="fNote" placeholder="cth. kurang pedas, tanpa telur…"></textarea>
+        </div>
       </div>
 
-      <div class="summary" id="summary">
+      <!-- summary (borong) -->
+      <div class="summary mode-only" data-for="borong" id="summary">
         <span class="s-label">Anggaran</span>
         <span class="s-total" id="sTotal">RM0<small>0 bungkus</small></span>
       </div>
@@ -700,7 +717,6 @@
       sel.appendChild(o);
     });
   }
-  fillPickup(document.getElementById("fPickup"));
   fillPickup(document.getElementById("fPickup2"));
 
   /* ---- highlight today's row + today strip ---- */
@@ -774,7 +790,7 @@
   var lastFocus = null;
 
   var TITLES = {
-    biasa:   { t:"Buat Order",     s:"Pilih menu & kuantiti — kami sediakan mesej WhatsApp." },
+    biasa:   { t:"Buat Tempahan",  s:"Pilih jenis tempahan di bawah." },
     borong:  { t:"Tempah Borong",  s:"Minimum 10 bungkus. Boleh campur beberapa menu." },
     katering:{ t:"Tanya Katering", s:"Isi butiran majlis, kami balas dengan pakej & harga." }
   };
@@ -786,12 +802,13 @@
     });
     document.querySelectorAll(".mode-only").forEach(function(el){
       var forList = el.getAttribute("data-for").split(" ");
-      el.style.display = forList.indexOf(m)>-1 ? "block" : "none";
+      el.classList.toggle("show", forList.indexOf(m)>-1);
     });
     document.getElementById("modalTitle").textContent = TITLES[m].t;
     document.getElementById("modalSub").textContent = TITLES[m].s;
-    document.getElementById("summary").style.display = (m==="katering") ? "none" : "flex";
     document.getElementById("dateLbl").textContent = (m==="katering") ? "Tarikh majlis" : "Tarikh ambil";
+    // single (biasa) orders are paused — hide the WhatsApp send button, show notice only
+    document.querySelector(".m-foot").style.display = (m==="biasa") ? "none" : "block";
     document.getElementById("foodHint").textContent = (m==="borong")
       ? "Minimum 10 bungkus — kami balas harga borong di WhatsApp."
       : "Mesej akan dibuka dalam WhatsApp — semak sebelum hantar.";
@@ -819,6 +836,9 @@
   document.querySelectorAll(".segmented button").forEach(function(b){
     b.addEventListener("click", function(){ applyMode(b.getAttribute("data-mode")); });
   });
+  document.querySelectorAll("[data-goto]").forEach(function(b){
+    b.addEventListener("click", function(){ applyMode(b.getAttribute("data-goto")); });
+  });
   document.addEventListener("keydown", function(e){ if(e.key==="Escape" && modal.classList.contains("is-open")) closeModal(); });
 
   /* ---- build WhatsApp message ---- */
@@ -845,28 +865,27 @@
       ]) };
     }
 
-    // biasa / borong — item based
+    if(mode==="biasa"){ return { err:"Order satu-satu belum dibuka — sila pilih Borong atau Katering." }; }
+
+    // borong — item based
     var t = orderTotals();
     if(t.bungkus===0){ return { err:"Sila pilih sekurang-kurangnya satu menu." }; }
-    if(mode==="borong" && t.bungkus<10){ return { err:"Borong minimum 10 bungkus (sekarang " + t.bungkus + ")." }; }
+    if(t.bungkus<10){ return { err:"Borong minimum 10 bungkus (sekarang " + t.bungkus + ")." }; }
 
     var lines = [];
     MENU.forEach(function(m){
       if(qty[m.id]>0) lines.push("• " + qty[m.id] + "× " + m.name + " — RM" + (qty[m.id]*m.price));
     });
 
-    var head = mode==="borong" ? "Saya nak *BORONG* order:" : "Saya nak order:";
-    var pickup = mode==="borong" ? val("fPickup2") : val("fPickup");
-
     return { text: line([
       "Assalamualaikum Dapur Ayah 👋",
-      head,
+      "Saya nak *BORONG* order:",
       "",
       lines.join("\n"),
       "—",
       "Jumlah: " + t.bungkus + " bungkus (RM" + t.rm + ")",
-      (mode==="borong" && val("fDate")) ? "Tarikh ambil: " + val("fDate") : "",
-      pickup ? "Ambil di: " + pickup : "",
+      val("fDate") ? "Tarikh ambil: " + val("fDate") : "",
+      val("fPickup2") ? "Ambil di: " + val("fPickup2") : "",
       name ? "Nama: " + name : "",
       note ? "Catatan: " + note : ""
     ]) };
