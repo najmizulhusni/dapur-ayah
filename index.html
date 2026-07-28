@@ -152,6 +152,8 @@
   .kicker{ display:inline-flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:700; margin:0 0 18px; }
   .kicker::before{ content:""; width:26px; height:2px; background:var(--accent); display:inline-block; }
   .hero h1{ font-family:var(--font-display); font-weight:400; font-size:clamp(46px,12vw,96px); line-height:.86; letter-spacing:.005em; margin:0 0 20px; text-transform:uppercase; }
+  .hero h1 .l1, .hero h1 .l2{ display:block; }
+  .hero h1 .l2{ margin-top:0.16em; }
   .hero h1 em{ font-style:normal; color:var(--accent); }
   .hero .lede{ font-size:clamp(16px,2.6vw,19px); line-height:1.6; color:var(--ink-soft); max-width:460px; margin:0 0 26px; }
   .hero-ctas{ display:flex; flex-wrap:wrap; gap:12px; }
@@ -390,7 +392,7 @@
   <div class="hero-inner">
     <div>
       <p class="kicker">Skudai &amp; Sekitar · Johor</p>
-      <h1>Semua<br><em>RM7</em> je.</h1>
+      <h1><span class="l1">Semua</span><span class="l2"><em>RM7</em> je.</span></h1>
       <p class="lede">Nasi ayam, mee kari, nasi lemak dan lain-lain — segar dimasak setiap hari pasar. Menerima pelbagai tempahan masakan untuk borong &amp; majlis.</p>
       <div class="hero-ctas">
         <button class="btn btn-chili" type="button" data-order="biasa">
@@ -567,7 +569,7 @@
   <div class="brand"><span class="mark">RM7</span><span class="txt"><b>DAPUR AYAH</b><small>Gerai Pasar Tani</small></span></div>
   <p>Nasi Ayam · Nasi Lemak Ayam · Nasi Lemak Telur · Mee Kari · Lontong Kering · Bubur Ayam · Soto Ayam</p>
   <p>+60 19-730 9787 · Skudai &amp; sekitar, Johor</p>
-  <p class="foot-note">RM7 sebungkus (Bubur Ayam RM4 · Nasi Lemak Telur RM5) · Stok terhad setiap hari</p>
+  <p class="foot-note">Sedia menerima tempahan sekitar Skudai, Mutiara Rini &amp; Taman Universiti</p>
 </footer>
 
 <!-- ================= MOBILE STICKY BAR ================= -->
