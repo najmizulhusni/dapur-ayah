@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#C0392B">
 <meta name="description" content="Dapur Ayah — gerai pasar tani di Skudai & sekitar. Nasi ayam, mee kari, nasi lemak dan lain-lain, RM7 sebungkus. Menerima pelbagai tempahan masakan — order terus WhatsApp, borong & katering majlis.">
 <title>Dapur Ayah — Gerai Pasar Tani · RM7 Sebungkus</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='12' fill='%23C0392B'/%3E%3Cg fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 2.6c-.6 1-.6 1.8 0 2.6M13 2.6c-.6 1-.6 1.8 0 2.6' opacity='.8'/%3E%3Cpath d='M4 10.5h16'/%3E%3Cpath d='M4.5 10.5c0 4.14 3.36 7.5 7.5 7.5s7.5-3.36 7.5-7.5'/%3E%3Cpath d='M9 19.5h6'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -214,10 +215,11 @@
   .menu-board::before{ content:""; position:absolute; left:0; right:0; top:0; height:6px; background:repeating-linear-gradient(90deg, var(--chili) 0 22px, var(--turmeric) 22px 44px, var(--pandan) 44px 66px); opacity:.9; }
   .menu-list{ list-style:none; margin:0; padding:8px; display:grid; gap:2px; }
   @media (min-width:720px){ .menu-list{ grid-template-columns:1fr 1fr; gap:2px 40px; } }
-  .m-row{ display:flex; align-items:baseline; gap:10px; padding:14px 12px; border-radius:var(--r-sm); }
+  .m-row{ display:flex; align-items:center; gap:10px; padding:14px 12px; border-radius:var(--r-sm); }
   .m-row:hover{ background:var(--panel-hover); }
-  .m-row .nm{ font-weight:600; font-size:16.5px; }
-  .m-row .dots{ flex:1; border-bottom:2px dotted var(--line-strong); transform:translateY(-5px); min-width:14px; }
+  .m-row .nm{ font-weight:600; font-size:16.5px; line-height:1.3; }
+  .m-row .tag-day{ display:block; font-weight:700; font-family:var(--font-mono); font-size:10px; letter-spacing:.04em; text-transform:uppercase; color:var(--accent); margin-top:2px; }
+  .m-row .dots{ flex:1; border-bottom:2px dotted var(--line-strong); align-self:center; min-width:14px; }
   .m-row .pr{ font-family:var(--font-mono); font-weight:700; font-size:15px; color:#fff; background:var(--accent); padding:5px 11px; border-radius:6px; white-space:nowrap; }
   .m-row .pr.alt{ background:var(--turmeric-deep); }
   .menu-foot{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:14px; margin-top:22px; }
@@ -333,6 +335,9 @@
   .item .info{ flex:1; min-width:0; }
   .item .info b{ display:block; font-size:14.5px; font-weight:600; }
   .item .info span{ font-family:var(--font-mono); font-size:12px; color:var(--ink-soft); }
+  .item .info .avail{ font-style:normal; color:var(--accent); font-weight:700; }
+  .item.unavailable{ opacity:.45; }
+  .item.unavailable .info .avail{ color:var(--ink-soft); }
   .stepper{ display:flex; align-items:center; border:1px solid var(--line-strong); border-radius:9px; overflow:hidden; background:var(--bg); }
   .stepper button{ width:34px; height:34px; font-size:19px; line-height:1; background:transparent; display:flex; align-items:center; justify-content:center; }
   .stepper button:hover{ background:var(--panel-hover); }
@@ -632,6 +637,7 @@
       <div class="mode-only" data-for="borong">
         <div class="field"><label>Pilih menu &amp; kuantiti</label>
           <div class="items" id="itemPicker"></div>
+          <p class="hint" style="margin-top:8px;">Sesetengah menu hanya tersedia pada hari tertentu — pilih tarikh untuk kemas kini.</p>
         </div>
       </div>
 
@@ -698,11 +704,12 @@
   var MENU = [
     { id:"nasi-ayam",   name:"Nasi Ayam",                 price:7 },
     { id:"ayam-goreng", name:"Nasi Ayam Goreng Berempah", price:7 },
+    { id:"ayam-penyet", name:"Nasi Ayam Penyet",          price:7 },
     { id:"nasi-lemak",  name:"Nasi Lemak Ayam",           price:7 },
     { id:"nasi-lemak-telur", name:"Nasi Lemak Telur",     price:5 },
-    { id:"mee-kari",    name:"Mee Kari",                  price:7 },
-    { id:"lontong",     name:"Lontong Kering",            price:7 },
-    { id:"soto",        name:"Soto Ayam",                 price:7 },
+    { id:"mee-kari",    name:"Mee Kari",                  price:7, days:[3] },
+    { id:"lontong",     name:"Lontong Kering",            price:7, days:[0] },
+    { id:"soto",        name:"Soto Ayam",                 price:7, days:[0] },
     { id:"bubur",       name:"Bubur Ayam",                price:4 }
   ];
   var SCHEDULE = [
@@ -714,13 +721,16 @@
   ];
   var DAY_NAMES = ["Ahad","Isnin","Selasa","Rabu","Khamis","Jumaat","Sabtu"];
 
+  function daysLabel(days){ return days.map(function(d){ return DAY_NAMES[d]; }).join(" & ") + " sahaja"; }
+  function isAvailable(m, dow){ return !m.days || m.days.indexOf(dow) > -1; }
+
   /* ---- render menu board ---- */
   var menuList = document.getElementById("menuList");
   MENU.forEach(function(m){
     var li = document.createElement("li");
     li.className = "m-row";
     li.innerHTML =
-      '<span class="nm">' + m.name + '</span>' +
+      '<span class="nm">' + m.name + (m.days ? '<small class="tag-day">' + daysLabel(m.days) + '</small>' : '') + '</span>' +
       '<span class="dots"></span>' +
       '<span class="pr' + (m.price!==7?' alt':'') + '">RM' + m.price + '</span>';
     menuList.appendChild(li);
@@ -772,13 +782,38 @@
     var row = document.createElement("div");
     row.className = "item"; row.setAttribute("data-id", m.id);
     row.innerHTML =
-      '<div class="info"><b>' + m.name + '</b><span>RM' + m.price + '</span></div>' +
+      '<div class="info"><b>' + m.name + '</b><span>RM' + m.price + (m.days ? ' · <em class="avail">' + daysLabel(m.days) + '</em>' : '') + '</span></div>' +
       '<div class="stepper">' +
         '<button type="button" data-act="dec" aria-label="Kurang ' + m.name + '" disabled>−</button>' +
         '<span class="qty">0</span>' +
         '<button type="button" data-act="inc" aria-label="Tambah ' + m.name + '">+</button>' +
       '</div>';
     picker.appendChild(row);
+  });
+
+  function refreshAvailability(dow){
+    MENU.forEach(function(m){
+      var row = picker.querySelector('[data-id="' + m.id + '"]');
+      if(!row) return;
+      var ok = isAvailable(m, dow);
+      row.classList.toggle("unavailable", !ok);
+      row.querySelector('[data-act="inc"]').disabled = !ok;
+      if(!ok && qty[m.id] > 0){
+        qty[m.id] = 0;
+        row.querySelector(".qty").textContent = 0;
+        row.querySelector('[data-act="dec"]').disabled = true;
+        row.classList.remove("on");
+      }
+    });
+    updateSummary();
+  }
+
+  document.getElementById("fDate").addEventListener("input", function(){
+    var v = this.value;
+    var dow;
+    if(v){ var p = v.split("-"); dow = new Date(+p[0], +p[1]-1, +p[2]).getDay(); }
+    else { dow = new Date().getDay(); }
+    refreshAvailability(dow);
   });
 
   picker.addEventListener("click", function(e){
@@ -830,6 +865,11 @@
     document.getElementById("foodHint").textContent = (m==="borong")
       ? "Minimum 10 bungkus — kami balas harga borong di WhatsApp."
       : "Mesej akan dibuka dalam WhatsApp — semak sebelum hantar.";
+    if(m==="borong"){
+      var dv = document.getElementById("fDate").value;
+      var dow = dv ? (function(){ var p=dv.split("-"); return new Date(+p[0],+p[1]-1,+p[2]).getDay(); })() : new Date().getDay();
+      refreshAvailability(dow);
+    }
   }
 
   function openModal(m){
@@ -916,7 +956,7 @@
     window.open(url, "_blank", "noopener");
   });
 
-  updateSummary();
+  refreshAvailability(new Date().getDay());
 
   /* ---- theme toggle (in-memory) ---- */
   var root = document.documentElement;
