@@ -9,7 +9,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='12' fill='%23C0392B'/%3E%3Cg fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 2.6c-.6 1-.6 1.8 0 2.6M13 2.6c-.6 1-.6 1.8 0 2.6' opacity='.8'/%3E%3Cpath d='M4 10.5h16'/%3E%3Cpath d='M4.5 10.5c0 4.14 3.36 7.5 7.5 7.5s7.5-3.36 7.5-7.5'/%3E%3Cpath d='M9 19.5h6'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@600;700&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 
   /* ======================================================================
@@ -33,6 +33,7 @@
     --font-display:'Anton', sans-serif;
     --font-body:'Work Sans', sans-serif;
     --font-mono:'Space Mono', monospace;
+    --font-hand:'Caveat', cursive;
 
     --max:1680px;
     --pad:20px;
@@ -211,8 +212,15 @@
   .band{ background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
 
   /* ================= MENU BOARD (dot-leader price list) ================= */
-  .menu-board{ background:var(--panel); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow-sm); padding:16px 8px 10px; position:relative; overflow:hidden; }
-  .menu-board::before{ content:""; position:absolute; left:0; right:0; top:0; height:6px; background:repeating-linear-gradient(90deg, var(--chili) 0 22px, var(--turmeric) 22px 44px, var(--pandan) 44px 66px); opacity:.9; }
+  .menu-board{ background:var(--panel); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow-sm); padding:16px 8px 22px; position:relative; overflow:visible; }
+  .menu-board::before{ content:""; position:absolute; left:0; right:0; top:0; height:6px; background:repeating-linear-gradient(90deg, var(--chili) 0 22px, var(--turmeric) 22px 44px, var(--pandan) 44px 66px); opacity:.9; border-radius:var(--r) var(--r) 0 0; }
+  .menu-board::after{
+    content:""; position:absolute; left:0; right:0; bottom:-7px; height:14px;
+    background:
+      linear-gradient(135deg, var(--bg-2) 50%, transparent 50%) 0 0/16px 16px repeat-x,
+      linear-gradient(45deg, var(--bg-2) 50%, transparent 50%) 8px 0/16px 16px repeat-x;
+  }
+  .menu-foot .scribble{ font-family:var(--font-hand); font-size:19px; font-weight:700; color:var(--accent); transform:rotate(-2deg); display:inline-block; margin-left:6px; }
   .menu-list{ list-style:none; margin:0; padding:8px; display:grid; gap:2px; }
   @media (min-width:720px){ .menu-list{ grid-template-columns:1fr 1fr; gap:2px 40px; } }
   .m-row{ display:flex; align-items:center; gap:10px; padding:14px 12px; border-radius:var(--r-sm); }
@@ -226,9 +234,40 @@
   .menu-foot .note{ font-family:var(--font-mono); font-size:12.5px; color:var(--ink-soft); max-width:420px; }
   .menu-foot .note::before{ content:"\2731  "; color:var(--accent); }
 
+  /* ================= FALSAFAH / STORY ================= */
+  .story{ display:grid; gap:40px; align-items:center; }
+  @media (min-width:860px){ .story{ grid-template-columns:.9fr 1.1fr; gap:52px; } }
+  .story-text .eyebrow{ margin-bottom:10px; }
+  .story-text h2{ font-family:var(--font-display); font-weight:400; font-size:clamp(28px,5vw,40px); line-height:1.05; margin:0 0 16px; text-transform:uppercase; }
+  .story-text p{ color:var(--ink-soft); font-size:15.5px; line-height:1.65; margin:0 0 14px; max-width:440px; }
+  .story-sign{ font-family:var(--font-hand); font-size:30px; font-weight:700; color:var(--accent); margin:10px 0 0; transform:rotate(-2deg); display:inline-block; }
+
+  .photo-collage{ position:relative; display:grid; grid-template-columns:1fr 1fr; gap:22px 18px; max-width:420px; margin:0 auto; }
+  .photo-slot{
+    position:relative; aspect-ratio:1/1; background:var(--panel); border:1px solid var(--line-strong); border-radius:3px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
+    box-shadow:0 10px 20px rgba(0,0,0,.12); padding:14px;
+  }
+  .photo-slot svg{ width:30px; height:30px; color:var(--ink-soft); opacity:.5; }
+  .photo-slot span{ font-family:var(--font-mono); font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-soft); opacity:.7; text-align:center; }
+  .photo-slot::before{
+    content:""; position:absolute; top:-9px; left:50%; width:44px; height:16px; margin-left:-22px;
+    background:color-mix(in srgb, var(--turmeric) 55%, transparent); transform:rotate(-3deg);
+    box-shadow:0 1px 2px rgba(0,0,0,.15);
+  }
+  .photo-slot.rot-1{ transform:rotate(-3deg); }
+  .photo-slot.rot-2{ transform:rotate(2.5deg); margin-top:14px; }
+  .photo-slot.rot-3{ transform:rotate(-2deg); margin-top:-14px; }
+  .photo-slot.rot-2::before{ transform:rotate(4deg); }
+  .photo-slot.rot-3::before{ transform:rotate(-5deg); }
+  .photo-slot.wide{ grid-column:1/3; max-width:200px; margin:0 auto; }
+
   /* ================= TEMPAH (order kinds) ================= */
   .kinds{ display:grid; gap:18px; }
   @media (min-width:760px){ .kinds{ grid-template-columns:1fr 1fr; } }
+  .kinds .card:nth-child(1){ transform:rotate(-1deg); }
+  .kinds .card:nth-child(2){ transform:rotate(1deg); }
+  .kinds .card:hover{ transform:translateY(-3px) rotate(0deg); }
   .card{ position:relative; background:var(--panel); border:1px solid var(--line); border-radius:var(--r); padding:28px 24px; display:flex; flex-direction:column; box-shadow:var(--shadow-sm); transition:transform .15s, box-shadow .15s, border-color .15s; }
   .card:hover{ transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--line-strong); }
   .card .chip{ align-self:flex-start; font-family:var(--font-mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:#fff; background:var(--charcoal); padding:5px 11px; border-radius:20px; margin-bottom:15px; }
@@ -451,11 +490,40 @@
     </div>
 
     <div class="menu-foot">
-      <p class="note">Menu boleh berubah ikut stok harian.</p>
+      <p class="note">Menu boleh berubah ikut stok harian.<span class="scribble">datang awal ye!</span></p>
       <button class="btn btn-chili" type="button" data-order="biasa">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
         Buat Order
       </button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FALSAFAH / STORY ================= -->
+<section id="cerita">
+  <div class="wrap">
+    <div class="story">
+      <div class="story-text">
+        <p class="eyebrow">Falsafah Kami</p>
+        <h2>Kenapa Harga Kekal RM7?</h2>
+        <p>Kami percaya makanan yang sedap dan mengenyangkan tak semestinya mahal. Itu sebab harga kekal RM7 sebungkus — senang diingat, senang di poket, setiap hari pasar.</p>
+        <p>Menu berubah ikut bahan yang segar hari itu, tapi harga tak berubah. Itu janji kami.</p>
+        <span class="story-sign">— Dapur Ayah</span>
+      </div>
+      <div class="photo-collage">
+        <div class="photo-slot rot-1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>
+          <span>Foto gerai<br>tidak lama lagi</span>
+        </div>
+        <div class="photo-slot rot-2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>
+          <span>Foto makanan<br>tidak lama lagi</span>
+        </div>
+        <div class="photo-slot rot-3 wide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>
+          <span>Foto pasar<br>tidak lama lagi</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
