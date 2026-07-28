@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="ms" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Dapur Ayah — gerai pasar tani menjual nasi ayam, mee kari, nasi lemak dan lain-lain, RM7 sepinggan. Order WhatsApp, borong, dan katering majlis.">
+<title>Dapur Ayah — Gerai Pasar Tani</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* ============ CONSTANTS (identical in both themes) ============ */
+  :root{
+    --turmeric:#DDA22F;
+    --turmeric-deep:#B87F1E;
+    --chili:#B3402C;
+    --chili-deep:#8A2818;
+    --pandan:#4C6140;
+    --pandan-deep:#3F5335;
+    --string:#B7A97D;
+    --cream:#F2EAD8;
+    --charcoal:#181511;
+
+    --font-display:'Anton', sans-serif;
+    --font-body:'Work Sans', sans-serif;
+    --font-mono:'Space Mono', monospace;
+
+    --max:1120px;
+    --pad:20px;
+    --r:10px;
+  }
+
+  /* ============ THEME TOKENS ============ */
+  :root, [data-theme="dark"]{
+    --bg:#181511;
+    --bg-elevated:#221E17;
+    --bg-elevated-hover:#2B2620;
+    --bg-inverted:#F2EAD8;
+    --text:#F2EAD8;
+    --text-muted:#CBBE9A;
+    --text-on-inverted:#181511;
+    --text-muted-on-inverted:#5B5238;
+    --border:rgba(242,234,216,0.12);
+    --border-strong:rgba(242,234,216,0.20);
+    --accent-on-page:var(--turmeric);
+    --accent-on-inverted:var(--chili);
+  }
+  [data-theme="light"]{
+    --bg:#F7F1E3;
+    --bg-elevated:#FFFFFF;
+    --bg-elevated-hover:#F0E8D4;
+    --bg-inverted:#181511;
+    --text:#181511;
+    --text-muted:#6B6248;
+    --text-on-inverted:#F2EAD8;
+    --text-muted-on-inverted:#CBBE9A;
+    --border:rgba(24,21,17,0.10);
+    --border-strong:rgba(24,21,17,0.20);
+    --accent-on-page:var(--chili);
+    --accent-on-inverted:var(--turmeric);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:var(--font-body); -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    transition:background-color .25s ease, color .25s ease;
+  }
+  img,svg{ display:block; max-width:100%; }
+  a{ color:inherit; text-decoration:none; }
+  button{ font-family:inherit; cursor:pointer; }
+  :focus-visible{ outline:3px solid var(--turmeric); outline-offset:3px; }
+  .wrap{ max-width:var(--max); margin:0 auto; padding:0 var(--pad); }
+
+  .grain{
+    position:fixed; inset:0; pointer-events:none; z-index:5; opacity:0.03; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ============ TOP BAR ============ */
+  .topbar{ position:sticky; top:0; z-index:40; background:var(--bg); border-bottom:1px solid var(--border); transition:background-color .25s ease, border-color .25s ease; }
+  .topbar-inner{ display:flex; align-items:center; justify-content:space-between; padding:14px var(--pad); max-width:var(--max); margin:0 auto; gap:12px; }
+  .brand{ display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-size:19px; letter-spacing:0.02em; color:var(--text); }
+  .brand .mark{ width:32px; height:32px; border-radius:50%; background:var(--turmeric); display:flex; align-items:center; justify-content:center; color:var(--charcoal); font-family:var(--font-mono); font-weight:700; font-size:11px; flex-shrink:0; }
+  .topbar-actions{ display:flex; align-items:center; gap:10px; }
+  .top-cta{ display:none; align-items:center; gap:10px; }
+  @media (min-width:760px){ .top-cta{ display:flex; } }
+
+  /* ============ THEME TOGGLE ============ */
+  .theme-toggle{ width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--bg-elevated); border:1px solid var(--border-strong); color:var(--text); flex-shrink:0; transition:background-color .2s ease, border-color .2s ease; }
+  .theme-toggle:hover{ background:var(--bg-elevated-hover); }
+  .theme-toggle svg{ width:19px; height:19px; }
+  .theme-toggle .icon-moon{ display:none; }
+  [data-theme="light"] .theme-toggle .icon-sun{ display:none; }
+  [data-theme="light"] .theme-toggle .icon-moon{ display:block; }
+
+  /* ============ BUTTONS ============ */
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    font-family:var(--font-body); font-weight:600; font-size:14.5px;
+    padding:13px 22px; border-radius:8px; border:1.5px solid transparent;
+    white-space:nowrap; box-shadow:0 1px 2px rgba(0,0,0,0.2);
+    transition:transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
+  }
+  .btn:hover{ transform:translateY(-1px); box-shadow:0 6px 14px rgba(0,0,0,0.25); }
+  .btn:active{ transform:translateY(0); box-shadow:0 1px 2px rgba(0,0,0,0.2); }
+  .btn svg{ width:17px; height:17px; flex-shrink:0; }
+  .btn-primary{ background:var(--pandan); color:var(--cream); }
+  .btn-primary:hover{ background:var(--pandan-deep); }
+  .btn-outline{ border-color:var(--border-strong); color:var(--text); background:var(--bg-elevated); }
+  .btn-outline:hover{ background:var(--bg-elevated-hover); }
+  .btn-chili{ background:var(--chili); color:var(--cream); }
+  .btn-chili:hover{ background:var(--chili-deep); }
+  .btn-block{ width:100%; }
+
+  /* ============ MOBILE STICKY ORDER BAR ============ */
+  .mobile-bar{ position:fixed; left:0; right:0; bottom:0; z-index:50; display:flex; gap:8px; padding:10px var(--pad) calc(10px + env(safe-area-inset-bottom)); background:var(--bg); border-top:1px solid var(--border-strong); box-shadow:0 -6px 16px rgba(0,0,0,0.25); transition:background-color .25s ease, border-color .25s ease; }
+  @media (min-width:760px){ .mobile-bar{ display:none; } }
+  .mobile-bar .btn{ flex:1; padding:14px 8px; font-size:14px; }
+  body{ padding-bottom:80px; }
+  @media (min-width:760px){ body{ padding-bottom:0; } }
+
+  /* ============ HERO ============ */
+  .hero{ position:relative; padding:52px var(--pad) 60px; background:radial-gradient(ellipse 750px 420px at 10% -10%, rgba(221,162,47,0.14), transparent 60%), var(--bg); transition:background-color .25s ease; }
+  .hero-inner{ position:relative; z-index:1; max-width:var(--max); margin:0 auto; display:grid; gap:36px; }
+  @media (min-width:860px){ .hero-inner{ grid-template-columns:1.2fr 0.8fr; align-items:center; } }
+  .eyebrow{ font-family:var(--font-mono); font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent-on-page); margin:0 0 14px; }
+  .hero h1{ font-family:var(--font-display); font-weight:400; font-size:clamp(44px, 13vw, 94px); line-height:0.9; letter-spacing:0.01em; margin:0 0 18px; color:var(--text); }
+  .hero h1 span{ color:var(--accent-on-page); }
+  .hero p.sub{ font-size:clamp(16px, 3.2vw, 19px); line-height:1.55; color:var(--text-muted); max-width:480px; margin:0 0 28px; }
+  .hero-ctas{ display:flex; flex-wrap:wrap; gap:12px; }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:0; margin-top:36px; padding-top:22px; border-top:1px solid var(--border); }
+  .stat-strip div{ padding:0 22px 0 0; margin-right:22px; border-right:1px solid var(--border); font-family:var(--font-mono); font-size:11.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; }
+  .stat-strip div:last-child{ border-right:none; margin-right:0; }
+
+  /* the hanging tag is a physical object — its colors stay fixed regardless of theme */
+  .hero-tag-holder{ display:flex; flex-direction:column; align-items:center; }
+  .hero-tag{ position:relative; width:230px; filter:drop-shadow(0 18px 30px rgba(0,0,0,0.4)); transform:rotate(3deg); }
+  .hero-tag .string{ width:2px; height:44px; margin:0 auto; background:repeating-linear-gradient(to bottom, var(--string) 0 4px, transparent 4px 8px); }
+  .hero-tag .grommet{ width:16px; height:16px; border-radius:50%; margin:0 auto -8px; position:relative; z-index:2; background:radial-gradient(circle at 35% 30%, #efe3c2, #a89a72 70%); border:2px solid var(--charcoal); }
+  .hero-tag .tag-body{ background:linear-gradient(180deg, #F8F0DE, var(--cream)); clip-path:polygon(14% 0%, 100% 0%, 100% 78%, 50% 100%, 0% 78%, 0% 0%); padding:40px 22px 46px; text-align:center; color:var(--charcoal); }
+  .hero-tag .price-label{ font-family:var(--font-mono); font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--chili); margin-bottom:6px; display:block; }
+  .hero-tag .price{ font-family:var(--font-display); font-size:64px; line-height:1; color:var(--charcoal); }
+  .hero-tag .price sup{ font-size:22px; font-family:var(--font-mono); top:-1.6em; }
+  .hero-tag .price-note{ font-family:var(--font-mono); font-size:11px; margin-top:8px; color:#4A4330; opacity:0.85; }
+  .tag-exception{ margin-top:12px; font-family:var(--font-mono); font-size:11.5px; color:var(--text-muted); text-align:center; }
+
+  /* ============ TODAY BANNER — the single most useful mobile line on the page ============ */
+  .today-banner{ display:none; }
+  .today-banner.is-ready{ display:flex; }
+  .today-banner{
+    align-items:center; justify-content:center; flex-wrap:wrap; gap:10px 18px;
+    padding:14px var(--pad); text-align:center;
+    font-size:14.5px; line-height:1.4;
+  }
+  .today-banner.is-open{ background:var(--chili); color:var(--cream); }
+  .today-banner.is-closed{ background:var(--bg-elevated); color:var(--text-muted); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+  .today-banner strong{ font-weight:700; }
+  .today-banner .tb-actions{ display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
+  .today-banner .tb-link{
+    font-family:var(--font-mono); font-size:12px; letter-spacing:0.03em;
+    padding:5px 12px; border-radius:20px; white-space:nowrap;
+  }
+  .today-banner.is-open .tb-link{ background:rgba(255,255,255,0.18); color:var(--cream); }
+  .today-banner.is-open .tb-link:hover{ background:rgba(255,255,255,0.28); }
+  .today-banner.is-closed .tb-link{ border:1px solid var(--border-strong); color:var(--text); }
+  .today-banner.is-closed .tb-link:hover{ background:var(--bg-elevated-hover); }
+
+  /* ============ SECTION HEADERS ============ */
+  section{ padding:64px var(--pad); scroll-margin-top:74px; }
+  .section-head{ max-width:640px; margin:0 0 40px; }
+  .section-head .eyebrow{ margin-bottom:10px; }
+  .section-head h2{ font-family:var(--font-display); font-weight:400; font-size:clamp(30px,6vw,44px); line-height:1.04; margin:0 0 12px; color:var(--text); }
+  .section-head p{ color:var(--text-muted); font-size:16px; line-height:1.6; margin:0; }
+
+  section, .card, .menu-tag{ transition:background-color .25s ease, border-color .25s ease, color .25s ease; }
+
+  /* schedule/coverage section — deliberately inverted relative to the page for rhythm */
+  .panel-inverted{ background:var(--bg-inverted); color:var(--text-on-inverted); }
+  .panel-inverted .section-head h2{ color:var(--text-on-inverted); }
+  .panel-inverted .section-head p{ color:var(--text-muted-on-inverted); }
+  .panel-inverted .eyebrow{ color:var(--accent-on-inverted); }
+
+  /* ============ MENU GRID ============ */
+  .menu-grid{ display:grid; gap:16px; grid-template-columns:repeat(2,1fr); }
+  @media (min-width:640px){ .menu-grid{ grid-template-columns:repeat(3,1fr); } }
+  @media (min-width:900px){ .menu-grid{ grid-template-columns:repeat(4,1fr); } }
+  .menu-tag{ position:relative; background:var(--bg-elevated); border:1px solid var(--border); border-radius:var(--r); padding:24px 14px 18px; display:flex; flex-direction:column; align-items:center; text-align:center; box-shadow:0 6px 16px rgba(0,0,0,0.16); }
+  .menu-tag:hover{ transform:translateY(-3px); border-color:var(--turmeric); box-shadow:0 10px 22px rgba(0,0,0,0.2); }
+  .menu-tag .icon{ width:40px; height:40px; margin-bottom:14px; color:var(--accent-on-page); }
+  .menu-tag .name{ font-weight:700; font-size:14.5px; line-height:1.25; color:var(--text); margin-bottom:16px; min-height:38px; display:flex; align-items:center; }
+  .menu-tag .price-chip{ margin-top:auto; font-family:var(--font-mono); font-weight:700; font-size:12.5px; letter-spacing:0.02em; color:var(--charcoal); background:var(--turmeric); padding:6px 14px; border-radius:6px; }
+  .menu-note{ margin-top:28px; font-family:var(--font-mono); font-size:12.5px; color:var(--text-muted); }
+  .menu-note::before{ content:'— '; color:var(--accent-on-page); }
+
+  /* ============ CARDS (borong / katering / contact) ============ */
+  .split{ display:grid; gap:20px; }
+  @media (min-width:760px){ .split{ grid-template-columns:1fr 1fr; } }
+  .card{ position:relative; background:var(--bg-elevated); border:1px solid var(--border); padding:32px 28px; border-radius:var(--r); display:flex; flex-direction:column; box-shadow:0 8px 20px rgba(0,0,0,0.16); }
+  .card .tag-num{ display:inline-block; font-family:var(--font-mono); font-size:11px; color:var(--charcoal); letter-spacing:0.05em; background:var(--turmeric); padding:4px 10px; border-radius:20px; margin-bottom:16px; align-self:flex-start; }
+  .card h3{ font-family:var(--font-display); font-weight:400; font-size:25px; margin:0 0 10px; color:var(--text); }
+  .pickup-badge{ display:inline-flex; align-items:center; gap:6px; align-self:flex-start; font-family:var(--font-mono); font-size:11px; letter-spacing:0.03em; color:var(--chili); border:1px solid var(--chili); padding:5px 10px; border-radius:20px; margin-bottom:16px; }
+  .pickup-badge svg{ width:13px; height:13px; }
+  .card p{ color:var(--text-muted); line-height:1.6; font-size:15px; margin:0 0 20px; flex:1; }
+  .card ul{ list-style:none; margin:0 0 22px; padding:0; }
+  .card ul li{ display:flex; gap:10px; align-items:flex-start; font-size:14.5px; color:var(--text-muted); margin-bottom:10px; line-height:1.5; }
+  .card ul li::before{ content:''; width:6px; height:6px; margin-top:7px; background:var(--turmeric); flex-shrink:0; border-radius:50%; }
+
+  /* ============ SCHEDULE TABLE — a fixed "printed ticket" object ============ */
+  .schedule-wrap{ background:#FFFDF7; border:1px solid rgba(24,21,17,0.16); border-radius:var(--r); overflow:hidden; box-shadow:0 10px 24px rgba(0,0,0,0.22); }
+  table.schedule-table{ width:100%; border-collapse:collapse; font-size:15px; }
+  .schedule-table thead th{ text-align:left; font-family:var(--font-mono); text-transform:uppercase; letter-spacing:0.06em; font-size:11.5px; padding:14px 18px; background:var(--charcoal); color:var(--turmeric); }
+  .schedule-table tbody td{ padding:16px 18px; border-bottom:1px solid rgba(24,21,17,0.1); }
+  .schedule-table tbody tr:last-child td{ border-bottom:none; }
+  .schedule-table tbody tr:hover{ background:#FBF4DE; }
+  .schedule-table tbody tr.is-today{ background:#FBEED0; }
+  .schedule-table .day{ font-weight:700; color:var(--charcoal); white-space:nowrap; }
+  .schedule-table .place{ color:#4A4330; }
+  .schedule-table .time{ font-family:var(--font-mono); font-size:13.5px; color:var(--chili); white-space:nowrap; }
+  .today-badge{ display:inline-block; margin-left:8px; font-family:var(--font-mono); font-size:10px; letter-spacing:0.05em; background:var(--chili); color:#fff; padding:2px 7px; border-radius:20px; vertical-align:middle; }
+
+  @media (max-width:640px){
+    .schedule-table thead{ display:none; }
+    .schedule-table, .schedule-table tbody, .schedule-table tr, .schedule-table td{ display:block; width:100%; }
+    .schedule-table tr{ padding:14px 16px; border-bottom:1px solid rgba(24,21,17,0.1); }
+    .schedule-table tbody tr:last-child{ border-bottom:none; }
+    .schedule-table td{ padding:3px 0; border-bottom:none !important; }
+    .schedule-table td::before{ content:attr(data-label); display:inline-block; width:56px; font-family:var(--font-mono); font-size:10.5px; text-transform:uppercase; color:#8b8064; }
+    .schedule-table .day{ font-size:16px; margin-bottom:2px; }
+  }
+  .schedule-caption{ margin-top:16px; font-family:var(--font-mono); font-size:12.5px; color:var(--text-muted-on-inverted); opacity:0.9; }
+
+  /* ============ CONTACT ============ */
+  .contact-grid{ display:grid; gap:20px; }
+  @media (min-width:760px){ .contact-grid{ grid-template-columns:1fr 1fr; align-items:stretch; } }
+  .contact-line{ display:flex; gap:14px; align-items:flex-start; margin-bottom:18px; font-size:15px; color:var(--text-muted); line-height:1.5; }
+  .contact-line svg{ width:20px; height:20px; color:var(--accent-on-page); flex-shrink:0; margin-top:2px; }
+  .contact-line strong{ color:var(--text); display:block; font-size:12.5px; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:3px; }
+
+  /* ============ FOOTER ============ */
+  footer{ padding:40px var(--pad) 30px; border-top:1px solid var(--border); text-align:center; }
+  footer .brand{ justify-content:center; margin-bottom:10px; }
+  footer p{ font-size:12.5px; color:var(--text-muted); margin:4px 0; }
+  footer .foot-note{ font-family:var(--font-mono); font-size:11px; opacity:0.7; margin-top:14px; }
+
+  /* ============ MOBILE REFINEMENTS ============ */
+  @media (max-width:640px){
+    .hero{ padding:36px var(--pad) 44px; }
+    .hero-inner{ gap:28px; }
+    .hero-ctas .btn{ flex:1 1 auto; text-align:center; }
+    .stat-strip{ display:grid; grid-template-columns:1fr 1fr; gap:14px 16px; margin-top:28px; padding-top:18px; }
+    .stat-strip div{ padding:0; margin-right:0; border-right:none; border-top:1px solid var(--border); padding-top:10px; }
+    .hero-tag-holder{ margin-top:4px; }
+    .hero-tag{ width:190px; }
+    .hero-tag .price{ font-size:52px; }
+
+    section{ padding:44px var(--pad); }
+    .section-head{ margin-bottom:28px; }
+
+    .card{ padding:24px 20px; }
+    .card h3{ font-size:22px; }
+
+    .topbar-inner{ padding:12px var(--pad); }
+    .brand{ font-size:16px; }
+    .brand .mark{ width:28px; height:28px; font-size:10px; }
+    .theme-toggle{ width:40px; height:40px; }
+
+    .today-banner{ font-size:13.5px; padding:12px var(--pad); }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- ============ TOP BAR ============ -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="mark">RM7</span>DAPUR AYAH</div>
+    <div class="topbar-actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Tukar tema terang / gelap">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 14.5A8.5 8.5 0 119.5 4a7 7 0 0010.5 10.5z"/></svg>
+      </button>
+      <div class="top-cta">
+        <a class="btn btn-outline" href="#" id="saveContactTop">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v12m0 0l-5-5m5 5l5-5M5 20h14"/></svg>
+          Simpan Kenalan
+        </a>
+        <a class="btn btn-primary" href="https://wa.me/60197309787?text=Assalamualaikum%2C%20saya%20nak%20order%20makanan." target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.2c-.22.62-1.29 1.2-1.78 1.27-.46.07-1.03.1-1.66-.1-.38-.12-.87-.28-1.5-.55-2.64-1.14-4.36-3.8-4.5-3.99-.13-.18-1.08-1.43-1.08-2.73 0-1.3.68-1.93.93-2.2.24-.26.53-.33.7-.33.18 0 .35 0 .5.01.16.01.38-.06.6.46.22.53.75 1.83.82 1.96.07.13.11.29.02.46-.09.18-.14.29-.27.44-.13.16-.28.35-.4.47-.13.13-.27.27-.11.53.16.27.72 1.19 1.55 1.93 1.07.95 1.97 1.24 2.24 1.38.27.13.43.11.59-.07.16-.18.68-.79.87-1.06.18-.27.36-.22.61-.13.24.09 1.55.73 1.82.86.27.13.45.2.51.31.07.11.07.65-.15 1.27z"/></svg>
+          WhatsApp Order
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="eyebrow">Gerai Pasar Tani &middot; Skudai &amp; Sekitar</p>
+      <h1>SEMUA<br><span>RM7</span>.</h1>
+      <p class="sub">Nasi ayam, mee kari, nasi lemak dan lain-lain. Menerima pelbagai tempahan masakan untuk borong dan majlis — order terus melalui WhatsApp.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-chili" href="https://wa.me/60197309787?text=Assalamualaikum%2C%20saya%20nak%20order%20makanan." target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+          Order Sekarang
+        </a>
+        <a class="btn btn-outline" href="#borong">Nak Borong / Katering</a>
+      </div>
+      <div class="stat-strip">
+        <div>7 Menu Setiap Hari</div>
+        <div>Halal &middot; Tempahan Diterima</div>
+        <div>Boleh Borong</div>
+      </div>
+    </div>
+    <div class="hero-tag-holder">
+      <div class="hero-tag">
+        <div class="string"></div>
+        <div class="grommet"></div>
+        <div class="tag-body">
+          <span class="price-label">Harga Tetap</span>
+          <div class="price"><sup>RM</sup>7</div>
+          <div class="price-note">sebungkus, tiap hari</div>
+        </div>
+      </div>
+      <div class="tag-exception">*Bubur Ayam RM4</div>
+    </div>
+  </div>
+</section>
+
+<div class="today-banner" id="todayBanner" aria-live="polite"></div>
+
+<!-- ============ MENU ============ -->
+<section id="menu">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Menu Hari-Hari</p>
+      <h2>7 pilihan.<br>Satu harga.</h2>
+      <p>Menu terhad setiap hari — datang awal sebelum kehabisan.</p>
+    </div>
+
+    <div class="menu-grid">
+      <div class="menu-tag">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="9" r="6.5"/><path d="M4 19h16M8 19c0-2 1.5-3 4-3s4 1 4 3"/></svg>
+        <div class="name">Nasi Ayam</div>
+        <div class="price-chip">RM7</div>
+      </div>
+      <div class="menu-tag">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="9" r="6.5"/><path d="M8.5 6.5l1 1.5M15.5 6.5l-1 1.5M9 10h6M4 19h16M8 19c0-2 1.5-3 4-3s4 1 4 3"/></svg>
+        <div class="name">Nasi Ayam Goreng Berempah</div>
+        <div class="price-chip">RM7</div>
+      </div>
+      <div class="menu-tag">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12c0-4.5 3.5-8 8-8s8 3.5 8 8"/><path d="M3 19h18M6 19c0-2 1-3.5 2-4M18 19c0-2-1-3.5-2-4M11 15v4M13 15v4"/></svg>
+        <div class="name">Nasi Lemak</div>
+        <div class="price-chip">RM7</div>
+      </div>
+      <div class="menu-tag">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><ellipse cx="12" cy="14" rx="8" ry="4"/><path d="M6 14c1-4 2-7 2-9M12 14c.5-4.5.5-7.5 0-9M18 14c-1-4-2-7-2-9"/></svg>
+        <div class="name">Mee Kari</div>
+        <div class="price-chip">RM7</div>
+      </div>
+      <div class="menu-tag">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 13c2 3 5 4.5 8 4.5s6-1.5 8-4.5"/><ellipse cx="12" cy="13" rx="8" ry="3"/><path d="M12 3v4M9 4l1 3M15 4l-1 3"/></svg>
+        <div class="name">Bubur Ayam</div>
+        <div class="price-chip">RM4</div>
+      </div>
+      <div class="menu-tag">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="5" width="14" height="14" rx="1.5"/><path d="M5 10h14M9 5v14M14 5v14"/></svg>
+        <div class="name">Lontong Kering</div>
+        <div class="price-chip">RM7</div>
+      </div>
+      <div class="menu-tag">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><ellipse cx="12" cy="14" rx="8" ry="4.5"/><path d="M6.5 10c1-3 3-5 5.5-5s4.5 2 5.5 5"/><circle cx="10" cy="14" r="1"/><circle cx="14" cy="15" r="1"/></svg>
+        <div class="name">Soto Ayam</div>
+        <div class="price-chip">RM7</div>
+      </div>
+    </div>
+
+    <p class="menu-note">Menu boleh berubah ikut stok — WhatsApp dulu untuk pastikan ada.</p>
+  </div>
+</section>
+
+<!-- ============ BULK + CATERING ============ -->
+<section id="borong">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Borong &amp; Majlis</p>
+      <h2>Nak untuk ramai orang?</h2>
+      <p>Menerima pelbagai tempahan masakan untuk pejabat, kenduri, kelas sekolah, atau majlis keluarga. WhatsApp kuantiti dan tarikh, kami bagi harga.</p>
+    </div>
+
+    <div class="split">
+      <div class="card">
+        <span class="tag-num">Borong</span>
+        <h3>Borong Bungkusan</h3>
+        <span class="pickup-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          Pick-up only in Pasar Tani
+        </span>
+        <p>Untuk pejabat, surau, atau acara kecil — boleh order dalam kuantiti besar. Lagi banyak order, lagi baik harga.</p>
+        <ul>
+          <li>Minimum 10 bungkus</li>
+          <li>Boleh campur beberapa menu dalam satu order</li>
+          <li>Tempah sehari awal, elak last minute</li>
+        </ul>
+        <a class="btn btn-primary btn-block" href="https://wa.me/60197309787?text=Assalamualaikum%2C%20saya%20nak%20borong%20makanan.%20Kuantiti%3A%20___%20Tarikh%3A%20___" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+          WhatsApp untuk Borong
+        </a>
+      </div>
+
+      <div class="card">
+        <span class="tag-num">Katering</span>
+        <h3>Katering Acara</h3>
+        <p>Kenduri kahwin, rumah terbuka, mesyuarat, atau program sekolah — kami sediakan dan hantar ikut keperluan majlis anda.</p>
+        <ul>
+          <li>Pakej ikut bilangan tetamu</li>
+          <li>Menu boleh kita bincang dulu</li>
+          <li>Penghantaran ikut kawasan</li>
+        </ul>
+        <a class="btn btn-chili btn-block" href="https://wa.me/60197309787?text=Assalamualaikum%2C%20saya%20nak%20tanya%20tentang%20katering%20untuk%20majlis.%20Bilangan%20tetamu%3A%20___%20Tarikh%3A%20___" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+          Tanya Tentang Katering
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCHEDULE ============ -->
+<section class="panel-inverted" id="jadual">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Jadual Pasar Tani</p>
+      <h2>Cari kami minggu ini</h2>
+      <p>Ini kawasan dan waktu kami jual setiap minggu — datang ikut jadual di bawah.</p>
+    </div>
+
+    <div class="schedule-wrap">
+      <table class="schedule-table" id="scheduleTable">
+        <thead>
+          <tr><th>Hari</th><th>Pasar</th><th>Masa</th></tr>
+        </thead>
+        <tbody>
+          <tr data-day="2" data-map="https://www.google.com/maps/search/?api=1&query=Pasar%20Tani%20Bandar%20Putra%20Kulai%20Johor">
+            <td class="day" data-label="Hari">Selasa</td>
+            <td class="place" data-label="Pasar">Pasar Tani Bandar Putra</td>
+            <td class="time" data-label="Masa">3:00 PM – 7:30 PM</td>
+          </tr>
+          <tr data-day="3" data-map="https://www.google.com/maps/search/?api=1&query=Pasar%20Tani%20Skudai%20Indah%20Skudai%20Johor">
+            <td class="day" data-label="Hari">Rabu</td>
+            <td class="place" data-label="Pasar">Pasar Tani Skudai Indah</td>
+            <td class="time" data-label="Masa">4:00 PM – 7:30 PM</td>
+          </tr>
+          <tr data-day="4" data-map="https://www.google.com/maps/search/?api=1&query=Pasar%20Tani%20Nusantara%20Gelang%20Patah%20Johor">
+            <td class="day" data-label="Hari">Khamis</td>
+            <td class="place" data-label="Pasar">Pasar Tani Nusantara</td>
+            <td class="time" data-label="Masa">3:00 PM – 9:00 PM</td>
+          </tr>
+          <tr data-day="5" data-map="https://www.google.com/maps/search/?api=1&query=Pasar%20Tani%20Mutiara%20Rini%20Skudai%20Johor">
+            <td class="day" data-label="Hari">Jumaat</td>
+            <td class="place" data-label="Pasar">Pasar Tani Mutiara Rini</td>
+            <td class="time" data-label="Masa">6:30 AM – 11:00 AM</td>
+          </tr>
+          <tr data-day="0" data-map="https://www.google.com/maps/search/?api=1&query=Pasar%20Tani%20Indahpura%20Kulai%20Johor">
+            <td class="day" data-label="Hari">Ahad</td>
+            <td class="place" data-label="Pasar">Pasar Tani Indahpura</td>
+            <td class="time" data-label="Masa">6:30 AM – 11:00 AM</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="schedule-caption">* Jadual boleh berubah waktu cuti umum — WhatsApp dulu kalau nak pastikan.</p>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="hubungi">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Hubungi Kami</p>
+      <h2>Order, tanya, atau simpan nombor kami</h2>
+      <p>Cara paling laju untuk order ialah terus WhatsApp. Boleh simpan nombor kami terus dalam phone pun.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="card">
+        <div class="contact-line">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+          <div><strong>WhatsApp / Telefon</strong>+60 19-730 9787</div>
+        </div>
+        <div class="contact-line">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div><strong>Lokasi &amp; Waktu</strong>Ikut jadual pasar tani di atas — Selasa hingga Ahad.</div>
+        </div>
+        <a class="btn btn-primary btn-block" href="https://wa.me/60197309787?text=Assalamualaikum" target="_blank" rel="noopener" style="margin-top:8px;">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+          Chat WhatsApp
+        </a>
+        <a href="tel:+60197309787" style="display:block; text-align:center; margin-top:12px; font-family:var(--font-mono); font-size:12.5px; color:var(--text-muted);">atau telefon terus &middot; 019-730 9787</a>
+      </div>
+
+      <div class="card">
+        <span class="tag-num">Simpan Terus</span>
+        <h3 style="font-size:24px;">Simpan nombor kami</h3>
+        <p>Muat turun kad kenalan terus ke phone — senang, tak payah taip manual.</p>
+        <a class="btn btn-outline btn-block" href="#" id="saveContactMain">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v12m0 0l-5-5m5 5l5-5M5 20h14"/></svg>
+          Simpan Kenalan (.vcf)
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="brand"><span class="mark">RM7</span>DAPUR AYAH</div>
+  <p>Gerai pasar tani &middot; Nasi Ayam &middot; Mee Kari &middot; Nasi Lemak &middot; Bubur Ayam &middot; Soto Ayam</p>
+  <p>+60 19-730 9787</p>
+  <p class="foot-note">Harga RM7 sebungkus (Bubur Ayam RM4) &middot; Stok terhad setiap hari</p>
+</footer>
+
+<!-- ============ MOBILE STICKY BAR ============ -->
+<div class="mobile-bar">
+  <a class="btn btn-outline" href="#" id="saveContactMobile">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v12m0 0l-5-5m5 5l5-5M5 20h14"/></svg>
+    Simpan
+  </a>
+  <a class="btn btn-chili" href="https://wa.me/60197309787?text=Assalamualaikum%2C%20saya%20nak%20order%20makanan." target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+    Order WhatsApp
+  </a>
+</div>
+
+<script>
+  function saveContact(){
+    var vcard = [
+      "BEGIN:VCARD",
+      "VERSION:3.0",
+      "N:;Dapur Ayah;;;",
+      "FN:Dapur Ayah - Pasar Tani",
+      "ORG:Dapur Ayah",
+      "TEL;TYPE=CELL:+60197309787",
+      "NOTE:Nasi Ayam, Mee Kari, Nasi Lemak, Bubur Ayam, Soto Ayam dan lain-lain. RM7 (Bubur Ayam RM4).",
+      "END:VCARD"
+    ].join("\r\n");
+    var blob = new Blob([vcard], { type: "text/vcard" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "Dapur-Ayah.vcf";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  }
+  ["saveContactTop","saveContactMain","saveContactMobile"].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el){ el.addEventListener("click", function(e){ e.preventDefault(); saveContact(); }); }
+  });
+
+  // theme toggle — in-memory only (no browser storage), defaults to dark
+  var root = document.documentElement;
+  var themeBtn = document.getElementById('themeToggle');
+  themeBtn.addEventListener('click', function(){
+    var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    root.setAttribute('data-theme', next);
+  });
+
+  // highlight today's row in the schedule table, and build the today-banner
+  (function(){
+    var dayNames = ['Ahad','Isnin','Selasa','Rabu','Khamis','Jumaat','Sabtu'];
+    var today = new Date().getDay(); // 0=Ahad ... 6=Sabtu
+    var rows = Array.prototype.slice.call(document.querySelectorAll('#scheduleTable tbody tr'));
+    var banner = document.getElementById('todayBanner');
+
+    var todayRow = null;
+    rows.forEach(function(row){
+      var d = parseInt(row.getAttribute('data-day'), 10);
+      if(d === today){
+        todayRow = row;
+        row.classList.add('is-today');
+        var dayCell = row.querySelector('.day');
+        if(dayCell){ dayCell.innerHTML += ' <span class="today-badge">HARI INI</span>'; }
+      }
+    });
+
+    if(!banner) return;
+
+    function rowInfo(row){
+      return {
+        place: row.querySelector('.place').textContent.trim(),
+        time: row.querySelector('.time').textContent.trim(),
+        map: row.getAttribute('data-map')
+      };
+    }
+
+    if(todayRow){
+      var info = rowInfo(todayRow);
+      banner.className = 'today-banner is-ready is-open';
+      banner.innerHTML =
+        '<span>Hari ini (' + dayNames[today] + '): <strong>' + info.place + '</strong> &middot; ' + info.time + '</span>';
+    } else {
+      // find the next day (1-6 days ahead) that has a market
+      var next = null, offset = 0;
+      for(var i = 1; i <= 6; i++){
+        var d = (today + i) % 7;
+        var match = rows.filter(function(r){ return parseInt(r.getAttribute('data-day'),10) === d; })[0];
+        if(match){ next = match; offset = i; break; }
+      }
+      if(next){
+        var ninfo = rowInfo(next);
+        var when = offset === 1 ? 'esok' : dayNames[(today + offset) % 7];
+        banner.className = 'today-banner is-ready is-closed';
+        banner.innerHTML =
+          '<span>Tak berniaga hari ini &middot; jumpa kami ' + when + ' di <strong>' + ninfo.place + '</strong></span>';
+      }
+    }
+  })();
+</script>
+
+</body>
+</html>
