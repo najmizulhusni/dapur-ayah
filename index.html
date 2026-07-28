@@ -101,7 +101,8 @@
   .topbar{ position:sticky; top:0; z-index:60; background:color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter:saturate(1.4) blur(10px); border-bottom:1px solid var(--line); }
   .topbar-inner{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px var(--pad); max-width:var(--max); margin:0 auto; }
   .brand{ display:flex; align-items:center; gap:11px; }
-  .brand .mark{ width:38px; height:38px; border-radius:50%; background:var(--chili); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-weight:700; font-size:12px; letter-spacing:.02em; flex-shrink:0; box-shadow:inset 0 0 0 2px rgba(255,255,255,.25); }
+  .brand .mark{ width:38px; height:38px; border-radius:50%; background:var(--chili); color:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:inset 0 0 0 2px rgba(255,255,255,.25); }
+  .brand .mark svg{ width:21px; height:21px; }
   .brand .txt{ line-height:1; }
   .brand .txt b{ font-family:var(--font-display); font-weight:400; font-size:20px; letter-spacing:.02em; display:block; }
   .brand .txt small{ font-family:var(--font-mono); font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); }
@@ -363,7 +364,7 @@
 <header class="topbar">
   <div class="topbar-inner">
     <a class="brand" href="#top" aria-label="Dapur Ayah — laman utama">
-      <span class="mark">RM7</span>
+      <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2.6c-.6 1-.6 1.8 0 2.6M13 2.6c-.6 1-.6 1.8 0 2.6" opacity=".8"/><path d="M4 10.5h16"/><path d="M4.5 10.5c0 4.14 3.36 7.5 7.5 7.5s7.5-3.36 7.5-7.5"/><path d="M9 19.5h6"/></svg></span>
       <span class="txt"><b>DAPUR AYAH</b><small>Gerai Pasar Tani</small></span>
     </a>
     <div class="topbar-actions">
@@ -566,9 +567,8 @@
 </main>
 
 <footer>
-  <div class="brand"><span class="mark">RM7</span><span class="txt"><b>DAPUR AYAH</b><small>Gerai Pasar Tani</small></span></div>
+  <div class="brand"><span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2.6c-.6 1-.6 1.8 0 2.6M13 2.6c-.6 1-.6 1.8 0 2.6" opacity=".8"/><path d="M4 10.5h16"/><path d="M4.5 10.5c0 4.14 3.36 7.5 7.5 7.5s7.5-3.36 7.5-7.5"/><path d="M9 19.5h6"/></svg></span><span class="txt"><b>DAPUR AYAH</b><small>Gerai Pasar Tani</small></span></div>
   <p>Nasi Ayam · Nasi Lemak Ayam · Nasi Lemak Telur · Mee Kari · Lontong Kering · Bubur Ayam · Soto Ayam</p>
-  <p>+60 19-730 9787 · Skudai &amp; sekitar, Johor</p>
   <p class="foot-note">Sedia menerima tempahan sekitar Skudai, Mutiara Rini &amp; Taman Universiti</p>
 </footer>
 
