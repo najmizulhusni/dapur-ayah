@@ -349,6 +349,8 @@
   .segmented button{ border:none; background:transparent; padding:10px 6px; border-radius:8px; font-weight:600; font-size:13.5px; color:var(--ink-soft); transition:background .15s, color .15s; }
   .segmented button.active{ background:var(--chili); color:#fff; box-shadow:var(--shadow-sm); }
 
+  .field-row{ display:flex; gap:10px; }
+  .field-row .field{ flex:1; min-width:0; }
   .field{ margin-bottom:15px; }
   .field > label{ display:block; font-size:12px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:7px; }
   .field input, .field select, .field textarea{
@@ -505,9 +507,9 @@
   <div class="wrap">
     <div class="story">
       <div class="story-text">
-        <p class="eyebrow">Sejak 2010</p>
+        <p class="eyebrow">Sejak 2008</p>
         <h2>Sudah Bertahun di Pasar Tani</h2>
-        <p>Dapur Ayah diusahakan oleh Encik Mohd Sapuan bersama isterinya, Cik Noraini, yang telah berniaga di pasar tani sejak 2010 — dari minggu ke minggu, pasar ke pasar, kami masih di sini menyediakan makanan yang sedap dan berpatutan untuk pelanggan sekitar Skudai dan Kulai.</p>
+        <p>Dapur Ayah diusahakan oleh Encik Mohd Sapuan bersama isterinya, Cik Noraini, yang telah berniaga di pasar tani sejak 2008 — dari minggu ke minggu, pasar ke pasar, kami masih di sini menyediakan makanan yang sedap dan berpatutan untuk pelanggan sekitar Skudai dan Kulai.</p>
         <p>Bertahun pengalaman ajar kami satu perkara: kualiti dan harga yang konsisten itu yang buat pelanggan datang balik.</p>
         <span class="story-sign">— Encik Mohd Sapuan &amp; Cik Noraini</span>
       </div>
@@ -634,7 +636,7 @@
 
       <div class="card">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" style="width:44px;height:44px;color:var(--accent);margin-bottom:14px;"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
-        <h3 style="font-size:22px;">Balas Cepat</h3>
+        <h3 style="font-size:22px;">Reply Laju</h3>
         <p style="margin-bottom:0;">Order, tanya menu hari ini, atau tempah untuk majlis — semua boleh terus di WhatsApp.</p>
       </div>
     </div>
@@ -722,10 +724,15 @@
         </div>
       </div>
 
-      <!-- date (borong + katering) -->
+      <!-- date + time (borong + katering) -->
       <div class="mode-only" data-for="borong katering">
-        <div class="field"><label id="dateLbl">Tarikh diperlukan</label>
-          <input type="date" id="fDate">
+        <div class="field-row">
+          <div class="field"><label id="dateLbl">Tarikh diperlukan</label>
+            <input type="date" id="fDate">
+          </div>
+          <div class="field"><label id="timeLbl">Waktu</label>
+            <input type="time" id="fTime">
+          </div>
         </div>
       </div>
 
@@ -928,6 +935,7 @@
     document.getElementById("modalTitle").textContent = TITLES[m].t;
     document.getElementById("modalSub").textContent = TITLES[m].s;
     document.getElementById("dateLbl").textContent = (m==="katering") ? "Tarikh majlis" : "Tarikh ambil";
+    document.getElementById("timeLbl").textContent = (m==="katering") ? "Waktu majlis" : "Waktu ambil";
     // single (biasa) orders are paused — hide the WhatsApp send button, show notice only
     document.querySelector(".m-foot").style.display = (m==="biasa") ? "none" : "block";
     document.getElementById("foodHint").textContent = (m==="borong")
@@ -985,6 +993,7 @@
         "• Bilangan tetamu: " + guests,
         val("fMenu") ? "• Menu: " + val("fMenu") : "",
         val("fDate") ? "• Tarikh majlis: " + val("fDate") : "",
+        val("fTime") ? "• Waktu majlis: " + val("fTime") : "",
         val("fArea") ? "• Kawasan penghantaran: " + val("fArea") : "",
         name ? "• Nama: " + name : "",
         note ? "• Catatan: " + note : ""
@@ -1011,6 +1020,7 @@
       "—",
       "Jumlah: " + t.bungkus + " bungkus (RM" + t.rm + ")",
       val("fDate") ? "Tarikh ambil: " + val("fDate") : "",
+      val("fTime") ? "Waktu ambil: " + val("fTime") : "",
       val("fPickup2") ? "Ambil di: " + val("fPickup2") : "",
       name ? "Nama: " + name : "",
       note ? "Catatan: " + note : ""
