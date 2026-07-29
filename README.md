@@ -55,7 +55,10 @@ block and the early-return guard in `buildMessage()`.
 
 ## Photos
 
-The "Sejak 2010" story section (`#cerita`) has three placeholder photo
-slots clearly labelled "tidak lama lagi" — replace the SVG placeholder
-markup in each `.photo-slot` with a real `<img>` once photos of the stall
-are available.
+The "Sejak 2010" story section (`#cerita`) shows three real photos from
+`images/` (`pasartani1.jpg`, `pasartani2.jpg`, `pasartani3.jpg`) in a
+tilted, taped polaroid layout via `.photo-slot`. To swap a photo, replace
+the file in `images/` (keep the same name) or update the `src`/`alt` on
+the corresponding `<img>`. Images are pre-resized/compressed with `sips`
+(max ~900-1000px wide, ~76-78% JPEG quality) to keep the page light —
+do the same for any replacement before committing.

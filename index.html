@@ -237,14 +237,12 @@
 
   .photo-collage{ position:relative; display:grid; grid-template-columns:1fr 1fr; gap:22px 18px; max-width:420px; margin:0 auto; }
   .photo-slot{
-    position:relative; aspect-ratio:1/1; background:var(--panel); border:1px solid var(--line-strong); border-radius:3px;
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
-    box-shadow:0 10px 20px rgba(0,0,0,.12); padding:14px;
+    position:relative; aspect-ratio:1/1; background:#fff; border:1px solid var(--line-strong); border-radius:3px;
+    box-shadow:0 10px 20px rgba(0,0,0,.16); padding:8px 8px 22px;
   }
-  .photo-slot svg{ width:30px; height:30px; color:var(--ink-soft); opacity:.5; }
-  .photo-slot span{ font-family:var(--font-mono); font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-soft); opacity:.7; text-align:center; }
+  .photo-slot img{ width:100%; height:100%; object-fit:cover; border-radius:1px; display:block; background:var(--panel); }
   .photo-slot::before{
-    content:""; position:absolute; top:-9px; left:50%; width:44px; height:16px; margin-left:-22px;
+    content:""; position:absolute; top:-9px; left:50%; width:44px; height:16px; margin-left:-22px; z-index:2;
     background:color-mix(in srgb, var(--turmeric) 55%, transparent); transform:rotate(-3deg);
     box-shadow:0 1px 2px rgba(0,0,0,.15);
   }
@@ -253,7 +251,7 @@
   .photo-slot.rot-3{ transform:rotate(-2deg); margin-top:-14px; }
   .photo-slot.rot-2::before{ transform:rotate(4deg); }
   .photo-slot.rot-3::before{ transform:rotate(-5deg); }
-  .photo-slot.wide{ grid-column:1/3; max-width:200px; margin:0 auto; }
+  .photo-slot.wide{ grid-column:1/3; max-width:300px; margin:0 auto; aspect-ratio:4/3; }
 
   /* ================= TEMPAH (order kinds) ================= */
   .kinds{ display:grid; gap:18px; }
@@ -498,22 +496,19 @@
       <div class="story-text">
         <p class="eyebrow">Sejak 2010</p>
         <h2>Sudah Bertahun di Pasar Tani</h2>
-        <p>Dapur Ayah diusahakan oleh Encik Mohd Sapuan bersama isterinya, Noraini, yang telah berniaga di pasar tani sejak 2010 — dari minggu ke minggu, pasar ke pasar, kami masih di sini menyediakan makanan yang sedap dan berpatutan untuk pelanggan sekitar Skudai dan Kulai.</p>
+        <p>Dapur Ayah diusahakan oleh Encik Mohd Sapuan bersama isterinya, Cik Noraini, yang telah berniaga di pasar tani sejak 2010 — dari minggu ke minggu, pasar ke pasar, kami masih di sini menyediakan makanan yang sedap dan berpatutan untuk pelanggan sekitar Skudai dan Kulai.</p>
         <p>Bertahun pengalaman ajar kami satu perkara: kualiti dan harga yang konsisten itu yang buat pelanggan datang balik.</p>
-        <span class="story-sign">— Encik Mohd Sapuan &amp; Noraini</span>
+        <span class="story-sign">— Encik Mohd Sapuan &amp; Cik Noraini</span>
       </div>
       <div class="photo-collage">
         <div class="photo-slot rot-1">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>
-          <span>Foto gerai<br>tidak lama lagi</span>
+          <img src="images/pasartani1.jpg" alt="Encik Mohd Sapuan dan Cik Noraini di gerai Dapur Ayah" loading="lazy">
         </div>
         <div class="photo-slot rot-2">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>
-          <span>Foto makanan<br>tidak lama lagi</span>
+          <img src="images/pasartani2.jpg" alt="Menu dan juadah Dapur Ayah di gerai pasar tani" loading="lazy">
         </div>
         <div class="photo-slot rot-3 wide">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>
-          <span>Foto pasar<br>tidak lama lagi</span>
+          <img src="images/pasartani3.jpg" alt="Dapur Ayah di pasar tani" loading="lazy">
         </div>
       </div>
     </div>
