@@ -703,11 +703,18 @@
         </div>
       </div>
 
-      <!-- BORONG: item picker -->
+      <!-- pickup (borong) — pick the pasar tani/day FIRST so menu availability makes sense -->
+      <div class="mode-only" data-for="borong">
+        <div class="field"><label>Ambil di pasar tani mana?</label>
+          <select id="fPickup2"></select>
+        </div>
+      </div>
+
+      <!-- BORONG: item picker (availability follows the pickup day chosen above) -->
       <div class="mode-only" data-for="borong">
         <div class="field"><label>Pilih menu &amp; kuantiti</label>
           <div class="items" id="itemPicker"></div>
-          <p class="hint" style="margin-top:8px;">Sesetengah menu hanya tersedia pada hari tertentu — pilih tarikh untuk kemas kini.</p>
+          <p class="hint" style="margin-top:8px;">Sesetengah menu hanya tersedia pada pasar/hari tertentu — ikut pilihan di atas.</p>
         </div>
       </div>
 
@@ -733,13 +740,6 @@
           <div class="field"><label id="timeLbl">Waktu</label>
             <input type="time" id="fTime">
           </div>
-        </div>
-      </div>
-
-      <!-- pickup (borong) -->
-      <div class="mode-only" data-for="borong">
-        <div class="field"><label>Ambil di pasar tani mana?</label>
-          <select id="fPickup2"></select>
         </div>
       </div>
 
@@ -799,6 +799,19 @@
   function daysLabel(days){ return days.map(function(d){ return DAY_NAMES[d]; }).join(" & ") + " sahaja"; }
   function isAvailable(m, dow){ return !m.days || m.days.indexOf(dow) > -1; }
 
+  /* the next pasar tani we'll actually be at — today's if we're open today, else the soonest one ahead */
+  function nextMarketDay(){
+    var today = new Date().getDay();
+    var match = SCHEDULE.filter(function(s){ return s.day===today; })[0];
+    if(match) return match;
+    for(var i=1;i<=6;i++){
+      var d=(today+i)%7;
+      var m=SCHEDULE.filter(function(s){ return s.day===d; })[0];
+      if(m) return m;
+    }
+    return null;
+  }
+
   /* ---- render menu board ---- */
   var menuList = document.getElementById("menuList");
   MENU.forEach(function(m){
@@ -811,16 +824,20 @@
     menuList.appendChild(li);
   });
 
-  /* ---- populate pickup selects ---- */
+  /* ---- populate pickup select ---- */
   function fillPickup(sel){
     SCHEDULE.forEach(function(s){
       var o = document.createElement("option");
       o.value = s.name + " (" + s.hari + ", " + s.time + ")";
       o.textContent = s.hari + " — " + s.name;
+      o.setAttribute("data-day", s.day);
       sel.appendChild(o);
     });
   }
-  fillPickup(document.getElementById("fPickup2"));
+  var fPickup2 = document.getElementById("fPickup2");
+  fillPickup(fPickup2);
+  var defaultMarket = nextMarketDay();
+  if(defaultMarket){ fPickup2.value = defaultMarket.name + " (" + defaultMarket.hari + ", " + defaultMarket.time + ")"; }
 
   /* ---- highlight today's row + today strip ---- */
   (function(){
@@ -883,13 +900,12 @@
     updateSummary();
   }
 
-  document.getElementById("fDate").addEventListener("input", function(){
-    var v = this.value;
-    var dow;
-    if(v){ var p = v.split("-"); dow = new Date(+p[0], +p[1]-1, +p[2]).getDay(); }
-    else { dow = new Date().getDay(); }
-    refreshAvailability(dow);
-  });
+  /* menu availability follows whichever pasar tani/day is picked above — not the calendar date */
+  function pickupDow(){
+    var opt = fPickup2.options[fPickup2.selectedIndex];
+    return opt ? parseInt(opt.getAttribute("data-day"), 10) : new Date().getDay();
+  }
+  fPickup2.addEventListener("change", function(){ refreshAvailability(pickupDow()); });
 
   picker.addEventListener("click", function(e){
     var btn = e.target.closest("button[data-act]"); if(!btn) return;
@@ -941,11 +957,7 @@
     document.getElementById("foodHint").textContent = (m==="borong")
       ? "Minimum 10 bungkus — kami reply harga borong di WhatsApp."
       : "Mesej akan dibuka dalam WhatsApp — semak sebelum hantar.";
-    if(m==="borong"){
-      var dv = document.getElementById("fDate").value;
-      var dow = dv ? (function(){ var p=dv.split("-"); return new Date(+p[0],+p[1]-1,+p[2]).getDay(); })() : new Date().getDay();
-      refreshAvailability(dow);
-    }
+    if(m==="borong"){ refreshAvailability(pickupDow()); }
   }
 
   function openModal(m){
@@ -1034,7 +1046,7 @@
     window.open(url, "_blank", "noopener");
   });
 
-  refreshAvailability(new Date().getDay());
+  refreshAvailability(pickupDow());
 
   /* ---- theme toggle (in-memory) ---- */
   var root = document.documentElement;
