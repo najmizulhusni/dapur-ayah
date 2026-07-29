@@ -594,11 +594,11 @@
           <tr><th>Hari</th><th>Pasar</th><th>Masa</th></tr>
         </thead>
         <tbody>
-          <tr data-day="2"><td class="day">Selasa</td><td class="place">Pasar Tani Bandar Putra</td><td class="time">3:00–7:30 PM</td></tr>
+          <tr data-day="2"><td class="day">Selasa</td><td class="place">Pasar Tani Bandar Putra Kulai</td><td class="time">3:00–7:30 PM</td></tr>
           <tr data-day="3"><td class="day">Rabu</td><td class="place">Pasar Tani Skudai Indah</td><td class="time">4:00–7:30 PM</td></tr>
-          <tr data-day="4"><td class="day">Khamis</td><td class="place">Pasar Tani Nusantara</td><td class="time">3:00–9:00 PM</td></tr>
-          <tr data-day="5"><td class="day">Jumaat</td><td class="place">Pasar Tani Mutiara Rini</td><td class="time">6:30–11:00 AM</td></tr>
-          <tr data-day="0"><td class="day">Ahad</td><td class="place">Pasar Tani Indahpura</td><td class="time">6:30–11:00 AM</td></tr>
+          <tr data-day="4"><td class="day">Khamis</td><td class="place">Pasar Tani Taman Nusantara</td><td class="time">3:00–9:00 PM</td></tr>
+          <tr data-day="5"><td class="day">Jumaat</td><td class="place">Pasar Tani Mutiara Rini</td><td class="time">3:00–9:00 PM</td></tr>
+          <tr data-day="0"><td class="day">Ahad</td><td class="place">Pasar Tani Temenggong Kulai</td><td class="time">6:30–11:00 AM</td></tr>
         </tbody>
       </table>
     </div>
@@ -775,17 +775,17 @@
     { id:"ayam-penyet", name:"Nasi Ayam Penyet",          price:7 },
     { id:"nasi-lemak",  name:"Nasi Lemak Ayam",           price:7 },
     { id:"nasi-lemak-telur", name:"Nasi Lemak Telur",     price:5 },
-    { id:"mee-kari",    name:"Mee Kari",                  price:7, days:[3] },
+    { id:"mee-kari",    name:"Mee Kari",                  price:7, days:[0,3] },
     { id:"lontong",     name:"Lontong Kering",            price:7, days:[0] },
-    { id:"soto",        name:"Soto Ayam",                 price:7, days:[0] },
+    { id:"soto",        name:"Soto Ayam",                 price:7, days:[0,3,5] },
     { id:"bubur",       name:"Bubur Ayam",                price:4 }
   ];
   var SCHEDULE = [
-    { day:2, name:"Pasar Tani Bandar Putra", time:"3:00–7:30 PM", hari:"Selasa" },
-    { day:3, name:"Pasar Tani Skudai Indah", time:"4:00–7:30 PM", hari:"Rabu" },
-    { day:4, name:"Pasar Tani Nusantara",    time:"3:00–9:00 PM", hari:"Khamis" },
-    { day:5, name:"Pasar Tani Mutiara Rini", time:"6:30–11:00 AM", hari:"Jumaat" },
-    { day:0, name:"Pasar Tani Indahpura",    time:"6:30–11:00 AM", hari:"Ahad" }
+    { day:2, name:"Pasar Tani Bandar Putra Kulai", time:"3:00–7:30 PM", hari:"Selasa" },
+    { day:3, name:"Pasar Tani Skudai Indah",       time:"4:00–7:30 PM", hari:"Rabu" },
+    { day:4, name:"Pasar Tani Taman Nusantara",    time:"3:00–9:00 PM", hari:"Khamis" },
+    { day:5, name:"Pasar Tani Mutiara Rini",       time:"3:00–9:00 PM", hari:"Jumaat" },
+    { day:0, name:"Pasar Tani Temenggong Kulai",   time:"6:30–11:00 AM", hari:"Ahad" }
   ];
   var DAY_NAMES = ["Ahad","Isnin","Selasa","Rabu","Khamis","Jumaat","Sabtu"];
 
