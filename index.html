@@ -526,7 +526,7 @@
     <div class="section-head">
       <p class="eyebrow">Borong &amp; Majlis</p>
       <h2>Nak Order Untuk Ramai Orang?</h2>
-      <p>Menerima pelbagai tempahan masakan untuk pejabat, surau, kelas sekolah, kenduri dan majlis keluarga. Isi borang ringkas, kami balas harga di WhatsApp.</p>
+      <p>Menerima pelbagai tempahan masakan untuk pejabat, surau, kelas sekolah, kenduri dan majlis keluarga. Isi borang ringkas, kami reply harga di WhatsApp.</p>
     </div>
 
     <div class="kinds">
@@ -606,7 +606,7 @@
     <div class="section-head">
       <p class="eyebrow">Hubungi Kami</p>
       <h2>Order &amp; Tanya</h2>
-      <p>Cara paling laju untuk order ialah terus WhatsApp — kami balas secepat mungkin.</p>
+      <p>Cara paling laju untuk order ialah terus WhatsApp — kami reply secepat mungkin.</p>
     </div>
 
     <div class="contact-grid">
@@ -907,7 +907,7 @@
   var TITLES = {
     biasa:   { t:"Buat Tempahan",  s:"Pilih jenis tempahan di bawah." },
     borong:  { t:"Tempah Borong",  s:"Minimum 10 bungkus. Boleh campur beberapa menu." },
-    katering:{ t:"Tanya Katering", s:"Isi butiran majlis, kami balas dengan pakej & harga." }
+    katering:{ t:"Tanya Katering", s:"Isi butiran majlis, kami reply dengan pakej & harga." }
   };
 
   function applyMode(m){
@@ -925,7 +925,7 @@
     // single (biasa) orders are paused — hide the WhatsApp send button, show notice only
     document.querySelector(".m-foot").style.display = (m==="biasa") ? "none" : "block";
     document.getElementById("foodHint").textContent = (m==="borong")
-      ? "Minimum 10 bungkus — kami balas harga borong di WhatsApp."
+      ? "Minimum 10 bungkus — kami reply harga borong di WhatsApp."
       : "Mesej akan dibuka dalam WhatsApp — semak sebelum hantar.";
     if(m==="borong"){
       var dv = document.getElementById("fDate").value;
