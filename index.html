@@ -988,7 +988,11 @@
 
   /* ---- build WhatsApp message ---- */
   function val(id){ var el=document.getElementById(id); return el ? el.value.trim() : ""; }
-  function line(arr){ return arr.filter(Boolean).join("\n"); }
+  /* joins the truthy lines of ONE block with single line-breaks */
+  function joinLines(arr){ return arr.filter(Boolean).join("\n"); }
+  /* joins whole blocks with a blank line between them, dropping any empty block */
+  function joinBlocks(arr){ return arr.filter(function(b){ return b && b.length; }).join("\n\n"); }
+  var DIVIDER = "──────────────";
 
   function buildMessage(){
     var name = val("fName");
@@ -997,17 +1001,19 @@
     if(mode==="katering"){
       var guests = val("fGuests");
       if(!guests){ return { err:"Sila isi bilangan tetamu." }; }
-      return { text: line([
-        "Assalamualaikum Dapur Ayah 👋",
-        "Saya nak tanya pakej *KATERING*:",
-        "",
-        "• Bilangan tetamu: " + guests,
-        val("fMenu") ? "• Menu: " + val("fMenu") : "",
-        val("fDate") ? "• Tarikh majlis: " + val("fDate") : "",
-        val("fTime") ? "• Waktu majlis: " + val("fTime") : "",
-        val("fArea") ? "• Kawasan penghantaran: " + val("fArea") : "",
-        name ? "• Nama: " + name : "",
-        note ? "• Catatan: " + note : ""
+      var kDetails = joinLines([
+        "👥 Bilangan tetamu: *" + guests + "*",
+        val("fMenu") ? "🍽️ Menu: " + val("fMenu") : "",
+        val("fDate") ? "📅 Tarikh majlis: " + val("fDate") : "",
+        val("fTime") ? "⏰ Waktu majlis: " + val("fTime") : "",
+        val("fArea") ? "📍 Kawasan penghantaran: " + val("fArea") : "",
+        name ? "🙋 Nama: " + name : "",
+        note ? "📝 Catatan: " + note : ""
+      ]);
+      return { text: joinBlocks([
+        "Assalamualaikum Dapur Ayah 👋\nSaya nak tanya pakej *KATERING*:",
+        kDetails,
+        "Terima kasih! 🙏"
       ]) };
     }
 
@@ -1018,23 +1024,26 @@
     if(t.bungkus===0){ return { err:"Sila pilih sekurang-kurangnya satu menu." }; }
     if(t.bungkus<10){ return { err:"Borong minimum 10 bungkus (sekarang " + t.bungkus + ")." }; }
 
-    var lines = [];
+    var itemLines = [];
     MENU.forEach(function(m){
-      if(qty[m.id]>0) lines.push("• " + qty[m.id] + "× " + m.name + " — RM" + (qty[m.id]*m.price));
+      if(qty[m.id]>0) itemLines.push("• " + qty[m.id] + "× " + m.name + " — RM" + (qty[m.id]*m.price));
     });
+    var itemsBlock = itemLines.join("\n");
+    var totalBlock = DIVIDER + "\nJumlah: *" + t.bungkus + " bungkus (RM" + t.rm + ")*";
+    var metaBlock = joinLines([
+      val("fDate") ? "📅 Tarikh ambil: " + val("fDate") : "",
+      val("fTime") ? "⏰ Waktu ambil: " + val("fTime") : "",
+      val("fPickup2") ? "📍 Ambil di: " + val("fPickup2") : "",
+      name ? "🙋 Nama: " + name : "",
+      note ? "📝 Catatan: " + note : ""
+    ]);
 
-    return { text: line([
-      "Assalamualaikum Dapur Ayah 👋",
-      "Saya nak *BORONG* order:",
-      "",
-      lines.join("\n"),
-      "—",
-      "Jumlah: " + t.bungkus + " bungkus (RM" + t.rm + ")",
-      val("fDate") ? "Tarikh ambil: " + val("fDate") : "",
-      val("fTime") ? "Waktu ambil: " + val("fTime") : "",
-      val("fPickup2") ? "Ambil di: " + val("fPickup2") : "",
-      name ? "Nama: " + name : "",
-      note ? "Catatan: " + note : ""
+    return { text: joinBlocks([
+      "Assalamualaikum Dapur Ayah 👋\nSaya nak *TEMPAH BORONG*:",
+      itemsBlock,
+      totalBlock,
+      metaBlock,
+      "Terima kasih! 🙏"
     ]) };
   }
 
