@@ -373,7 +373,9 @@
   .stepper button{ width:34px; height:34px; font-size:19px; line-height:1; background:transparent; display:flex; align-items:center; justify-content:center; }
   .stepper button:hover{ background:var(--panel-hover); }
   .stepper button:disabled{ opacity:.35; cursor:not-allowed; }
-  .stepper .qty{ min-width:30px; text-align:center; font-family:var(--font-mono); font-weight:700; font-size:15px; }
+  .stepper .qty{ width:36px; height:34px; min-width:30px; text-align:center; font-family:var(--font-mono); font-weight:700; font-size:15px; border:none; background:transparent; color:inherit; -moz-appearance:textfield; }
+  .stepper .qty::-webkit-outer-spin-button, .stepper .qty::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+  .stepper .qty:disabled{ opacity:.35; }
 
   .summary{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin:16px 0 4px; padding:14px 16px; background:var(--panel); border:1px dashed var(--line-strong); border-radius:11px; }
   .summary .s-label{ font-family:var(--font-mono); font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-soft); }
@@ -877,11 +879,19 @@
       '<div class="info"><b>' + m.name + '</b><span>RM' + m.price + (m.days ? ' · <em class="avail">' + daysLabel(m.days) + '</em>' : '') + '</span></div>' +
       '<div class="stepper">' +
         '<button type="button" data-act="dec" aria-label="Kurang ' + m.name + '" disabled>−</button>' +
-        '<span class="qty">0</span>' +
+        '<input class="qty" type="number" inputmode="numeric" min="0" step="1" value="0" aria-label="Kuantiti ' + m.name + '">' +
         '<button type="button" data-act="inc" aria-label="Tambah ' + m.name + '">+</button>' +
       '</div>';
     picker.appendChild(row);
   });
+
+  function setQty(row, id, n){
+    n = Math.max(0, Math.floor(n) || 0);
+    qty[id] = n;
+    row.querySelector(".qty").value = n;
+    row.querySelector('[data-act="dec"]').disabled = n===0;
+    row.classList.toggle("on", n>0);
+  }
 
   function refreshAvailability(dow){
     MENU.forEach(function(m){
@@ -890,11 +900,9 @@
       var ok = isAvailable(m, dow);
       row.classList.toggle("unavailable", !ok);
       row.querySelector('[data-act="inc"]').disabled = !ok;
+      row.querySelector(".qty").disabled = !ok;
       if(!ok && qty[m.id] > 0){
-        qty[m.id] = 0;
-        row.querySelector(".qty").textContent = 0;
-        row.querySelector('[data-act="dec"]').disabled = true;
-        row.classList.remove("on");
+        setQty(row, m.id, 0);
       }
     });
     updateSummary();
@@ -910,10 +918,21 @@
   picker.addEventListener("click", function(e){
     var btn = e.target.closest("button[data-act]"); if(!btn) return;
     var row = btn.closest(".item"); var id = row.getAttribute("data-id");
-    qty[id] = Math.max(0, qty[id] + (btn.getAttribute("data-act")==="inc"?1:-1));
-    row.querySelector(".qty").textContent = qty[id];
-    row.querySelector('[data-act="dec"]').disabled = qty[id]===0;
-    row.classList.toggle("on", qty[id]>0);
+    setQty(row, id, qty[id] + (btn.getAttribute("data-act")==="inc"?1:-1));
+    updateSummary();
+  });
+
+  picker.addEventListener("input", function(e){
+    var input = e.target.closest("input.qty"); if(!input) return;
+    var row = input.closest(".item"); var id = row.getAttribute("data-id");
+    setQty(row, id, parseInt(input.value, 10));
+    updateSummary();
+  });
+
+  picker.addEventListener("change", function(e){
+    var input = e.target.closest("input.qty"); if(!input) return;
+    var row = input.closest(".item"); var id = row.getAttribute("data-id");
+    setQty(row, id, parseInt(input.value, 10));
     updateSummary();
   });
 
