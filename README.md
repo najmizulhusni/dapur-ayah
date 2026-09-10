@@ -4,7 +4,11 @@ Single-page site for Dapur Ayah, a pasar tani food stall in Skudai, Kulai & seki
 
 ## Stack
 
-Plain HTML/CSS/JS — no build step, no dependencies. Everything (styles, markup, and the small theme-toggle / today-banner script) lives in `index.html`.
+Plain HTML/CSS/JS — no build step, no dependencies. Everything (styles, markup, and the small today-banner / order-form script) lives in `index.html`.
+
+The site is a single warm kraft-paper theme — there is no dark mode or theme
+toggle. Colours come from the CSS custom properties on `:root` at the top of
+the `<style>` block; change them there.
 
 ## Running locally
 
@@ -41,6 +45,20 @@ Most content lives in the `<script>` at the bottom of `index.html`:
 - **WhatsApp number** — the `WA` constant (and search `60197309787` for the
   plain `tel:`/`wa.me` links in the markup).
 
+## Reviews (`#ulasan`)
+
+Customer reviews are plain markup in the `#ulasan` section — three
+`<article class="review">` blocks (tag chip, quote, then name/role with a
+coloured initial avatar). To add or edit one, copy an existing block; the
+avatar colour cycles automatically off `:nth-child`. On screens under 900px
+the grid turns into a swipeable snap rail, so keep the quotes to roughly
+similar lengths. Don't add reviews that weren't actually given by a
+customer.
+
+The `.trust-row` above the reviews holds three factual claims (years,
+markets per week, order types). Keep those in sync with `SCHEDULE` and the
+story section if the business changes.
+
 ## Order form
 
 Clicking any "Order" button opens a modal with three modes — **Biasa**
@@ -48,8 +66,9 @@ Clicking any "Order" button opens a modal with three modes — **Biasa**
 builds a formatted WhatsApp message and opens `wa.me`; nothing is stored or
 sent server-side.
 
-**Biasa is currently paused** (shows a "belum dibuka" notice instead of the
-item picker) — see the `mode==="biasa"` branch in `applyMode()` and
+**Biasa is currently paused** — instead of dead-ending, that tab now shows a
+chooser (`.notice.is-chooser`) that routes to Borong or Katering and tells
+walk-in customers to visit the stall — see the `mode==="biasa"` branch in `applyMode()` and
 `buildMessage()`. To re-enable single retail orders, remove that notice
 block and the early-return guard in `buildMessage()`.
 

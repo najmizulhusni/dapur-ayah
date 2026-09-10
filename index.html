@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ms" data-theme="light">
+<html lang="ms">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,13 @@
 <meta name="description" content="Dapur Ayah — gerai pasar tani di Skudai, Kulai & sekitar. Nasi ayam, mee kari, nasi lemak dan lain-lain, RM7 sebungkus. Menerima pelbagai tempahan masakan — order terus WhatsApp, borong & katering majlis.">
 <title>Dapur Ayah — Gerai Pasar Tani · RM7 Sebungkus</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='12' fill='%23C0392B'/%3E%3Cg fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 2.6c-.6 1-.6 1.8 0 2.6M13 2.6c-.6 1-.6 1.8 0 2.6' opacity='.8'/%3E%3Cpath d='M4 10.5h16'/%3E%3Cpath d='M4.5 10.5c0 4.14 3.36 7.5 7.5 7.5s7.5-3.36 7.5-7.5'/%3E%3Cpath d='M9 19.5h6'/%3E%3C/g%3E%3C/svg%3E">
+<meta name="og:type" content="website">
+<meta property="og:type" content="business.business">
+<meta property="og:title" content="Dapur Ayah — Gerai Pasar Tani · RM7 Sebungkus">
+<meta property="og:description" content="Nasi ayam, mee kari, nasi lemak & lain-lain RM7 sebungkus. Tempahan borong untuk surau, pejabat & sekolah, katering kenduri. Skudai, Kulai & sekitar — order terus WhatsApp.">
+<meta property="og:image" content="images/pasartani2.jpg">
+<meta property="og:locale" content="ms_MY">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@600;700&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -35,14 +42,14 @@
     --font-mono:'Space Mono', monospace;
     --font-hand:'Caveat', cursive;
 
-    --max:1680px;
+    --max:1240px;
     --pad:20px;
     --r:14px;
     --r-sm:9px;
   }
 
-  /* ---- light (paper) — the default, most true to a pasar tani ---- */
-  :root, [data-theme="light"]{
+  /* ---- palette: warm kraft paper, the one true to a pasar tani ---- */
+  :root{
     --bg:#F3EAD3;
     --bg-2:#EDE1C4;
     --panel:#FBF6E9;
@@ -56,22 +63,6 @@
     --shadow:0 14px 34px rgba(60,45,20,0.14);
     --shadow-sm:0 4px 14px rgba(60,45,20,0.10);
   }
-  /* ---- dark ---- */
-  [data-theme="dark"]{
-    --bg:#17130E;
-    --bg-2:#0F0C08;
-    --panel:#221C14;
-    --panel-hover:#2B2419;
-    --ink:#F5EEDC;
-    --ink-soft:#C6B892;
-    --line:rgba(245,238,220,0.13);
-    --line-strong:rgba(245,238,220,0.26);
-    --accent:var(--turmeric);
-    --accent-2:var(--turmeric);
-    --shadow:0 16px 40px rgba(0,0,0,0.5);
-    --shadow-sm:0 4px 16px rgba(0,0,0,0.4);
-  }
-
   @media (prefers-reduced-motion: reduce){
     *{ animation-duration:.01ms !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
   }
@@ -97,10 +88,20 @@
     position:fixed; inset:0; pointer-events:none; z-index:1; opacity:.05; mix-blend-mode:multiply;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
-  [data-theme="dark"] .grain{ mix-blend-mode:overlay; opacity:.035; }
 
   /* ================= TOP BAR ================= */
-  .topbar{ position:sticky; top:0; z-index:60; background:color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter:saturate(1.4) blur(10px); border-bottom:1px solid var(--line); }
+  .topbar{ position:sticky; top:0; z-index:60; background:color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter:saturate(1.4) blur(10px); border-bottom:1px solid var(--line); transition:box-shadow .28s ease, background-color .28s ease; }
+  .topbar.is-stuck{ background:color-mix(in srgb, var(--bg) 96%, transparent); box-shadow:0 6px 22px rgba(60,45,20,.11); }
+
+  /* desktop in-page nav (scroll-spy) */
+  .topnav{ display:none; }
+  @media (min-width:1040px){
+    .topnav{ display:flex; align-items:center; gap:2px; }
+    .topnav a{ position:relative; padding:10px 13px; border-radius:9px; font-size:14.5px; font-weight:500; color:var(--ink-soft); transition:color .18s ease, background-color .18s ease; }
+    .topnav a:hover{ color:var(--ink); background:var(--panel-hover); }
+    .topnav a.is-active{ color:var(--ink); font-weight:600; }
+    .topnav a.is-active::after{ content:""; position:absolute; left:13px; right:13px; bottom:4px; height:2px; border-radius:2px; background:var(--accent); }
+  }
   .topbar-inner{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px var(--pad); max-width:var(--max); margin:0 auto; }
   .brand{ display:flex; align-items:center; gap:11px; }
   .brand .mark{ width:38px; height:38px; border-radius:50%; background:var(--chili); color:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:inset 0 0 0 2px rgba(255,255,255,.25); }
@@ -111,13 +112,6 @@
   .topbar-actions{ display:flex; align-items:center; gap:9px; }
   .top-cta{ display:none; align-items:center; gap:9px; }
   @media (min-width:820px){ .top-cta{ display:flex; } }
-
-  .theme-toggle{ width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--panel); border:1px solid var(--line-strong); flex-shrink:0; transition:background-color .2s, border-color .2s; }
-  .theme-toggle:hover{ background:var(--panel-hover); }
-  .theme-toggle svg{ width:18px; height:18px; }
-  .theme-toggle .icon-moon{ display:none; }
-  [data-theme="dark"] .theme-toggle .icon-sun{ display:none; }
-  [data-theme="dark"] .theme-toggle .icon-moon{ display:block; }
 
   /* ================= BUTTONS ================= */
   .btn{
@@ -141,7 +135,7 @@
   .btn-sm{ padding:11px 16px; font-size:14px; }
 
   /* ================= HERO / SIGNBOARD ================= */
-  .hero{ position:relative; padding:44px var(--pad) 40px; overflow:hidden; }
+  .hero{ position:relative; padding:52px var(--pad) 48px; overflow:hidden; }
   .hero::before{
     content:""; position:absolute; inset:0; z-index:0;
     background:
@@ -150,7 +144,7 @@
     pointer-events:none;
   }
   .hero-inner{ position:relative; z-index:2; max-width:var(--max); margin:0 auto; display:grid; gap:30px; }
-  @media (min-width:900px){ .hero-inner{ grid-template-columns:1.25fr .75fr; align-items:center; gap:44px; } }
+  @media (min-width:900px){ .hero-inner{ grid-template-columns:1.05fr .95fr; align-items:center; gap:52px; } }
 
   .kicker{ display:inline-flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:700; margin:0 0 18px; }
   .kicker::before{ content:""; width:26px; height:2px; background:var(--accent); display:inline-block; }
@@ -158,27 +152,28 @@
   .hero h1 .l1, .hero h1 .l2{ display:block; }
   .hero h1 .l2{ margin-top:0.16em; }
   .hero h1 em{ font-style:normal; color:var(--accent); }
-  .hero .lede{ font-size:clamp(16px,2.6vw,19px); line-height:1.6; color:var(--ink-soft); max-width:460px; margin:0 0 26px; }
+  .hero .lede{ font-size:clamp(16px,2.6vw,19px); line-height:1.6; color:var(--ink-soft); max-width:460px; margin:0 0 14px; }
+  .hero .lede-sub{ font-size:14.5px; line-height:1.6; color:var(--ink-soft); max-width:440px; margin:0 0 26px; padding-left:13px; border-left:3px solid color-mix(in srgb, var(--accent) 55%, transparent); }
   .hero-ctas{ display:flex; flex-wrap:wrap; gap:12px; }
-  .hero-meta{ display:flex; flex-wrap:wrap; gap:10px 26px; margin-top:28px; padding-top:20px; border-top:1px dashed var(--line-strong); }
-  .hero-meta div{ font-family:var(--font-mono); font-size:11.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-soft); display:flex; align-items:center; gap:7px; }
+  .hero-meta{ display:flex; flex-wrap:wrap; gap:9px; margin-top:28px; padding-top:22px; border-top:1px dashed var(--line-strong); }
+  .hero-meta div{ font-family:var(--font-mono); font-size:11.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-soft); display:flex; align-items:center; gap:7px; background:var(--panel); border:1px solid var(--line); padding:8px 12px; border-radius:20px; }
   .hero-meta svg{ width:15px; height:15px; color:var(--pandan); }
 
   /* hero visual (right) — a real photo of the owners, with the RM7 price hook as a corner sticker */
   .board-holder{ display:flex; flex-direction:column; align-items:center; }
   .hero-photo{
-    position:relative; width:min(300px,80vw); border-radius:20px; overflow:hidden;
+    position:relative; width:min(420px,84vw); border-radius:20px; overflow:hidden;
     box-shadow:0 22px 40px rgba(40,28,10,.28); transform:rotate(-1.5deg);
     border:4px solid var(--panel);
   }
   .hero-photo img{ width:100%; height:auto; display:block; }
   .price-badge{
-    position:absolute; right:-10px; bottom:-10px; z-index:3; width:104px; height:104px; border-radius:50%;
+    position:absolute; right:-12px; bottom:-12px; z-index:3; width:clamp(100px,25vw,124px); aspect-ratio:1; border-radius:50%;
     background:var(--chili); color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center;
     transform:rotate(8deg); box-shadow:0 8px 18px rgba(0,0,0,.3); border:3px solid var(--panel);
   }
   .price-badge .lbl{ font-family:var(--font-mono); font-size:8px; letter-spacing:.1em; text-transform:uppercase; opacity:.9; }
-  .price-badge .big{ font-family:var(--font-display); font-size:30px; line-height:1; margin:1px 0; }
+  .price-badge .big{ font-family:var(--font-display); font-size:clamp(29px,7vw,36px); line-height:1; margin:2px 0; }
   .price-badge .big sup{ font-family:var(--font-mono); font-size:11px; margin-right:1px; }
   .price-badge .sub{ font-family:var(--font-mono); font-size:8px; opacity:.9; }
   .hero-exc{ margin-top:22px; font-family:var(--font-mono); font-size:11.5px; color:var(--ink-soft); text-align:center; }
@@ -186,7 +181,9 @@
   /* ================= TODAY STRIP (dynamic) ================= */
   .today{ display:none; }
   .today.is-ready{ display:block; }
-  .today .in{ max-width:var(--max); margin:0 auto; padding:11px var(--pad); display:flex; align-items:center; justify-content:center; gap:8px 14px; flex-wrap:wrap; text-align:center; font-size:14px; }
+  /* nowrap keeps the status dot beside the text instead of on a line of its own */
+  .today .in{ max-width:var(--max); margin:0 auto; padding:11px var(--pad); display:flex; align-items:center; justify-content:center; gap:9px; flex-wrap:nowrap; text-align:center; font-size:14px; }
+  .today .in > span:last-child{ min-width:0; }
   .today.is-open{ background:var(--pandan); color:#fff; }
   .today.is-closed{ background:var(--bg-2); color:var(--ink-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
   .today .dot{ width:9px; height:9px; border-radius:50%; flex-shrink:0; }
@@ -196,7 +193,7 @@
   .today b{ font-weight:700; }
 
   /* ================= SECTIONS ================= */
-  section{ padding:66px var(--pad); scroll-margin-top:70px; }
+  section{ padding:72px var(--pad); scroll-margin-top:82px; }
   .section-head{ max-width:620px; margin:0 0 34px; }
   .eyebrow{ font-family:var(--font-mono); font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:700; margin:0 0 10px; }
   .section-head h2{ font-family:var(--font-display); font-weight:400; font-size:clamp(30px,6vw,46px); line-height:1.02; margin:0 0 12px; text-transform:uppercase; }
@@ -220,8 +217,18 @@
   .m-row .nm{ font-weight:600; font-size:16.5px; line-height:1.3; }
   .m-row .tag-day{ display:block; font-weight:700; font-family:var(--font-mono); font-size:10px; letter-spacing:.04em; text-transform:uppercase; color:var(--accent); margin-top:2px; }
   .m-row .dots{ flex:1; border-bottom:2px dotted var(--line-strong); align-self:center; min-width:14px; }
-  .m-row .pr{ font-family:var(--font-mono); font-weight:700; font-size:15px; color:#fff; background:var(--accent); padding:5px 11px; border-radius:6px; white-space:nowrap; }
-  .m-row .pr.alt{ background:var(--turmeric-deep); }
+  .m-row .pr{ font-family:var(--font-mono); font-weight:700; font-size:15px; color:var(--ink-soft); background:transparent; border:1px solid var(--line-strong); padding:5px 11px; border-radius:6px; white-space:nowrap; }
+  /* only the off-price items get colour — RM7 is the norm, so it stays quiet */
+  .m-row .pr.alt{ color:#fff; background:var(--accent); border-color:transparent; }
+  .m-row.is-off{ opacity:.42; }
+  .m-row.is-off .nm{ text-decoration:line-through; text-decoration-thickness:1px; }
+
+  .day-filter{ display:flex; gap:8px; overflow-x:auto; padding:2px 8px 16px; margin:0 0 4px; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .day-filter::-webkit-scrollbar{ display:none; }
+  .day-filter button{ flex:0 0 auto; padding:9px 15px; border-radius:20px; border:1px solid var(--line-strong); background:var(--panel); font-size:13.5px; font-weight:600; color:var(--ink-soft); transition:background-color .18s ease, color .18s ease, border-color .18s ease; }
+  .day-filter button:hover{ background:var(--panel-hover); color:var(--ink); }
+  .day-filter button.active{ background:var(--charcoal); border-color:var(--charcoal); color:var(--cream); }
+  .day-filter .tnow{ font-family:var(--font-mono); font-size:9px; letter-spacing:.06em; margin-left:6px; opacity:.75; }
   .menu-foot{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:14px; margin-top:22px; }
   .menu-foot .note{ font-family:var(--font-mono); font-size:12.5px; color:var(--ink-soft); max-width:420px; }
   .menu-foot .note::before{ content:"\2731  "; color:var(--accent); }
@@ -252,6 +259,80 @@
   .photo-slot.rot-3::before{ transform:rotate(-5deg); }
   .photo-slot.wide{ grid-column:1/3; max-width:300px; margin:0 auto; aspect-ratio:4/3; }
 
+  /* ================= ULASAN (reviews) ================= */
+  /* three across at every width — compact enough to stay one row on a phone */
+  .trust-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:0 0 24px; }
+  @media (min-width:700px){ .trust-row{ gap:14px; } }
+  .trust-row div{ background:var(--panel); border:1px solid var(--line); border-radius:var(--r-sm); padding:13px 11px; text-align:center; display:flex; flex-direction:column; }
+  /* heading takes the slack so the sub-labels line up even when a heading wraps */
+  .trust-row b{ flex:1; }
+  @media (min-width:700px){ .trust-row div{ padding:15px 16px; } }
+  .trust-row b{ display:block; font-family:var(--font-display); font-weight:400; font-size:clamp(15px,4.1vw,20px); line-height:1.14; text-transform:uppercase; letter-spacing:.01em; }
+  .trust-row span{ display:block; font-size:clamp(11px,2.9vw,13px); color:var(--ink-soft); margin-top:4px; line-height:1.35; }
+
+  .reviews{ display:grid; gap:16px; }
+  @media (min-width:900px){ .reviews{ grid-template-columns:repeat(3,1fr); gap:18px; align-items:stretch; } }
+  .review{
+    position:relative; background:var(--panel); border:1px solid var(--line); border-radius:var(--r);
+    padding:26px 22px 20px; box-shadow:var(--shadow-sm); display:flex; flex-direction:column;
+    transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+  }
+  .review:hover{ transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--line-strong); }
+  .review::before{
+    content:"\201C"; position:absolute; top:6px; left:18px; font-family:var(--font-display); font-weight:400;
+    font-size:58px; line-height:1; color:var(--accent); opacity:.2; pointer-events:none;
+  }
+  .review .r-tag{
+    align-self:flex-start; font-family:var(--font-mono); font-size:10px; letter-spacing:.07em; text-transform:uppercase;
+    color:var(--pandan-deep); background:color-mix(in srgb, var(--pandan) 15%, transparent);
+    border:1px solid color-mix(in srgb, var(--pandan) 40%, transparent);
+    padding:5px 10px; border-radius:20px; margin:0 0 14px; position:relative; z-index:1;
+  }
+  .review p{ font-size:15.5px; line-height:1.62; color:var(--ink); margin:0 0 18px; flex:1; }
+  .review .r-who{ display:flex; align-items:center; gap:12px; padding-top:16px; border-top:1px dashed var(--line-strong); }
+  .review .r-av{
+    width:42px; height:42px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:400; font-size:19px; color:#fff; background:var(--chili);
+  }
+  .review:nth-child(2) .r-av{ background:var(--pandan); }
+  .review:nth-child(3) .r-av{ background:var(--turmeric-deep); }
+  .review .r-who > div b{ display:block; font-size:15px; font-weight:600; line-height:1.25; }
+  .review .r-who > div span{ display:block; font-size:12.5px; color:var(--ink-soft); line-height:1.4; margin-top:3px; }
+
+  .swipe-hint{ display:none; font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 12px; }
+
+  /* mobile: swipeable review rail — reads as "there are more" without a tall stack */
+  @media (max-width:899px){
+    .reviews{
+      grid-auto-flow:column; grid-auto-columns:82%; overflow-x:auto; scroll-snap-type:x mandatory;
+      gap:14px; padding:4px 0 14px; margin:0 calc(var(--pad) * -1); padding-left:var(--pad); padding-right:var(--pad);
+      scrollbar-width:none; -webkit-overflow-scrolling:touch;
+    }
+    .reviews::-webkit-scrollbar{ display:none; }
+    .review{ scroll-snap-align:start; }
+    .review:hover{ transform:none; }
+    .swipe-hint{ display:block; }
+  }
+
+  /* ================= CARA TEMPAH (steps) ================= */
+  .steps{ list-style:none; counter-reset:st; margin:0 0 18px; padding:0; }
+  .steps li{ display:flex; gap:14px; align-items:flex-start; margin-bottom:18px; }
+  .steps li:last-child{ margin-bottom:0; }
+  .steps .n{
+    width:30px; height:30px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono); font-weight:700; font-size:13px; background:var(--accent); color:#fff;
+  }
+  .steps b{ display:block; font-size:15px; font-weight:600; margin-bottom:3px; }
+  .steps p{ margin:0; font-size:14px; color:var(--ink-soft); line-height:1.55; }
+  .steps-note{ font-family:var(--font-mono); font-size:12px; color:var(--ink-soft); line-height:1.6; margin:0; padding-top:16px; border-top:1px dashed var(--line-strong); }
+
+  /* ================= SCROLL REVEAL ================= */
+  /* content is visible by default; it only starts hidden once JS has confirmed it can reveal it
+     again (html.js-anim), so a script error or a missed observer can never hide the page */
+  .js-anim .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s cubic-bezier(.22,.7,.3,1), transform .6s cubic-bezier(.22,.7,.3,1); }
+  .js-anim .reveal.in{ opacity:1; transform:none; }
+  @media (prefers-reduced-motion:reduce){ .js-anim .reveal{ opacity:1 !important; transform:none !important; } }
+
   /* ================= TEMPAH (order kinds) ================= */
   .kinds{ display:grid; gap:18px; }
   @media (min-width:760px){ .kinds{ grid-template-columns:1fr 1fr; } }
@@ -265,6 +346,7 @@
   .card p{ color:var(--ink-soft); font-size:15px; line-height:1.6; margin:0 0 18px; flex:1; }
   .card ul{ list-style:none; margin:0 0 22px; padding:0; }
   .card ul li{ display:flex; gap:10px; align-items:flex-start; font-size:14.5px; color:var(--ink-soft); margin-bottom:10px; line-height:1.5; }
+  .card ul li > span{ min-width:0; }
   .card ul li svg{ width:16px; height:16px; color:var(--pandan); flex-shrink:0; margin-top:2px; }
   .pickup-badge{ display:inline-flex; align-items:center; gap:6px; align-self:flex-start; font-family:var(--font-mono); font-size:10.5px; letter-spacing:.03em; color:var(--chili); border:1px solid var(--chili); padding:5px 10px; border-radius:20px; margin-bottom:16px; }
   .pickup-badge svg{ width:13px; height:13px; }
@@ -305,21 +387,45 @@
   .footer-grid{ max-width:var(--max); margin:0 auto; display:flex; flex-wrap:wrap; gap:32px 64px; padding-bottom:32px; }
   .footer-grid > div{ flex:0 1 320px; }
   .footer-grid .col-links{ font-size:13.5px; color:var(--ink-soft); line-height:1.9; }
+  .footer-grid .col-links a:hover{ color:var(--ink); text-decoration:underline; text-underline-offset:3px; }
   .footer-grid h4{ font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink); margin:0 0 12px; }
   .footer-tagline{ font-size:13.5px; color:var(--ink-soft); line-height:1.6; margin:14px 0 0; max-width:280px; }
+  .footer-phone{
+    display:inline-flex; align-items:center; gap:9px; margin-top:14px; min-height:44px;
+    font-family:var(--font-mono); font-size:14px; font-weight:700; color:var(--ink);
+  }
+  .footer-phone svg{ width:16px; height:16px; color:var(--accent); }
+  .footer-phone:hover{ color:var(--accent); }
+  .footer-grid .col-areas span{ display:block; }
   .footer-bottom{ max-width:var(--max); margin:0 auto; padding:18px 0 28px; border-top:1px solid var(--line); display:flex; flex-wrap:wrap; gap:8px 16px; justify-content:space-between; }
   .footer-bottom p{ font-family:var(--font-mono); font-size:11px; color:var(--ink-soft); opacity:.8; margin:0; }
+
+  /* On a phone this is a one-page site with a sticky order bar, so the footer only
+     needs to say who we are, how to call, and where we deliver — the rest is noise. */
+  @media (max-width:640px){
+    footer{ padding:30px var(--pad) 0; }
+    .footer-grid{ gap:22px; padding-bottom:22px; }
+    .footer-grid > div{ flex:1 1 100%; }
+    .footer-tagline{ max-width:none; font-size:13px; }
+    .footer-grid .col-nav{ display:none; }
+    .footer-grid .col-links{ line-height:1.6; }
+    .footer-grid .col-areas span{ display:inline; }
+    .footer-grid .col-areas span:not(:last-child)::after{ content:" \00b7"; margin-right:5px; opacity:.55; }
+    .footer-grid h4{ margin-bottom:7px; }
+    .footer-bottom{ padding:14px 0 20px; }
+    .footer-bottom p{ font-size:10.5px; }
+  }
 
   /* ================= MOBILE STICKY ORDER BAR ================= */
   .mobile-bar{ position:fixed; left:0; right:0; bottom:0; z-index:55; display:flex; gap:9px; padding:9px var(--pad) calc(9px + env(safe-area-inset-bottom)); background:color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter:blur(10px); border-top:1px solid var(--line-strong); box-shadow:0 -8px 20px rgba(0,0,0,.14); }
   @media (min-width:820px){ .mobile-bar{ display:none; } }
   .mobile-bar .call{ width:52px; flex-shrink:0; padding:0; }
-  .mobile-bar .order{ flex:1; }
+  .mobile-bar .order{ flex:1; font-size:14.5px; min-height:50px; }
   body.has-mobilebar{ padding-bottom:78px; }
   @media (min-width:820px){ body.has-mobilebar{ padding-bottom:0; } }
 
   /* ================= ORDER MODAL ================= */
-  .modal-open{ overflow:hidden; }
+  .modal-open{ overflow:hidden; position:fixed; left:0; right:0; width:100%; }
   .modal{ position:fixed; inset:0; z-index:100; display:none; }
   .modal.is-open{ display:block; }
   .modal .backdrop{ position:absolute; inset:0; background:rgba(20,14,6,.55); backdrop-filter:blur(3px); animation:fade .2s ease; }
@@ -396,15 +502,52 @@
   .notice p{ color:var(--ink-soft); font-size:14.5px; line-height:1.55; margin:0 auto 18px; max-width:340px; }
   .notice-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
 
+  /* modal mode chooser — replaces the old "belum dibuka" dead end */
+  .chooser{ display:grid; gap:10px; margin:0 0 4px; }
+  .choice{
+    display:flex; align-items:center; gap:14px; text-align:left; width:100%;
+    background:var(--bg); border:1.5px solid var(--line-strong); border-radius:12px; padding:15px 16px;
+    transition:border-color .16s ease, background-color .16s ease, transform .16s ease;
+  }
+  .choice:hover{ border-color:var(--accent); background:var(--panel-hover); transform:translateY(-2px); }
+  .choice .ic{ width:40px; height:40px; border-radius:11px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:color-mix(in srgb, var(--accent) 14%, transparent); color:var(--accent); }
+  .choice .ic svg{ width:20px; height:20px; }
+  .choice .tx{ flex:1; min-width:0; }
+  .choice b{ display:block; font-size:15.5px; font-weight:600; margin-bottom:2px; }
+  .choice span{ display:block; font-size:13px; color:var(--ink-soft); line-height:1.45; }
+  .choice .arw{ width:18px; height:18px; flex-shrink:0; color:var(--ink-soft); }
+  .chooser-q{ font-size:15px; font-weight:600; margin:0 0 14px; text-align:left; }
+  .chooser-note{ font-size:13px; color:var(--ink-soft); line-height:1.6; text-align:left; margin:16px 0 0; padding-top:14px; border-top:1px dashed var(--line-strong); }
+  .chooser-note a{ color:var(--accent); font-weight:600; text-decoration:underline; text-underline-offset:3px; }
+  .notice.is-chooser{ text-align:left; padding:20px 18px; }
+
+  .segmented button[data-mode="biasa"]{ font-size:13px; }
+
   /* ================= MOBILE REFINEMENTS ================= */
   @media (max-width:640px){
-    section{ padding:40px var(--pad); }
+    section{ padding:44px var(--pad); }
     .section-head{ margin-bottom:24px; }
     .today .in{ padding:10px var(--pad); font-size:13.5px; }
     .card{ padding:22px 20px; }
     .story{ gap:28px; }
     .topbar-inner{ padding:10px var(--pad); }
     .brand .txt b{ font-size:18px; }
+    .hero{ padding:34px var(--pad) 40px; }
+    .hero h1{ margin-bottom:16px; }
+    .hero .lede{ margin-bottom:22px; }
+    .hero-ctas{ gap:10px; }
+    .hero-ctas .btn{ flex:1 1 0; min-width:0; min-height:50px; padding:14px 12px; font-size:14.5px; }
+    .menu-list{ padding:6px 2px; }
+    .m-row{ padding:13px 10px; }
+    .trust-row{ gap:10px; margin-bottom:22px; }
+    .trust-row b{ font-size:19px; }
+    .review{ padding:24px 20px 18px; }
+    .footer-grid{ gap:26px; }
+    /* comfortable thumb targets in the order sheet */
+    .stepper button{ width:40px; height:40px; }
+    .stepper .qty{ height:40px; width:40px; }
+    .item{ padding:11px 12px; }
+    .segmented button{ padding:12px 4px; font-size:12.5px; }
   }
 
 </style>
@@ -420,11 +563,14 @@
       <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2.6c-.6 1-.6 1.8 0 2.6M13 2.6c-.6 1-.6 1.8 0 2.6" opacity=".8"/><path d="M4 10.5h16"/><path d="M4.5 10.5c0 4.14 3.36 7.5 7.5 7.5s7.5-3.36 7.5-7.5"/><path d="M9 19.5h6"/></svg></span>
       <span class="txt"><b>DAPUR AYAH</b><small>Gerai Pasar Tani</small></span>
     </a>
+    <nav class="topnav" id="topnav" aria-label="Navigasi laman">
+      <a href="#menu">Menu</a>
+      <a href="#cerita">Cerita Kami</a>
+      <a href="#ulasan">Ulasan</a>
+      <a href="#tempah">Tempahan</a>
+      <a href="#jadual">Jadual</a>
+    </nav>
     <div class="topbar-actions">
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Tukar tema terang / gelap">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 14.5A8.5 8.5 0 119.5 4a7 7 0 0010.5 10.5z"/></svg>
-      </button>
       <div class="top-cta">
         <a class="btn btn-ghost btn-sm" href="tel:+60197309787">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3-8.6A2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.4 1.8.7 2.6a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.5-1.2a2 2 0 012.1-.5c.8.3 1.7.6 2.6.7a2 2 0 011.7 2z"/></svg>
@@ -432,7 +578,7 @@
         </a>
         <button class="btn btn-chili btn-sm" type="button" data-order="biasa">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
-          Order Sekarang
+          Tempah Sekarang
         </button>
       </div>
     </div>
@@ -448,10 +594,11 @@
       <p class="kicker">Skudai &amp; Kulai · Johor</p>
       <h1><span class="l1">Semua</span><span class="l2"><em>RM7</em> je.</span></h1>
       <p class="lede">Kami menyediakan nasi ayam, mee kari, nasi lemak dan lain-lain. Sedia menerima pelbagai tempahan masakan untuk borong &amp; majlis.</p>
+      <p class="lede-sub">Tempahan borong &amp; katering boleh terus di WhatsApp. Nak beli sebungkus dua? Jumpa kami di gerai pasar tani.</p>
       <div class="hero-ctas">
         <button class="btn btn-chili" type="button" data-order="biasa">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
-          Order Sekarang
+          Tempah Sekarang
         </button>
         <a class="btn btn-outline" href="#menu">Lihat Menu</a>
       </div>
@@ -482,17 +629,18 @@
 <!-- ================= MENU ================= -->
 <section id="menu" class="band">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <p class="eyebrow">Menu Hari-Hari</p>
       <h2>Satu Harga.<br>Banyak Pilihan.</h2>
       <p>Menu terhad setiap hari! Datang awal ke Pasar Tani sebelum kehabisan.</p>
     </div>
 
-    <div class="menu-board">
+    <div class="menu-board reveal">
+      <div class="day-filter" id="dayFilter" role="group" aria-label="Tapis menu ikut hari pasar"><!-- injected by JS --></div>
       <ul class="menu-list" id="menuList"><!-- injected by JS --></ul>
     </div>
 
-    <div class="menu-foot">
+    <div class="menu-foot reveal">
       <p class="note">Menu boleh berubah ikut stok harian.<span class="scribble">confirm sedap!</span></p>
       <button class="btn btn-chili" type="button" data-order="biasa">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
@@ -506,14 +654,14 @@
 <section id="cerita">
   <div class="wrap">
     <div class="story">
-      <div class="story-text">
+      <div class="story-text reveal">
         <p class="eyebrow">Sejak 2007</p>
         <h2>Sudah Bertahun di Pasar Tani</h2>
         <p>Dapur Ayah diusahakan oleh Encik Sapuan bersama isterinya, Cik Noraini, yang telah berniaga di pasar tani sejak 2007 — dari minggu ke minggu, pasar ke pasar, kami masih di sini menyediakan makanan yang sedap dan berpatutan untuk pelanggan sekitar Skudai dan Kulai.</p>
         <p>Bertahun pengalaman ajar kami satu perkara: kualiti dan harga yang konsisten itu yang buat pelanggan datang balik.</p>
         <span class="story-sign">— Encik Sapuan &amp; Cik Noraini</span>
       </div>
-      <div class="photo-collage">
+      <div class="photo-collage reveal">
         <div class="photo-slot rot-1">
           <img src="images/pasartani1.jpg" width="674" height="900" alt="Encik Sapuan dan Cik Noraini di gerai Dapur Ayah" loading="lazy">
         </div>
@@ -528,16 +676,74 @@
   </div>
 </section>
 
+<!-- ================= ULASAN PELANGGAN ================= -->
+<section id="ulasan" class="band">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Kata Pelanggan</p>
+      <h2>Yang Dah Order<br>Dengan Kami</h2>
+      <p>Kebanyakan pelanggan kami datang balik minggu demi minggu — ada yang tempah untuk surau, ada untuk kenduri keluarga, ada yang sekadar singgah beli sebungkus.</p>
+    </div>
+
+    <div class="trust-row reveal">
+      <div><b>Sejak 2007</b><span>Berniaga di pasar tani</span></div>
+      <div><b>5 Pasar</b><span>Setiap minggu</span></div>
+      <div><b>Surau &amp; Kenduri</b><span>Tempahan borong tetap</span></div>
+    </div>
+
+    <p class="swipe-hint">← Leret untuk baca lagi →</p>
+
+    <div class="reviews reveal">
+      <article class="review">
+        <span class="r-tag">Tempahan Surau · Setiap Jumaat</span>
+        <p>Kami tempah untuk jemaah solat Jumaat. Encik Sapuan memang senang nak berbincang — bab harga pun boleh nego ikut bajet surau, dan dia boleh masak pelbagai jenis lauk ikut permintaan kami. Minggu ini nasi ayam, minggu depan mee kari. Sampai awal, cukup bilangan, tak pernah sekali kecewakan kami.</p>
+        <div class="r-who">
+          <span class="r-av" aria-hidden="true">A</span>
+          <div>
+            <b>Ali</b>
+            <span>AJK Surau Assyakirin, Taman Universiti</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="review">
+        <span class="r-tag">Borong Kenduri Keluarga</span>
+        <p>Setiap kali ada kenduri keluarga, saya order borong dengan Dapur Ayah. Senang sangat — WhatsApp je, bagi bilangan orang dan tarikh, lepas tu dia confirm harga. Kuantiti besar pun rasa dia tetap sama sedap, tak jadi hambar. Saudara-mara semua tanya saya order kat mana.</p>
+        <div class="r-who">
+          <span class="r-av" aria-hidden="true">A</span>
+          <div>
+            <b>Ani</b>
+            <span>Pelanggan borong · Skudai</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="review">
+        <span class="r-tag">Pelanggan Tetap Pasar Tani</span>
+        <p>Saya singgah gerai ni lepas kerja hampir setiap minggu di Pasar Tani Mutiara Rini. RM7 dapat nasi ayam yang berisi — memang susah nak cari harga macam ni sekarang. Cuma kalau datang lewat memang dah kehabisan, jadi saya WhatsApp dulu minta simpan.</p>
+        <div class="r-who">
+          <span class="r-av" aria-hidden="true">F</span>
+          <div>
+            <b>Faizal</b>
+            <span>Pelanggan tetap · Pasar Tani Mutiara Rini</span>
+          </div>
+        </div>
+      </article>
+    </div>
+
+  </div>
+</section>
+
 <!-- ================= TEMPAH / BORONG / KATERING ================= -->
 <section id="tempah">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <p class="eyebrow">Borong &amp; Majlis</p>
       <h2>Nak Order Untuk Ramai Orang?</h2>
       <p>Menerima pelbagai tempahan masakan untuk pejabat, surau, kelas sekolah, kenduri dan majlis keluarga. Isi borang ringkas, kami reply harga di WhatsApp.</p>
     </div>
 
-    <div class="kinds">
+    <div class="kinds reveal">
       <div class="card">
         <span class="chip">Borong</span>
         <h3>Borong Bungkusan</h3>
@@ -550,7 +756,7 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Minimum 10 bungkus</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Boleh campur beberapa menu</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Tempah sehari awal</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Waktu ambil: 6:30 AM – 9:00 PM ikut hari (<a href="#jadual" style="color:inherit;text-decoration:underline;">rujuk jadual</a>)</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Waktu ambil: 6:30 AM – 9:00 PM ikut hari (<a href="#jadual" style="color:inherit;text-decoration:underline;">rujuk jadual</a>)</span></li>
         </ul>
         <button class="btn btn-chili btn-block" type="button" data-order="borong">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
@@ -584,13 +790,13 @@
 <!-- ================= SCHEDULE ================= -->
 <section id="jadual" class="band">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <p class="eyebrow">Jadual Pasar Tani</p>
       <h2>Cari Kami Minggu Ini</h2>
       <p>Ini kawasan dan waktu kami berniaga setiap minggu.</p>
     </div>
 
-    <div class="ticket">
+    <div class="ticket reveal">
       <table class="sched" id="schedTable">
         <thead>
           <tr><th>Hari</th><th>Pasar</th><th>Masa</th></tr>
@@ -611,13 +817,13 @@
 <!-- ================= CONTACT ================= -->
 <section id="hubungi">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <p class="eyebrow">Hubungi Kami</p>
       <h2>Order &amp; Tanya</h2>
       <p>Cara paling laju untuk order ialah terus WhatsApp — kami reply secepat mungkin.</p>
     </div>
 
-    <div class="contact-grid">
+    <div class="contact-grid reveal">
       <div class="card">
         <div class="contact-line">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
@@ -635,9 +841,23 @@
       </div>
 
       <div class="card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" style="width:44px;height:44px;color:var(--accent);margin-bottom:14px;"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
-        <h3 style="font-size:22px;">Reply Laju</h3>
-        <p style="margin-bottom:0;">Order, tanya menu hari ini, atau tempah untuk majlis — semua boleh terus di WhatsApp.</p>
+        <span class="chip">3 Langkah</span>
+        <h3>Cara Tempah</h3>
+        <ol class="steps">
+          <li>
+            <span class="n" aria-hidden="true">1</span>
+            <div><b>WhatsApp kami</b><p>Beritahu menu, berapa bungkus, tarikh dan waktu anda perlukan.</p></div>
+          </li>
+          <li>
+            <span class="n" aria-hidden="true">2</span>
+            <div><b>Kami confirm</b><p>Kami reply dengan harga, menu yang ada pada hari itu, dan waktu ambil atau hantar.</p></div>
+          </li>
+          <li>
+            <span class="n" aria-hidden="true">3</span>
+            <div><b>Ambil atau kami hantar</b><p>Borong: ambil di gerai pasar tani ikut jadual. Katering: kami hantar ke tempat majlis.</p></div>
+          </li>
+        </ol>
+        <p class="steps-note">Tempah sekurang-kurangnya sehari awal supaya kami boleh sediakan cukup. Kalau tak pasti menu hari itu, tanya dulu — kami jawab jujur apa yang ada.</p>
       </div>
     </div>
   </div>
@@ -650,15 +870,26 @@
     <div>
       <div class="brand"><span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2.6c-.6 1-.6 1.8 0 2.6M13 2.6c-.6 1-.6 1.8 0 2.6" opacity=".8"/><path d="M4 10.5h16"/><path d="M4.5 10.5c0 4.14 3.36 7.5 7.5 7.5s7.5-3.36 7.5-7.5"/><path d="M9 19.5h6"/></svg></span><span class="txt"><b>DAPUR AYAH</b><small>Gerai Pasar Tani</small></span></div>
       <p class="footer-tagline">Gerai pasar tani RM7 sebungkus — segar dimasak setiap hari, menerima tempahan borong &amp; katering.</p>
+      <a class="footer-phone" href="tel:+60197309787">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3-8.6A2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.4 1.8.7 2.6a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.5-1.2a2 2 0 012.1-.5c.8.3 1.7.6 2.6.7a2 2 0 011.7 2z"/></svg>
+        +60 19-730 9787
+      </a>
     </div>
-    <div class="col-links">
+    <div class="col-links col-nav">
+      <h4>Laman</h4>
+      <a href="#menu">Menu &amp; Harga</a><br>
+      <a href="#ulasan">Ulasan Pelanggan</a><br>
+      <a href="#tempah">Borong &amp; Katering</a><br>
+      <a href="#jadual">Jadual Pasar Tani</a><br>
+      <a href="#hubungi">Hubungi</a>
+    </div>
+    <div class="col-links col-areas">
       <h4>Kawasan Tempahan</h4>
-      Skudai<br>Mutiara Rini<br>Taman Universiti<br>Kulai<br>&amp; sekitar
+      <span>Skudai</span><span>Mutiara Rini</span><span>Taman Universiti</span><span>Kulai</span><span>&amp; sekitar</span>
     </div>
   </div>
   <div class="footer-bottom">
     <p>&copy; Dapur Ayah &middot; Gerai Pasar Tani</p>
-    <p>+60 19-730 9787</p>
   </div>
 </footer>
 
@@ -669,14 +900,14 @@
   </a>
   <button class="btn btn-chili order" type="button" data-order="biasa">
     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
-    Order Sekarang
+    Tempah Borong / Katering
   </button>
 </div>
 
 <!-- ================= ORDER MODAL ================= -->
 <div class="modal" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
   <div class="backdrop" data-close></div>
-  <div class="sheet" role="document">
+  <div class="sheet" role="document" tabindex="-1">
     <div class="m-head">
       <div>
         <h3 id="modalTitle">Buat Order</h3>
@@ -687,20 +918,33 @@
 
     <div class="m-body">
       <div class="segmented" role="tablist" aria-label="Jenis tempahan">
-        <button type="button" data-mode="biasa" class="active">Biasa</button>
-        <button type="button" data-mode="borong">Borong</button>
-        <button type="button" data-mode="katering">Katering</button>
+        <button type="button" role="tab" data-mode="biasa" class="active" aria-selected="true">Pilihan</button>
+        <button type="button" role="tab" data-mode="borong" aria-selected="false">Borong</button>
+        <button type="button" role="tab" data-mode="katering" aria-selected="false">Katering</button>
       </div>
 
-      <!-- BIASA: single orders paused for now -->
-      <div class="notice mode-only" data-for="biasa">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-        <h4>Order satu-satu belum dibuka</h4>
-        <p>Buat masa ini kami hanya terima <b>tempahan borong</b> (min. 10 bungkus) dan <b>katering majlis</b>. Terima kasih!</p>
-        <div class="notice-actions">
-          <button class="btn btn-chili btn-sm" type="button" data-goto="borong">Tempah Borong</button>
-          <button class="btn btn-outline btn-sm" type="button" data-goto="katering">Tanya Katering</button>
+      <!-- landing state: route to borong / katering instead of dead-ending -->
+      <div class="notice is-chooser mode-only" data-for="biasa">
+        <p class="chooser-q">Tempahan untuk apa?</p>
+        <div class="chooser">
+          <button class="choice" type="button" data-goto="borong">
+            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8h18v12H3zM3 8l2-4h14l2 4M12 8v12"/></svg></span>
+            <span class="tx">
+              <b>Borong Bungkusan</b>
+              <span>Min. 10 bungkus · ambil di pasar tani. Untuk surau, pejabat atau kelas.</span>
+            </span>
+            <svg class="arw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+          <button class="choice" type="button" data-goto="katering">
+            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10h16M5 10c0 3.9 3.1 7 7 7s7-3.1 7-7M7 20h10"/></svg></span>
+            <span class="tx">
+              <b>Katering Majlis</b>
+              <span>Kenduri, rumah terbuka atau program · kami hantar ikut kawasan.</span>
+            </span>
+            <svg class="arw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
         </div>
+        <p class="chooser-note">Nak beli sebungkus dua sahaja? Order satu-satu belum dibuka di laman ini — jumpa kami terus di gerai. <a href="#jadual" data-close>Lihat jadual pasar tani →</a></p>
       </div>
 
       <!-- pickup (borong) — pick the pasar tani/day FIRST so menu availability makes sense -->
@@ -771,6 +1015,41 @@
 </div>
 
 <script>
+/* ---- scroll reveal ----------------------------------------------------------
+   Deliberately its own IIFE and the first thing to run: it must never depend on
+   the rest of the page's script. Three separate guarantees that content ends up
+   visible — anything on screen now is shown immediately, an observer handles the
+   rest, and a timer force-reveals everything regardless. -------------------- */
+(function(){
+  "use strict";
+  var blocks = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+  if(!blocks.length) return;
+
+  function showAll(){ blocks.forEach(function(el){ el.classList.add("in"); }); }
+
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduce || !("IntersectionObserver" in window)){ showAll(); return; }
+
+  document.documentElement.classList.add("js-anim");
+
+  /* safety net: whatever happens with the observer, nothing stays hidden */
+  setTimeout(showAll, 2600);
+
+  /* anything already in view gets no animation-in delay */
+  var vh = window.innerHeight || 800;
+  blocks.forEach(function(el){
+    var r = el.getBoundingClientRect();
+    if(r.top < vh && r.bottom > 0) el.classList.add("in");
+  });
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); }
+    });
+  }, { rootMargin:"0px 0px -8% 0px", threshold:0.06 });
+  blocks.forEach(function(el){ if(!el.classList.contains("in")) io.observe(el); });
+})();
+
 (function(){
   "use strict";
   var WA = "60197309787";
@@ -819,12 +1098,59 @@
   MENU.forEach(function(m){
     var li = document.createElement("li");
     li.className = "m-row";
+    if(m.days){ li.setAttribute("data-days", m.days.join(",")); }
     li.innerHTML =
       '<span class="nm">' + m.name + (m.days ? '<small class="tag-day">' + daysLabel(m.days) + '</small>' : '') + '</span>' +
       '<span class="dots"></span>' +
       '<span class="pr' + (m.price!==7?' alt':'') + '">RM' + m.price + '</span>';
     menuList.appendChild(li);
   });
+
+  /* ---- menu day filter: defaults to today when today is a market day ---- */
+  (function(){
+    var wrap = document.getElementById("dayFilter");
+    if(!wrap) return;
+    var today = new Date().getDay();
+    var isMarketToday = SCHEDULE.some(function(s){ return s.day === today; });
+
+    var chips = [{ day:null, label:"Semua Menu" }].concat(SCHEDULE.map(function(s){
+      return { day:s.day, label:s.hari, now:s.day===today };
+    }));
+
+    chips.forEach(function(c){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("data-day", c.day===null ? "" : c.day);
+      b.innerHTML = c.label + (c.now ? '<span class="tnow">HARI INI</span>' : '');
+      b.setAttribute("aria-pressed","false");
+      wrap.appendChild(b);
+    });
+
+    function apply(day){
+      wrap.querySelectorAll("button").forEach(function(b){
+        var d = b.getAttribute("data-day");
+        var on = (day===null) ? d==="" : d===String(day);
+        b.classList.toggle("active", on);
+        b.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+      menuList.querySelectorAll(".m-row").forEach(function(li){
+        var raw = li.getAttribute("data-days");
+        var off = false;
+        if(day!==null && raw){
+          off = raw.split(",").indexOf(String(day)) === -1;
+        }
+        li.classList.toggle("is-off", off);
+      });
+    }
+
+    wrap.addEventListener("click", function(e){
+      var b = e.target.closest("button"); if(!b) return;
+      var d = b.getAttribute("data-day");
+      apply(d==="" ? null : parseInt(d,10));
+    });
+
+    apply(isMarketToday ? today : null);
+  })();
 
   /* ---- populate pickup select ---- */
   function fillPickup(sel){
@@ -961,7 +1287,9 @@
   function applyMode(m){
     mode = m;
     document.querySelectorAll(".segmented button").forEach(function(b){
-      b.classList.toggle("active", b.getAttribute("data-mode")===m);
+      var on = b.getAttribute("data-mode")===m;
+      b.classList.toggle("active", on);
+      b.setAttribute("aria-selected", on ? "true" : "false");
     });
     document.querySelectorAll(".mode-only").forEach(function(el){
       var forList = el.getAttribute("data-for").split(" ");
@@ -979,20 +1307,42 @@
     if(m==="borong"){ refreshAvailability(pickupDow()); }
   }
 
+  var FOCUSABLE = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  var scrollY = 0;
+
   function openModal(m){
     lastFocus = document.activeElement;
     applyMode(m || "biasa");
+    scrollY = window.scrollY;
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden","false");
     document.body.classList.add("modal-open");
+    document.body.style.top = (-scrollY) + "px";
     setTimeout(function(){ if(sheet) sheet.focus(); }, 30);
   }
   function closeModal(){
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden","true");
     document.body.classList.remove("modal-open");
+    document.body.style.top = "";
+    window.scrollTo(0, scrollY);
     if(lastFocus && lastFocus.focus) lastFocus.focus();
   }
+
+  /* keep Tab inside the sheet while it is open */
+  modal.addEventListener("keydown", function(e){
+    if(e.key !== "Tab") return;
+    var items = Array.prototype.slice.call(sheet.querySelectorAll(FOCUSABLE)).filter(function(el){
+      return el.offsetWidth > 0 || el.offsetHeight > 0;
+    });
+    if(!items.length) return;
+    var first = items[0], last = items[items.length-1];
+    if(e.shiftKey && (document.activeElement === first || document.activeElement === sheet)){
+      e.preventDefault(); last.focus();
+    } else if(!e.shiftKey && document.activeElement === last){
+      e.preventDefault(); first.focus();
+    }
+  });
 
   document.querySelectorAll("[data-order]").forEach(function(b){
     b.addEventListener("click", function(){ openModal(b.getAttribute("data-order")); });
@@ -1076,11 +1426,31 @@
 
   refreshAvailability(pickupDow());
 
-  /* ---- theme toggle (in-memory) ---- */
-  var root = document.documentElement;
-  document.getElementById("themeToggle").addEventListener("click", function(){
-    root.setAttribute("data-theme", root.getAttribute("data-theme")==="dark" ? "light" : "dark");
-  });
+  /* ---- sticky topbar gets a shadow once you leave the top ---- */
+  var topbar = document.querySelector(".topbar");
+  var onScroll = function(){ topbar.classList.toggle("is-stuck", window.scrollY > 8); };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive:true });
+
+  /* ---- scroll-spy for the desktop nav ---- */
+  (function(){
+    var links = Array.prototype.slice.call(document.querySelectorAll("#topnav a"));
+    if(!links.length || !("IntersectionObserver" in window)) return;
+    var map = {};
+    links.forEach(function(a){
+      var el = document.querySelector(a.getAttribute("href"));
+      if(el) map[el.id] = a;
+    });
+    var spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(!en.isIntersecting) return;
+        links.forEach(function(a){ a.classList.remove("is-active"); a.removeAttribute("aria-current"); });
+        var a = map[en.target.id];
+        if(a){ a.classList.add("is-active"); a.setAttribute("aria-current","true"); }
+      });
+    }, { rootMargin:"-45% 0px -50% 0px" });
+    Object.keys(map).forEach(function(id){ spy.observe(document.getElementById(id)); });
+  })();
 })();
 </script>
 
