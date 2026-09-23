@@ -43,7 +43,8 @@
     --font-hand:'Caveat', cursive;
 
     --max:1240px;
-    --pad:20px;
+    /* horizontal gutter; grows to clear the notch when a phone is held sideways */
+    --pad:max(20px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
     --r:14px;
     --r-sm:9px;
   }
@@ -68,7 +69,9 @@
   }
 
   *{ box-sizing:border-box; }
-  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; overflow-x:clip; }
+  /* a tap on Android/iOS should look like a press, not a grey flash */
+  a,button,input,select,textarea{ -webkit-tap-highlight-color:transparent; }
   body{
     margin:0; background:var(--bg); color:var(--ink);
     font-family:var(--font-body); font-size:16px; line-height:1.5;
@@ -121,8 +124,8 @@
     white-space:nowrap; box-shadow:var(--shadow-sm);
     transition:transform .12s ease, box-shadow .12s ease, background .15s ease, border-color .15s ease;
   }
-  .btn:hover{ transform:translateY(-2px); box-shadow:var(--shadow); }
-  .btn:active{ transform:translateY(0); }
+  @media (hover:hover){ .btn:hover{ transform:translateY(-2px); box-shadow:var(--shadow); } }
+  .btn:active{ transform:translateY(1px); box-shadow:var(--shadow-sm); }
   .btn svg{ width:18px; height:18px; flex-shrink:0; }
   .btn-wa{ background:#1FA855; color:#fff; }
   .btn-wa:hover{ background:#1a934a; }
@@ -225,7 +228,7 @@
 
   .day-filter{ display:flex; gap:8px; overflow-x:auto; padding:2px 8px 16px; margin:0 0 4px; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
   .day-filter::-webkit-scrollbar{ display:none; }
-  .day-filter button{ flex:0 0 auto; padding:9px 15px; border-radius:20px; border:1px solid var(--line-strong); background:var(--panel); font-size:13.5px; font-weight:600; color:var(--ink-soft); transition:background-color .18s ease, color .18s ease, border-color .18s ease; }
+  .day-filter button{ flex:0 0 auto; min-height:44px; padding:9px 16px; border-radius:20px; border:1px solid var(--line-strong); background:var(--panel); font-size:13.5px; font-weight:600; color:var(--ink-soft); transition:background-color .18s ease, color .18s ease, border-color .18s ease; }
   .day-filter button:hover{ background:var(--panel-hover); color:var(--ink); }
   .day-filter button.active{ background:var(--charcoal); border-color:var(--charcoal); color:var(--cream); }
   .day-filter .tnow{ font-family:var(--font-mono); font-size:9px; letter-spacing:.06em; margin-left:6px; opacity:.75; }
@@ -277,7 +280,7 @@
     padding:26px 22px 20px; box-shadow:var(--shadow-sm); display:flex; flex-direction:column;
     transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
   }
-  .review:hover{ transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--line-strong); }
+  @media (hover:hover){ .review:hover{ transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--line-strong); } }
   .review::before{
     content:"\201C"; position:absolute; top:6px; left:18px; font-family:var(--font-display); font-weight:400;
     font-size:58px; line-height:1; color:var(--accent); opacity:.2; pointer-events:none;
@@ -306,6 +309,7 @@
     .reviews{
       grid-auto-flow:column; grid-auto-columns:82%; overflow-x:auto; scroll-snap-type:x mandatory;
       gap:14px; padding:4px 0 14px; margin:0 calc(var(--pad) * -1); padding-left:var(--pad); padding-right:var(--pad);
+      scroll-padding-left:var(--pad); overscroll-behavior-x:contain;
       scrollbar-width:none; -webkit-overflow-scrolling:touch;
     }
     .reviews::-webkit-scrollbar{ display:none; }
@@ -336,11 +340,13 @@
   /* ================= TEMPAH (order kinds) ================= */
   .kinds{ display:grid; gap:18px; }
   @media (min-width:760px){ .kinds{ grid-template-columns:1fr 1fr; } }
-  .kinds .card:nth-child(1){ transform:rotate(-1deg); }
-  .kinds .card:nth-child(2){ transform:rotate(1deg); }
-  .kinds .card:hover{ transform:translateY(-3px) rotate(0deg); }
+  @media (min-width:760px){
+    .kinds .card:nth-child(1){ transform:rotate(-1deg); }
+    .kinds .card:nth-child(2){ transform:rotate(1deg); }
+  }
+  @media (hover:hover){ .kinds .card:hover{ transform:translateY(-3px) rotate(0deg); } }
   .card{ position:relative; background:var(--panel); border:1px solid var(--line); border-radius:var(--r); padding:28px 24px; display:flex; flex-direction:column; box-shadow:var(--shadow-sm); transition:transform .15s, box-shadow .15s, border-color .15s; }
-  .card:hover{ transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--line-strong); }
+  @media (hover:hover){ .card:hover{ transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--line-strong); } }
   .card .chip{ align-self:flex-start; font-family:var(--font-mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:#fff; background:var(--charcoal); padding:5px 11px; border-radius:20px; margin-bottom:15px; }
   .card h3{ font-family:var(--font-display); font-weight:400; font-size:25px; margin:0 0 8px; text-transform:uppercase; letter-spacing:.01em; }
   .card p{ color:var(--ink-soft); font-size:15px; line-height:1.6; margin:0 0 18px; flex:1; }
@@ -375,12 +381,25 @@
     .today-badge{ display:block; margin:4px 0 0; width:fit-content; }
   }
 
-  /* ================= CONTACT ================= */
+  /* ================= CONTACT =================
+     Both cards stretch to the same height, so the details card carries enough
+     real information to fill it and pins its CTA to the bottom edge — no gap. */
   .contact-grid{ display:grid; gap:18px; }
-  @media (min-width:760px){ .contact-grid{ grid-template-columns:1.1fr .9fr; align-items:stretch; } }
-  .contact-line{ display:flex; gap:13px; align-items:flex-start; margin-bottom:18px; font-size:15px; color:var(--ink-soft); line-height:1.5; }
-  .contact-line svg{ width:20px; height:20px; color:var(--accent); flex-shrink:0; margin-top:2px; }
-  .contact-line strong{ color:var(--ink); display:block; font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:3px; }
+  @media (min-width:760px){ .contact-grid{ grid-template-columns:1fr 1fr; align-items:stretch; } }
+
+  .contact-list{ list-style:none; margin:0 0 22px; padding:0; }
+  .contact-list li{ display:flex; gap:13px; align-items:flex-start; padding:15px 0; font-size:15px; color:var(--ink-soft); line-height:1.55; border-bottom:1px solid var(--line); }
+  .contact-list li:first-child{ padding-top:0; }
+  .contact-list li:last-child{ border-bottom:none; padding-bottom:0; }
+  .contact-list li > div{ min-width:0; }
+  .contact-list svg{ width:20px; height:20px; color:var(--accent); flex-shrink:0; margin-top:3px; }
+  .contact-list strong{ color:var(--ink); display:block; font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px; }
+  .contact-tel{ display:inline-block; font-family:var(--font-mono); font-weight:700; font-size:19px; letter-spacing:-.01em; color:var(--ink); }
+  .contact-tel:hover{ color:var(--accent); }
+  .contact-jump{ display:inline-block; margin-top:6px; font-size:13.5px; font-weight:600; color:var(--accent); text-decoration:underline; text-underline-offset:3px; }
+  .contact-cta{ margin-top:auto; }
+  .contact-alt{ display:block; text-align:center; margin-top:12px; font-family:var(--font-mono); font-size:12.5px; color:var(--ink-soft); }
+  .contact-alt:hover{ color:var(--ink); }
 
   /* ================= FOOTER ================= */
   footer{ padding:48px var(--pad) 0; border-top:1px solid var(--line); background:var(--bg-2); }
@@ -421,7 +440,8 @@
   @media (min-width:820px){ .mobile-bar{ display:none; } }
   .mobile-bar .call{ width:52px; flex-shrink:0; padding:0; }
   .mobile-bar .order{ flex:1; font-size:14.5px; min-height:50px; }
-  body.has-mobilebar{ padding-bottom:78px; }
+  /* the bar is 68px tall plus whatever the home indicator claims below it */
+  body.has-mobilebar{ padding-bottom:calc(78px + env(safe-area-inset-bottom, 0px)); }
   @media (min-width:820px){ body.has-mobilebar{ padding-bottom:0; } }
 
   /* ================= ORDER MODAL ================= */
@@ -432,23 +452,23 @@
   @keyframes fade{ from{opacity:0} to{opacity:1} }
   .modal .sheet{
     position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-    width:min(540px, calc(100vw - 24px)); max-height:min(88vh, 760px);
+    width:min(540px, calc(100vw - 24px)); max-height:min(88vh, 760px); max-height:min(88dvh, 760px);
     background:var(--bg); color:var(--ink); border:1px solid var(--line-strong); border-radius:18px;
     box-shadow:0 30px 70px rgba(0,0,0,.4); display:flex; flex-direction:column; overflow:hidden;
     animation:pop .22s cubic-bezier(.2,.9,.3,1.2);
   }
   @keyframes pop{ from{opacity:0; transform:translate(-50%,-46%) scale(.97)} to{opacity:1; transform:translate(-50%,-50%) scale(1)} }
   @media (max-width:560px){
-    .modal .sheet{ left:0; right:0; bottom:0; top:auto; transform:none; width:100%; max-height:92vh; border-radius:18px 18px 0 0; animation:slideUp .26s cubic-bezier(.2,.9,.3,1); }
+    .modal .sheet{ left:0; right:0; bottom:0; top:auto; transform:none; width:100%; max-height:92vh; max-height:92dvh; border-radius:18px 18px 0 0; animation:slideUp .26s cubic-bezier(.2,.9,.3,1); }
     @keyframes slideUp{ from{transform:translateY(100%)} to{transform:translateY(0)} }
   }
   .modal .m-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding:18px 20px 14px; border-bottom:1px solid var(--line); }
   .modal .m-head h3{ font-family:var(--font-display); font-weight:400; font-size:24px; margin:0; text-transform:uppercase; }
   .modal .m-head p{ margin:4px 0 0; font-size:13px; color:var(--ink-soft); }
-  .modal .x{ width:38px; height:38px; border-radius:50%; border:1px solid var(--line-strong); background:var(--panel); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .modal .x{ width:44px; height:44px; border-radius:50%; border:1px solid var(--line-strong); background:var(--panel); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
   .modal .x:hover{ background:var(--panel-hover); }
   .modal .x svg{ width:18px; height:18px; }
-  .modal .m-body{ padding:16px 20px; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+  .modal .m-body{ padding:16px 20px; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; }
 
   .segmented{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; background:var(--panel); border:1px solid var(--line); border-radius:11px; padding:5px; margin-bottom:18px; }
   .segmented button{ border:none; background:transparent; padding:10px 6px; border-radius:8px; font-weight:600; font-size:13.5px; color:var(--ink-soft); transition:background .15s, color .15s; }
@@ -509,7 +529,8 @@
     background:var(--bg); border:1.5px solid var(--line-strong); border-radius:12px; padding:15px 16px;
     transition:border-color .16s ease, background-color .16s ease, transform .16s ease;
   }
-  .choice:hover{ border-color:var(--accent); background:var(--panel-hover); transform:translateY(-2px); }
+  @media (hover:hover){ .choice:hover{ border-color:var(--accent); background:var(--panel-hover); transform:translateY(-2px); } }
+  .choice:active{ border-color:var(--accent); background:var(--panel-hover); }
   .choice .ic{ width:40px; height:40px; border-radius:11px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:color-mix(in srgb, var(--accent) 14%, transparent); color:var(--accent); }
   .choice .ic svg{ width:20px; height:20px; }
   .choice .tx{ flex:1; min-width:0; }
@@ -543,11 +564,41 @@
     .trust-row b{ font-size:19px; }
     .review{ padding:24px 20px 18px; }
     .footer-grid{ gap:26px; }
+    /* the handwritten sign-off should stay on one line, not break mid-name */
+    .story-sign{ font-size:25px; line-height:1.25; }
     /* comfortable thumb targets in the order sheet */
     .stepper button{ width:40px; height:40px; }
     .stepper .qty{ height:40px; width:40px; }
     .item{ padding:11px 12px; }
-    .segmented button{ padding:12px 4px; font-size:12.5px; }
+    .segmented button{ padding:12px 4px; font-size:12.5px; min-height:44px; }
+
+    /* iOS Safari zooms the whole page when a focused field is under 16px —
+       so every control in the order sheet stays at 16px on a phone. */
+    .field input, .field select, .field textarea, .stepper .qty{ font-size:16px; }
+
+    /* the tilted polaroids must not push past the gutter on a narrow screen */
+    .photo-collage{ max-width:100%; gap:14px 12px; }
+    .photo-slot.rot-1{ transform:rotate(-2deg); }
+    .photo-slot.rot-2{ transform:rotate(1.5deg); }
+    .photo-slot.rot-3{ transform:rotate(-1.5deg); }
+    .photo-slot.wide{ max-width:260px; }
+
+    /* contact card reads as one list, tighter on a phone */
+    .contact-list{ margin-bottom:20px; }
+    .contact-list li{ padding:14px 0; font-size:14.5px; }
+    .contact-tel{ font-size:20px; min-height:44px; display:flex; align-items:center; }
+    .contact-jump{ min-height:44px; display:inline-flex; align-items:center; }
+  }
+
+  /* small phones (iPhone SE, older Androids): labels must never be clipped,
+     so the hero CTAs get a row each rather than being squeezed side by side */
+  @media (max-width:374px){
+    .hero-ctas .btn{ flex:1 1 100%; }
+    .mobile-bar{ gap:8px; }
+    .mobile-bar .call{ width:48px; }
+    .mobile-bar .order{ font-size:13.5px; }
+    .trust-row b{ font-size:16px; }
+    .m-row .nm{ font-size:15.5px; }
   }
 
 </style>
@@ -824,20 +875,45 @@
     </div>
 
     <div class="contact-grid reveal">
-      <div class="card">
-        <div class="contact-line">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
-          <div><strong>WhatsApp / Telefon</strong>+60 19-730 9787</div>
+      <div class="card card-contact">
+        <ul class="contact-list">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+            <div>
+              <strong>WhatsApp / Telefon</strong>
+              <a class="contact-tel" href="tel:+60197309787">+60 19-730 9787</a>
+            </div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <div>
+              <strong>Jumpa Kami di Gerai</strong>
+              Selasa, Rabu, Khamis, Jumaat &amp; Ahad — ikut jadual pasar tani.
+              <a class="contact-jump" href="#jadual">Lihat jadual penuh &rarr;</a>
+            </div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8h18v12H3zM3 8l2-4h14l2 4M12 8v12"/></svg>
+            <div>
+              <strong>Kawasan Tempahan</strong>
+              Skudai · Mutiara Rini · Taman Universiti · Kulai &amp; sekitar.
+            </div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            <div>
+              <strong>Bila Kami Balas</strong>
+              Biasanya dalam beberapa jam waktu siang. Kalau kami tengah sibuk di pasar, kami balas sebaik sahaja habis berniaga.
+            </div>
+          </li>
+        </ul>
+        <div class="contact-cta">
+          <button class="btn btn-chili btn-block" type="button" data-order="biasa">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+            Order di WhatsApp
+          </button>
+          <a class="contact-alt" href="tel:+60197309787">atau telefon terus · 019-730 9787</a>
         </div>
-        <div class="contact-line">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          <div><strong>Lokasi &amp; Waktu</strong>Ikut jadual pasar tani di atas — Selasa, Rabu, Khamis, Jumaat &amp; Ahad.</div>
-        </div>
-        <button class="btn btn-chili btn-block" type="button" data-order="biasa" style="margin-top:6px;">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
-          Order di WhatsApp
-        </button>
-        <a href="tel:+60197309787" style="display:block;text-align:center;margin-top:12px;font-family:var(--font-mono);font-size:12.5px;color:var(--ink-soft);">atau telefon terus · 019-730 9787</a>
       </div>
 
       <div class="card">
