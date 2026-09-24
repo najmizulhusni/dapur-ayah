@@ -4,11 +4,44 @@ Single-page site for Dapur Ayah, a pasar tani food stall in Skudai, Kulai & seki
 
 ## Stack
 
-Plain HTML/CSS/JS — no build step, no dependencies. Everything (styles, markup, and the small today-banner / order-form script) lives in `index.html`.
+Plain HTML/CSS/JS — no build step, no dependencies. Everything (styles, markup, and the small script) lives in `index.html`.
 
-The site is a single warm kraft-paper theme — there is no dark mode or theme
-toggle. Colours come from the CSS custom properties on `:root` at the top of
-the `<style>` block; change them there.
+The site has one warm off-white theme. There is no dark mode or theme toggle.
+Colours come from the CSS custom properties on `:root` at the top of the
+`<style>` block, so change them there. Fonts come from Google Fonts: **Archivo** for
+headings and prices, **Figtree** for everything else.
+
+## How the page is ordered
+
+Sections follow what visitors come to find out, in this order:
+
+1. **Hero** — four things only: the owners' photo, "Semua RM7 je.", one
+   line of what we cook, and a live **"are you open?" card** (`#nowCard`).
+   The card shows when and which market, and tapping it opens Google Maps.
+   Please don't add more here; everything else is one scroll away.
+2. **Menu** (`#menu`) — filtered by market day. It defaults to today's market, or the next
+   one if today's is over or it's a day off.
+3. **Jadual** (`#jadual`) — the week's markets, each with an **Arah**
+   (directions) link.
+4. **Borong & Katering** (`#tempah`) — the two order types plus the 3 steps.
+5. **Ulasan** (`#ulasan`), **Cerita** (`#cerita`), **Hubungi** (`#hubungi`).
+
+On phones a sticky bar at the bottom holds WhatsApp and the order button.
+That's why the hero's own buttons are hidden below 820px.
+
+## Design rules
+
+The top of the `<style>` block lists the small set of parts the whole page uses.
+Reuse them rather than adding one-off styles:
+
+- **Headings** — one style. h1, h2 and h3 differ only in size.
+- **Text** — four sizes: `--t-lead`, `--t-body`, `--t-sm`, `--t-xs`.
+- **Corners** — `--r-lg` for cards and photos, `--r` for buttons, fields and tiles, and pills for chips.
+- **`.card`** — the only surface.
+- **`.chip`** — the only badge (neutral, `.chip-green` or `.chip-red`).
+- **`.tile`** — the only icon box.
+- **Buttons** — red opens the order form, green opens WhatsApp, and outline is used for everything else.
+- **Selected state** — a dark ink fill, the same for the day filter and the order-form tabs.
 
 ## Running locally
 
@@ -35,49 +68,56 @@ No CI/build pipeline is needed since there's nothing to compile.
 Most content lives in the `<script>` at the bottom of `index.html`:
 
 - **Menu & prices** — the `MENU` array. The menu board and the order-form
-  item pickers are both rendered from it, so edit in one place. Items can
-  carry an optional `days` array (0=Ahad … 6=Sabtu) to restrict them to
-  specific market days (e.g. Mee Kari is Rabu-only) — shown as a badge and
-  enforced (disabled + reset) in the Borong picker.
+  item picker are both built from it, so edit in one place. Prices other than
+  RM7 get a red chip automatically. Items can carry an optional `days` array
+  (0=Ahad … 6=Sabtu) to restrict them to specific market days. The restriction
+  is shown as a tag and enforced (disabled + reset) in the Borong picker.
 - **Weekly schedule** — the `SCHEDULE` array (`day`: 0=Ahad … 6=Sabtu). It
-  drives the schedule table, the "today" highlight, the live open/closed
-  banner, and the pickup-location dropdowns in the order form.
-- **WhatsApp number** — the `WA` constant (and search `60197309787` for the
-  plain `tel:`/`wa.me` links in the markup).
+  drives the schedule list, the "hari ini" highlight, the hero's live
+  open/closed card, the "Isnin & Sabtu kami cuti" line, and the pickup
+  dropdown in the order form. Keep `time` in the form `3:00–7:30 PM`: the
+  open/closed logic parses it, and the start takes the end's AM/PM unless it
+  has its own. The `<li>` rows in the `#sched` markup are only a no-JS fallback.
+  JS replaces them, but it's still worth keeping them roughly in sync.
+- **WhatsApp number** — the `WA` constant. Also search for `60197309787`
+  to find the plain `tel:`/`wa.me` links in the markup.
 
 ## Reviews (`#ulasan`)
 
-Customer reviews are plain markup in the `#ulasan` section — three
-`<article class="review">` blocks (tag chip, quote, then name/role with a
-coloured initial avatar). To add or edit one, copy an existing block; the
-avatar colour cycles automatically off `:nth-child`. On screens under 900px
-the grid turns into a swipeable snap rail, so keep the quotes to roughly
-similar lengths. Don't add reviews that weren't actually given by a
-customer.
+Customer reviews are plain markup: three `<figure class="review">` blocks,
+each with a tag, a `<blockquote>`, and a name/role with a coloured initial
+avatar. To add or edit one, copy an existing block. The avatar colour cycles
+automatically off `:nth-child`. Under 900px the grid becomes a swipeable
+snap rail with dots, so keep the quotes to roughly similar lengths. Don't add
+reviews that weren't actually given by a customer.
 
-The `.trust-row` above the reviews holds three factual claims (years,
-markets per week, order types). Keep those in sync with `SCHEDULE` and the
-story section if the business changes.
+The three fact tiles (`.facts`) in the story section give the year, the number
+of markets per week (filled from `SCHEDULE`), and the borong minimum. Keep
+them in sync if the business changes.
 
 ## Order form
 
-Clicking any "Order" button opens a modal with three modes — **Biasa**
-(retail), **Borong** (bulk, min. 10), and **Katering** (event enquiry). It
-builds a formatted WhatsApp message and opens `wa.me`; nothing is stored or
-sent server-side.
+Every "Tempah" button opens a sheet that first asks **Borong** (bulk, min. 10)
+or **Katering** (event enquiry). Once one is picked, a two-tab switch appears.
+The form builds a formatted WhatsApp message and opens `wa.me`. Nothing is
+stored or sent server-side. Validation errors show inline above the send
+button, and the Borong running total sits in the sheet footer. The date picker
+starts from tomorrow ("tempah sehari awal").
 
-**Biasa is currently paused** — instead of dead-ending, that tab now shows a
-chooser (`.notice.is-chooser`) that routes to Borong or Katering and tells
-walk-in customers to visit the stall — see the `mode==="biasa"` branch in `applyMode()` and
-`buildMessage()`. To re-enable single retail orders, remove that notice
-block and the early-return guard in `buildMessage()`.
+**Single retail orders are paused.** The opening state (`mode==="biasa"`) is
+a chooser that tells walk-in customers to visit the stall instead. To
+re-enable single orders, add a tab for it and remove the early-return guard in
+`buildMessage()`.
 
 ## Photos
 
-The "Sejak 2010" story section (`#cerita`) shows three real photos from
-`images/` (`pasartani1.jpg`, `pasartani2.jpg`, `pasartani3.jpg`) in a
-tilted, taped polaroid layout via `.photo-slot`. To swap a photo, replace
-the file in `images/` (keep the same name) or update the `src`/`alt` on
-the corresponding `<img>`. Images are pre-resized/compressed with `sips`
-(max ~900-1000px wide, ~76-78% JPEG quality) to keep the page light —
-do the same for any replacement before committing.
+`images/` holds three real photos:
+
+- `pasartani2.jpg` — the hero (owners at the counter).
+- `pasartani1.jpg` and `pasartani4.jpg` — both 3:4 portraits, shown as a
+  pair in the story section.
+
+To swap a photo, replace the file (keep the same name and aspect) or update
+the `src`/`alt`. Images are pre-resized/compressed with `sips` (max
+~900–1000px wide, ~76–78% JPEG quality) to keep the page light. Do the same
+for any replacement before committing.
