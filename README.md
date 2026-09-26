@@ -23,25 +23,40 @@ Sections follow what visitors come to find out, in this order:
    one if today's is over or it's a day off.
 3. **Jadual** (`#jadual`) — the week's markets, each with an **Arah**
    (directions) link.
-4. **Borong & Katering** (`#tempah`) — the two order types plus the 3 steps.
-5. **Ulasan** (`#ulasan`), **Cerita** (`#cerita`), **Hubungi** (`#hubungi`).
+4. **Borong & Katering** (`#tempah`) — the page's one red block, because
+   bulk and catering orders are what the site is for. Two white option cards,
+   each with a short tick list and one button.
+5. **Ulasan** (`#ulasan`) and **Tentang Kami** (`#tentang`).
+6. **Hubungi** (`#hubungi`) — the dark footer: phone, WhatsApp, areas.
 
 On phones a sticky bar at the bottom holds WhatsApp and the order button.
 That's why the hero's own buttons are hidden below 820px.
 
 ## Design rules
 
-The top of the `<style>` block lists the small set of parts the whole page uses.
-Reuse them rather than adding one-off styles:
+The page should read like the stall's own notice board, not a website
+template. The top of the `<style>` block lists the small set of parts the page
+uses. Reuse them rather than adding one-off styles:
 
+- **Section names** — plain labels ("Menu", "Jadual pasar tani"), not
+  questions or slogans. "Semua RM7 je." is the one slogan on the page.
 - **Headings** — one style. h1, h2 and h3 differ only in size.
 - **Text** — four sizes: `--t-lead`, `--t-body`, `--t-sm`, `--t-xs`.
-- **Corners** — `--r-lg` for cards and photos, `--r` for buttons, fields and tiles, and pills for chips.
-- **`.card`** — the only surface.
-- **`.chip`** — the only badge (neutral, `.chip-green` or `.chip-red`).
-- **`.tile`** — the only icon box.
+- **Layout** — plain sections share one background with a hairline between
+  them. Only two sections get colour: the red order block and the beige
+  reviews band. Don't add more, or nothing stands out.
+- **Cards** — for things that belong together: the menu board, the status
+  card, the two order options, each review. Everything else sits on the page.
+- **`.chip`** — the only badge (neutral or `.chip-green`). It says who or
+  what a card is for, e.g. "Ambil sendiri di gerai" or "Tempahan surau".
 - **Buttons** — red opens the order form, green opens WhatsApp, and outline is used for everything else.
 - **Selected state** — a dark ink fill, the same for the day filter and the order-form tabs.
+- **Copy** — short and plain. No em dashes in visible text; use a comma or a
+  full stop.
+
+Avoid the things that make a small-business page look generated: icons in
+rounded squares, stat tiles, numbered "how it works" steps, and question
+headings.
 
 ## Running locally
 
@@ -59,7 +74,12 @@ This repo is set up for **GitHub Pages**:
 
 1. Push to `main`.
 2. In repo Settings → Pages, set source to `main` branch, `/ (root)`.
-3. Site will be live at `https://<username>.github.io/dapur-ayah/`.
+3. Site will be live at `https://najmizulhusni.github.io/dapur-ayah/`.
+
+If the address changes (for example, a custom domain), update the absolute
+URLs in `<head>`: `canonical`, `og:url`, `og:image` and the JSON-LD block.
+WhatsApp and Facebook link previews only show the photo when `og:image` is a
+full URL.
 
 No CI/build pipeline is needed since there's nothing to compile.
 
@@ -69,7 +89,7 @@ Most content lives in the `<script>` at the bottom of `index.html`:
 
 - **Menu & prices** — the `MENU` array. The menu board and the order-form
   item picker are both built from it, so edit in one place. Prices other than
-  RM7 get a red chip automatically. Items can carry an optional `days` array
+  RM7 are set in red automatically. Items can carry an optional `days` array
   (0=Ahad … 6=Sabtu) to restrict them to specific market days. The restriction
   is shown as a tag and enforced (disabled + reset) in the Borong picker.
 - **Weekly schedule** — the `SCHEDULE` array (`day`: 0=Ahad … 6=Sabtu). It
@@ -78,22 +98,25 @@ Most content lives in the `<script>` at the bottom of `index.html`:
   dropdown in the order form. Keep `time` in the form `3:00–7:30 PM`: the
   open/closed logic parses it, and the start takes the end's AM/PM unless it
   has its own. The `<li>` rows in the `#sched` markup are only a no-JS fallback.
-  JS replaces them, but it's still worth keeping them roughly in sync.
+  JS replaces them, but it's still worth keeping them roughly in sync. The
+  `openingHoursSpecification` in the JSON-LD block in `<head>` repeats the
+  hours for Google, so update it too. The copy says "lima pasar" in two
+  places (the Jadual intro and Tentang Kami); change those if the number of
+  markets changes.
 - **WhatsApp number** — the `WA` constant. Also search for `60197309787`
   to find the plain `tel:`/`wa.me` links in the markup.
 
 ## Reviews (`#ulasan`)
 
-Customer reviews are plain markup: three `<figure class="review">` blocks,
-each with a tag, a `<blockquote>`, and a name/role with a coloured initial
-avatar. To add or edit one, copy an existing block. The avatar colour cycles
-automatically off `:nth-child`. Under 900px the grid becomes a swipeable
-snap rail with dots, so keep the quotes to roughly similar lengths. Don't add
-reviews that weren't actually given by a customer.
+Customer reviews are plain markup: three `<figure class="review">` cards.
+Each has a chip saying who the customer is (surau, kenduri, regular), the
+`<blockquote>`, and the name with an initial. Wrap the one sentence that best
+answers "can they handle my order?" in `<strong>`, so the card can be read at a
+glance. To add one, copy an existing card.
 
-The three fact tiles (`.facts`) in the story section give the year, the number
-of markets per week (filled from `SCHEDULE`), and the borong minimum. Keep
-them in sync if the business changes.
+They sit in three columns on desktop. On a phone they become one swipeable row
+with dots, so keep the quotes to roughly similar lengths. Keep the customer's
+own wording. Don't add reviews that weren't actually given by a customer.
 
 ## Order form
 
@@ -115,7 +138,9 @@ re-enable single orders, add a tab for it and remove the early-return guard in
 
 - `pasartani2.jpg` — the hero (owners at the counter).
 - `pasartani1.jpg` and `pasartani4.jpg` — both 3:4 portraits, shown as a
-  pair in the story section.
+  pair in Tentang Kami. They're cropped to 4:5 so the camera's date stamp on
+  `pasartani1.jpg` stays hidden.
+- `icon-180.png` — the home-screen icon (`apple-touch-icon`).
 
 To swap a photo, replace the file (keep the same name and aspect) or update
 the `src`/`alt`. Images are pre-resized/compressed with `sips` (max
