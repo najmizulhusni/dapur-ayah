@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#FBF8F2">
+<meta name="theme-color" content="#FFFFFF">
 <title>Dapur Ayah | Gerai pasar tani Skudai &amp; Kulai, RM7 sebungkus</title>
 <meta name="description" content="Gerai pasar tani Encik Sapuan dan Cik Noraini di Skudai dan Kulai sejak 2007. Nasi ayam, mee kari, laksa dan lain-lain, RM7 sebungkus. Tempahan borong dan katering melalui WhatsApp.">
 <link rel="canonical" href="https://najmizulhusni.github.io/dapur-ayah/">
@@ -64,29 +64,40 @@
        chips    .chip (neutral / green) — the only badge on the page
        buttons  red = opens the order form, green = opens WhatsApp, outline = everything else
        selected dark ink fill (day filter, order tabs)
+
+     Colour comes from the stall itself: its menu boards are white cards with
+     red scalloped tops, red price tags and a yellow strip. Each colour has one
+     job, so the page stays readable as it grows:
+       red     brand, prices that aren't RM7, every "order" action
+       yellow  highlight only: today's market, the order section's ground
+       green   only WhatsApp and "open now"
+       ink/white/grey  text and surfaces (neutral, no beige)
      ====================================================================== */
 
   :root{
-    /* brand — the stall's red menu boards, and market green for "open" */
-    --chili:#C8372D;
-    --chili-deep:#A12A21;
-    --chili-soft:#FBE7E3;
-    --turmeric:#E9A93A;
-    --pandan:#2F6F3A;
-    --pandan-soft:#E4EFDF;
-    /* WhatsApp's own #25D366 fails contrast with white text; this is the darkest
-       green that still reads as "WhatsApp" */
-    --wa:#15803D;
-    --wa-deep:#116B33;
+    /* brand — from the stall's menu boards */
+    --red:#D2261C;
+    --red-deep:#A81C14;
+    --red-soft:#FDECEA;
+    --yellow:#FFC21A;
+    --yellow-soft:#FFF4D2;
+    /* green means WhatsApp or "open now" and nothing else. WhatsApp's own
+       #25D366 fails contrast with white text; this is the darkest green that
+       still reads as WhatsApp */
+    --green:#15803D;
+    --green-deep:#116B33;
+    --green-soft:#E3F2E7;
 
-    --bg:#FBF8F2;
-    --bg-2:#F3EDE1;
-    --panel:#FFFEFB;
-    --panel-hover:#F7F2E8;
-    --ink:#1E1912;
-    --ink-soft:#5C5344;
-    --line:rgba(30,25,18,.11);
-    --line-strong:rgba(30,25,18,.2);
+    /* neutral surfaces: white, one light grey, near-black ink */
+    --bg:#FFFFFF;
+    --bg-2:#F5F4F1;
+    --panel:#FFFFFF;
+    --panel-hover:#F6F5F2;
+    --ink:#1B1A18;
+    --ink-soft:#57544E;
+    --line:rgba(20,18,15,.10);
+    --line-strong:rgba(20,18,15,.18);
+    --shadow-sm:0 1px 2px rgba(20,18,15,.05), 0 4px 14px rgba(20,18,15,.06);
 
     --font-display:'Archivo', system-ui, sans-serif;
     --font-body:'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -122,7 +133,7 @@
   img,svg{ display:block; max-width:100%; }
   a{ color:inherit; text-decoration:none; }
   button{ font-family:inherit; cursor:pointer; color:inherit; }
-  :focus-visible{ outline:3px solid var(--chili); outline-offset:2px; border-radius:6px; }
+  :focus-visible{ outline:3px solid var(--red); outline-offset:2px; border-radius:6px; }
   .wrap{ max-width:var(--max); margin:0 auto; padding:0 var(--pad); }
   .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); border:0; }
 
@@ -130,13 +141,13 @@
   h1,h2,h3{ font-family:var(--font-display); font-weight:800; font-stretch:82%; letter-spacing:-.01em; word-spacing:.05em; line-height:1.08; margin:0; text-wrap:balance; }
   h2{ font-size:clamp(28px,5.6vw,40px); }
   h3{ font-size:24px; }
-  .link{ color:var(--chili-deep); font-weight:600; text-decoration:underline; text-decoration-thickness:1.5px; text-underline-offset:3px; }
-  .link:hover{ color:var(--chili); }
+  .link{ color:var(--red-deep); font-weight:600; text-decoration:underline; text-decoration-thickness:1.5px; text-underline-offset:3px; }
+  .link:hover{ color:var(--red); }
   button.link{ background:none; border:0; padding:0; font:inherit; font-weight:600; }
 
   /* ---- chip: the only badge ---- */
   .chip{ display:inline-flex; align-items:center; width:fit-content; padding:2px 9px; border-radius:999px; font-size:var(--t-xs); font-weight:600; line-height:1.4; white-space:nowrap; background:var(--bg-2); color:var(--ink-soft); }
-  .chip-green{ background:var(--pandan-soft); color:var(--pandan); }
+  .chip-yellow{ background:var(--yellow); color:var(--ink); }
   .chip[hidden]{ display:none; }
 
   /* ---- facts as label + value: reads like a notice, not a sales pitch ---- */
@@ -155,10 +166,10 @@
   }
   .btn:active{ transform:scale(.98); }
   .btn svg{ width:19px; height:19px; flex-shrink:0; }
-  .btn-chili{ background:var(--chili); color:#fff; }
-  .btn-chili:hover{ background:var(--chili-deep); }
-  .btn-wa{ background:var(--wa); color:#fff; }
-  .btn-wa:hover{ background:var(--wa-deep); }
+  .btn-red{ background:var(--red); color:#fff; }
+  .btn-red:hover{ background:var(--red-deep); }
+  .btn-green{ background:var(--green); color:#fff; }
+  .btn-green:hover{ background:var(--green-deep); }
   .btn-outline{ background:var(--panel); border-color:var(--line-strong); color:var(--ink); }
   .btn-outline:hover{ background:var(--panel-hover); }
   .btn-block{ width:100%; }
@@ -173,7 +184,7 @@
   .topbar-inner{ display:flex; align-items:center; justify-content:space-between; gap:12px; height:60px; padding:0 var(--pad); max-width:var(--max); margin:0 auto; }
   /* a wordmark, set like the name on the stall — no stock icon */
   .brand{ font-family:var(--font-display); font-weight:800; font-stretch:82%; font-size:23px; letter-spacing:-.015em; line-height:1; }
-  .brand span{ color:var(--chili); }
+  .brand span{ color:var(--red); }
 
   .topnav{ display:none; }
   @media (min-width:1040px){
@@ -181,7 +192,7 @@
     .topnav a{ position:relative; padding:10px 13px; border-radius:var(--r); font-size:15px; font-weight:500; color:var(--ink-soft); transition:color .15s ease; }
     .topnav a:hover{ color:var(--ink); }
     .topnav a.is-active{ color:var(--ink); font-weight:600; }
-    .topnav a.is-active::after{ content:""; position:absolute; left:13px; right:13px; bottom:4px; height:2px; border-radius:2px; background:var(--chili); }
+    .topnav a.is-active::after{ content:""; position:absolute; left:13px; right:13px; bottom:4px; height:2px; border-radius:2px; background:var(--red); }
   }
   .top-cta{ display:none; align-items:center; gap:8px; }
   @media (min-width:820px){ .top-cta{ display:flex; } }
@@ -199,9 +210,10 @@
   .hero-photo{ margin:0; border-radius:var(--r-lg); overflow:hidden; background:var(--bg-2); }
   .hero-photo img{ width:100%; height:auto; aspect-ratio:4/3; object-fit:cover; object-position:50% 60%; }
   .hero h1{ font-size:clamp(46px,12.6vw,100px); line-height:.95; letter-spacing:-.02em; margin:0 0 var(--s3); }
-  .hero h1 em{ font-style:normal; color:var(--chili); }
+  /* RM7 is set the way the stall prints prices on its boards: a red tag */
+  .hero h1 em{ font-style:normal; display:inline-block; color:#fff; background:var(--red); padding:.06em .14em .02em; margin:0 .02em; border-radius:.09em; line-height:.92; }
   .hero .lede{ font-size:var(--t-lead); line-height:1.5; color:var(--ink-soft); max-width:27em; margin:0 0 var(--s5); }
-  @media (min-width:900px){ .hero .lede{ font-size:19px; margin-bottom:var(--s6); } }
+  @media (min-width:900px){ .hero h1{ margin-bottom:var(--s5); } .hero .lede{ font-size:19px; margin-bottom:var(--s6); } }
   /* tablets: one column is wide enough that a 4:3 photo would fill the screen */
   @media (min-width:600px) and (max-width:899px){
     .hero-photo img{ aspect-ratio:16/9; }
@@ -213,12 +225,13 @@
   .now{ display:flex; align-items:center; gap:var(--s3); padding:14px 16px; max-width:30em; background:var(--panel); border:1px solid var(--line-strong); border-radius:var(--r-lg); transition:border-color .15s ease; }
   .now:hover{ border-color:var(--ink-soft); }
   .now .dot{ width:10px; height:10px; border-radius:50%; flex-shrink:0; background:var(--line-strong); }
-  .now.is-open .dot{ background:var(--pandan); animation:pulse 2s infinite; }
-  .now.is-soon .dot{ background:var(--turmeric); }
+  .now.is-open .dot{ background:var(--green); animation:pulse 2s infinite; }
+  .now.is-soon .dot{ background:var(--yellow); }
   .now .tx{ flex:1; min-width:0; line-height:1.35; }
   .now .tx b{ display:block; font-weight:700; }
+  .now .tx .t{ white-space:nowrap; }
   .now .tx > span{ display:block; margin-top:2px; font-size:var(--t-sm); color:var(--ink-soft); }
-  .now .go{ flex-shrink:0; display:inline-flex; align-items:center; gap:2px; font-size:var(--t-sm); font-weight:600; color:var(--chili-deep); }
+  .now .go{ flex-shrink:0; display:inline-flex; align-items:center; gap:2px; font-size:var(--t-sm); font-weight:600; color:var(--red-deep); }
   .now .go svg{ width:18px; height:18px; }
   @keyframes pulse{ 0%{box-shadow:0 0 0 0 rgba(47,111,58,.45)} 70%{box-shadow:0 0 0 8px rgba(47,111,58,0)} 100%{box-shadow:0 0 0 0 rgba(47,111,58,0)} }
 
@@ -227,10 +240,10 @@
   @media (max-width:819px){ .hero-ctas{ display:none; } }
 
   /* ================= SECTIONS =================
-     one background all the way down; a hairline marks where a section starts */
+     white and light grey alternate, so each section starts where the ground
+     changes; yellow is reserved for the order section */
   section{ padding:var(--s8) 0; scroll-margin-top:60px; }
-  main > section + section:not(.order-block):not(.reviews-sec){ border-top:1px solid var(--line); }
-  .reviews-sec + section{ border-top:0 !important; }
+  .sec-grey{ background:var(--bg-2); }
   .section-head{ max-width:560px; margin:0 0 var(--s6); }
   .section-head h2{ margin:0 0 var(--s3); }
   .section-head p{ color:var(--ink-soft); line-height:1.6; margin:0; }
@@ -240,14 +253,15 @@
      Every row carries its price so nobody has to remember "all RM7 except…";
      the cheaper ones are set in red so they still stand out.
      (overflow:clip, not hidden — hidden would stop the day filter sticking) */
-  .menu-board{ background:var(--panel); border:1px solid var(--line-strong); border-radius:var(--r-lg); overflow:clip; }
   .day-filter{
-    display:flex; gap:var(--s2); overflow-x:auto; padding:var(--s3);
+    display:flex; gap:var(--s2); overflow-x:auto; padding:2px 0 var(--s4);
     scrollbar-width:none; -webkit-overflow-scrolling:touch;
-    border-bottom:1px solid var(--line); background:var(--panel);
   }
   .day-filter::-webkit-scrollbar{ display:none; }
-  @media (max-width:719px){ .day-filter{ position:sticky; top:0; z-index:4; } }
+  /* the list runs long on a phone — keep the chosen day in reach while scrolling it */
+  @media (max-width:719px){
+    .day-filter{ position:sticky; top:0; z-index:4; background:var(--bg-2); margin:0 calc(var(--pad) * -1); padding:var(--s2) var(--pad) var(--s3); }
+  }
   .day-filter button, .segmented button{
     flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; gap:6px; min-height:44px; padding:0 16px;
     border-radius:999px; border:1px solid var(--line-strong); background:var(--panel);
@@ -256,12 +270,19 @@
   }
   @media (hover:hover){ .day-filter button:hover, .segmented button:hover{ color:var(--ink); border-color:var(--ink-soft); } }
   .day-filter button.active, .segmented button.active{ background:var(--ink); border-color:var(--ink); color:#fff; }
-  .day-filter .tnow{ width:7px; height:7px; border-radius:50%; background:var(--pandan); }
-  .day-filter button.active .tnow{ background:#86D993; }
+  .day-filter .tnow{ width:7px; height:7px; border-radius:50%; background:var(--yellow); }
 
-  .menu-where{ margin:0; padding:var(--s4) var(--s5) 0; font-size:var(--t-sm); color:var(--ink-soft); }
-  .menu-where b{ color:var(--ink); font-weight:600; }
-  .menu-list{ list-style:none; margin:0; padding:var(--s1) var(--s5) var(--s3); display:grid; }
+  .menu-board{ background:var(--panel); border-radius:var(--r-lg); box-shadow:var(--shadow-sm); overflow:hidden; }
+  /* the header copies the stall's own menu cards: red, with a scalloped edge */
+  .board-head{ position:relative; background:var(--red); color:#fff; padding:var(--s4) var(--s5) var(--s4); }
+  .board-head::after{
+    content:""; position:absolute; left:0; right:0; top:100%; height:10px;
+    background:radial-gradient(circle at 10px 0, var(--red) 9.5px, transparent 10px) 0 0 / 20px 10px repeat-x;
+  }
+  .bh-day{ margin:0; font-family:var(--font-display); font-weight:800; font-stretch:82%; font-size:24px; line-height:1.1; letter-spacing:-.01em; }
+  .bh-day span{ display:inline-block; margin-left:8px; padding:2px 9px; border-radius:999px; background:var(--yellow); color:var(--ink); font-family:var(--font-body); font-stretch:normal; font-size:var(--t-xs); font-weight:700; letter-spacing:0; vertical-align:4px; }
+  .bh-where{ margin:4px 0 0; font-size:var(--t-sm); color:rgba(255,255,255,.9); }
+  .menu-list{ list-style:none; margin:0; padding:var(--s5) var(--s5) var(--s3); display:grid; }
   @media (min-width:720px){ .menu-list{ grid-template-columns:1fr 1fr; column-gap:var(--s7); } }
   .m-row{ display:flex; align-items:center; gap:var(--s3); min-height:56px; padding:10px 0; border-bottom:1px solid var(--line); }
   /* which row ends a column depends on the column count and on the day filter, so JS marks it */
@@ -270,7 +291,7 @@
   .m-row .nm{ flex:1; min-width:0; font-weight:500; line-height:1.3; }
   .m-row .nm .chip{ display:flex; margin-top:5px; }
   .m-row .pr{ font-weight:600; color:var(--ink-soft); white-space:nowrap; font-variant-numeric:tabular-nums; }
-  .m-row .pr.alt{ color:var(--chili-deep); font-weight:700; }
+  .m-row .pr.alt{ color:var(--red-deep); font-weight:700; }
 
   /* ================= SCHEDULE ================= */
   /* phone: day + time on one line, market underneath, Arah on the right.
@@ -280,23 +301,22 @@
   @media (min-width:720px){ .s-row{ grid-template-columns:130px 1fr auto auto; grid-template-areas:"day place time map"; column-gap:var(--s5); } }
   .s-day{ grid-area:day; }
   .s-day b{ font-weight:700; }
-  .s-row.is-today .s-day b{ color:var(--pandan); }
+  .s-row.is-today{ background:var(--yellow-soft); box-shadow:-12px 0 0 var(--yellow-soft), 12px 0 0 var(--yellow-soft); }
   .s-place{ grid-area:place; min-width:0; line-height:1.3; }
   .s-place .chip{ display:flex; margin-top:6px; }
   @media (min-width:720px){ .s-place .chip{ display:inline-flex; margin:0 0 0 10px; vertical-align:1px; } }
   .s-time{ grid-area:time; font-size:var(--t-sm); color:var(--ink-soft); font-variant-numeric:tabular-nums; white-space:nowrap; }
   .s-map{ grid-area:map; justify-self:end; }
-  .s-map svg{ width:16px; height:16px; color:var(--chili); }
+  .s-map svg{ width:16px; height:16px; color:var(--red); }
 
   /* ================= BORONG & KATERING =================
      The page's one colour block. Bulk and catering orders are what this site
      exists to bring in, so this is where the eye should land. The red is the
      red of the stall's own menu boards. */
-  .order-block{ background:var(--chili-deep); color:#fff; }
-  .order-block .section-head p{ color:rgba(255,255,255,.88); }
+  .order-block{ background:var(--yellow-soft); }
   .kinds{ display:grid; gap:var(--s4); }
   @media (min-width:760px){ .kinds{ grid-template-columns:1fr 1fr; gap:var(--s5); } }
-  .kind{ display:flex; flex-direction:column; background:var(--panel); color:var(--ink); border-radius:var(--r-lg); padding:var(--s5); box-shadow:0 12px 32px rgba(70,12,6,.28); }
+  .kind{ display:flex; flex-direction:column; background:var(--panel); color:var(--ink); border-radius:var(--r-lg); padding:var(--s5); box-shadow:var(--shadow-sm); border-top:4px solid var(--red); }
   @media (min-width:760px){ .kind{ padding:var(--s6); } }
   .kind .chip{ margin-bottom:var(--s3); }
   .kind h3{ margin:0 0 var(--s2); }
@@ -305,25 +325,24 @@
   .ticks li{ display:flex; gap:10px; align-items:flex-start; padding:6px 0; line-height:1.45; }
   .ticks li > span{ min-width:0; }
   .ticks b{ font-weight:700; }
-  .ticks svg{ width:18px; height:18px; color:var(--pandan); flex-shrink:0; margin-top:2px; }
-  .order-note{ margin:var(--s5) 0 0; font-size:var(--t-sm); color:rgba(255,255,255,.88); }
-  .order-note a{ color:#fff; font-weight:600; text-decoration:underline; text-decoration-thickness:1.5px; text-underline-offset:3px; }
+  .ticks svg{ width:18px; height:18px; color:var(--red); flex-shrink:0; margin-top:2px; }
+  .order-note{ margin:var(--s5) 0 0; font-size:var(--t-sm); color:var(--ink-soft); }
+  .order-note a{ color:var(--red-deep); font-weight:600; text-decoration:underline; text-decoration-thickness:1.5px; text-underline-offset:3px; }
 
   /* ================= ULASAN (reviews) =================
      Each card says who the customer is first, because a surau AJK trusts
      another surau AJK. The one sentence that answers "can they handle it?"
      is set darker so the card can be read in two seconds; the wording is
      the customer's own. */
-  .reviews-sec{ background:var(--bg-2); }
   .reviews{ display:grid; gap:var(--s4); }
   @media (min-width:900px){ .reviews{ grid-template-columns:repeat(3,1fr); gap:var(--s5); } }
-  .review{ margin:0; display:flex; flex-direction:column; background:var(--panel); border:1px solid var(--line); border-radius:var(--r-lg); padding:var(--s5); }
+  .review{ margin:0; display:flex; flex-direction:column; background:var(--panel); border:1px solid var(--line); border-radius:var(--r-lg); padding:var(--s5); box-shadow:var(--shadow-sm); }
   .review .chip{ margin-bottom:var(--s4); }
   .review blockquote{ margin:0 0 var(--s5); flex:1; color:var(--ink-soft); line-height:1.62; }
   .review blockquote p{ margin:0; }
   .review blockquote strong{ color:var(--ink); font-weight:600; }
   .review figcaption{ display:flex; align-items:center; gap:var(--s3); padding-top:var(--s4); border-top:1px solid var(--line); }
-  .review .av{ width:40px; height:40px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-weight:700; background:var(--bg-2); color:var(--ink); }
+  .review .av{ width:40px; height:40px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-weight:700; background:var(--yellow-soft); color:var(--ink); }
   .review figcaption b{ display:block; font-weight:700; line-height:1.3; }
   .review figcaption small{ display:block; font-size:var(--t-xs); color:var(--ink-soft); line-height:1.4; margin-top:1px; }
   /* phone: one swipeable row instead of three screens of text; the next
@@ -357,11 +376,11 @@
   /* ================= FOOTER / CONTACT =================
      the one dark block on the page: it's where the page ends and where the
      phone number lives, so it should be impossible to miss */
-  .site-foot{ background:var(--ink); color:#F5EFE4; padding:var(--s8) 0 0; scroll-margin-top:60px; }
+  .site-foot{ background:var(--ink); color:#fff; padding:var(--s8) 0 0; scroll-margin-top:60px; }
   .site-foot h2{ color:#fff; margin:0 0 var(--s3); }
   .foot-grid{ display:grid; gap:var(--s6); padding-bottom:var(--s7); }
   @media (min-width:820px){ .foot-grid{ grid-template-columns:1.1fr 1fr; gap:64px; align-items:start; } }
-  .foot-grid > div > p{ color:rgba(245,239,228,.72); line-height:1.6; margin:0 0 var(--s5); max-width:30em; }
+  .foot-grid > div > p{ color:rgba(255,255,255,.72); line-height:1.6; margin:0 0 var(--s5); max-width:30em; }
   .foot-tel{ display:inline-block; font-family:var(--font-display); font-weight:800; font-stretch:82%; font-size:34px; letter-spacing:-.01em; color:#fff; margin:0 0 var(--s4); font-variant-numeric:tabular-nums; }
   .foot-tel:hover{ color:#FFD9D4; }
   .foot-btns{ display:flex; flex-wrap:wrap; gap:var(--s3); }
@@ -370,10 +389,10 @@
   .btn-outline-light:hover{ background:rgba(255,255,255,.08); }
   .site-foot .spec{ border-color:rgba(255,255,255,.14); }
   .site-foot .spec > div{ border-color:rgba(255,255,255,.14); }
-  .site-foot .spec dt{ color:rgba(245,239,228,.6); }
+  .site-foot .spec dt{ color:rgba(255,255,255,.6); }
   .site-foot .spec dd{ color:#fff; }
   .site-foot .spec a, .site-foot .spec button{ color:#fff; font:inherit; font-weight:600; background:none; border:0; padding:0; text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
-  .foot-bottom{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:var(--s2) var(--s5); padding:var(--s5) 0 var(--s6); border-top:1px solid rgba(255,255,255,.14); font-size:var(--t-xs); color:rgba(245,239,228,.6); }
+  .foot-bottom{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:var(--s2) var(--s5); padding:var(--s5) 0 var(--s6); border-top:1px solid rgba(255,255,255,.14); font-size:var(--t-xs); color:rgba(255,255,255,.6); }
   .foot-bottom a:hover{ color:#fff; }
 
   /* ================= MOBILE STICKY ORDER BAR ================= */
@@ -383,7 +402,7 @@
     background:color-mix(in srgb, var(--panel) 94%, transparent); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
     border-top:1px solid var(--line);
   }
-  .mobile-bar .ico{ width:50px; flex-shrink:0; padding:0; color:var(--wa); }
+  .mobile-bar .ico{ width:50px; flex-shrink:0; padding:0; color:var(--green); }
   .mobile-bar .ico svg{ width:22px; height:22px; }
   .mobile-bar .order{ flex:1; min-width:0; padding:0 14px; }
   /* the bar covers the bottom of the page, so the (dark) footer grows to sit
@@ -443,13 +462,15 @@
   }
   .field select{ appearance:none; -webkit-appearance:none; padding-right:40px; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235C5344' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; background-size:18px; }
   .field textarea{ resize:vertical; min-height:72px; }
-  .field input:focus, .field select:focus, .field textarea:focus{ outline:none; border-color:var(--chili); box-shadow:0 0 0 3px color-mix(in srgb, var(--chili) 20%, transparent); }
+  .field input:focus, .field select:focus, .field textarea:focus{ outline:none; border-color:var(--red); box-shadow:0 0 0 3px color-mix(in srgb, var(--red) 20%, transparent); }
   .field .hint{ text-align:left; margin:8px 0 0; }
+  .pick-hint{ margin:-6px 0 var(--s4); font-size:var(--t-sm); color:var(--ink-soft); line-height:1.45; }
+  .pick-hint.is-warn{ color:var(--red-deep); font-weight:600; }
 
   .items{ background:var(--panel); border:1px solid var(--line-strong); border-radius:var(--r); overflow:hidden; }
   .item{ display:flex; align-items:center; gap:12px; padding:10px 10px 10px 14px; border-bottom:1px solid var(--line); transition:background-color .15s; }
   .item:last-child{ border-bottom:none; }
-  .item.on{ background:color-mix(in srgb, var(--chili) 6%, var(--panel)); box-shadow:inset 3px 0 0 var(--chili); }
+  .item.on{ background:color-mix(in srgb, var(--red) 6%, var(--panel)); box-shadow:inset 3px 0 0 var(--red); }
   .item .info{ flex:1; min-width:0; }
   .item .info b{ display:block; font-weight:600; line-height:1.3; }
   .item .info span{ font-size:var(--t-xs); color:var(--ink-soft); font-variant-numeric:tabular-nums; }
@@ -466,13 +487,13 @@
   .modal .m-foot{ padding:14px 20px calc(16px + env(safe-area-inset-bottom)); border-top:1px solid var(--line); background:var(--panel); }
   .summary{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin:0 0 12px; }
   .summary .s-label{ font-size:var(--t-sm); color:var(--ink-soft); line-height:1.35; }
-  .summary .s-label.is-ok{ color:var(--pandan); font-weight:600; }
+  .summary .s-label.is-ok{ color:var(--green); font-weight:600; }
   .summary .s-total{ font-family:var(--font-display); font-weight:800; font-stretch:82%; font-size:24px; font-variant-numeric:tabular-nums; white-space:nowrap; }
   .summary .s-total small{ font-family:var(--font-body); font-size:var(--t-xs); color:var(--ink-soft); margin-left:6px; font-weight:500; }
-  .form-err{ margin:0 0 10px; padding:10px 12px; border-radius:var(--r); background:var(--chili-soft); color:var(--chili-deep); font-size:var(--t-sm); font-weight:600; line-height:1.4; }
+  .form-err{ margin:0 0 10px; padding:10px 12px; border-radius:var(--r); background:var(--red-soft); color:var(--red-deep); font-size:var(--t-sm); font-weight:600; line-height:1.4; }
   .form-err[hidden]{ display:none; }
   .hint{ font-size:var(--t-xs); color:var(--ink-soft); text-align:center; margin:10px 0 0; line-height:1.45; }
-  .req{ color:var(--chili); }
+  .req{ color:var(--red); }
 
   .mode-only{ display:none; }
   .mode-only.show{ display:block; }
@@ -538,10 +559,10 @@
     </nav>
     <div class="top-cta">
       <a class="btn btn-outline btn-sm" href="https://wa.me/60197309787?text=Assalamualaikum%20Dapur%20Ayah%2C%20saya%20nak%20tanya%20" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="var(--wa)" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+        <svg viewBox="0 0 24 24" fill="var(--green)" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
         WhatsApp
       </a>
-      <button class="btn btn-chili btn-sm" type="button" data-order="biasa">Tempah borong / katering</button>
+      <button class="btn btn-red btn-sm" type="button" data-order="biasa">Tempah borong / katering</button>
     </div>
   </div>
 </header>
@@ -567,7 +588,7 @@
       </a>
 
       <div class="hero-ctas">
-        <button class="btn btn-chili" type="button" data-order="biasa">Tempah borong / katering</button>
+        <button class="btn btn-red" type="button" data-order="biasa">Tempah borong / katering</button>
         <a class="btn btn-outline" href="#menu">Lihat menu</a>
       </div>
     </div>
@@ -575,16 +596,19 @@
 </section>
 
 <!-- ================= MENU ================= -->
-<section id="menu">
+<section id="menu" class="sec-grey">
   <div class="wrap">
     <div class="section-head reveal">
       <h2>Menu</h2>
       <p>Lain pasar, lain menu. Pilih hari untuk tengok apa yang ada. Datang awal, lauk cepat habis.</p>
     </div>
 
+    <div class="day-filter reveal" id="dayFilter" role="group" aria-label="Tapis menu ikut hari pasar"><!-- injected by JS --></div>
     <div class="menu-board reveal">
-      <div class="day-filter" id="dayFilter" role="group" aria-label="Tapis menu ikut hari pasar"><!-- injected by JS --></div>
-      <p class="menu-where" id="menuCount" aria-live="polite"></p>
+      <div class="board-head" aria-live="polite">
+        <p class="bh-day" id="bhDay">Menu minggu ini</p>
+        <p class="bh-where" id="menuCount">Ada yang dijual pada hari tertentu sahaja.</p>
+      </div>
       <ul class="menu-list" id="menuList"><!-- injected by JS --></ul>
     </div>
     <p class="section-foot reveal">Menu boleh berubah ikut stok. Kalau nak pastikan, <a class="link" href="https://wa.me/60197309787?text=Assalamualaikum%20Dapur%20Ayah%2C%20hari%20ini%20ada%20menu%20apa%3F" target="_blank" rel="noopener">tanya kami di WhatsApp</a>.</p>
@@ -630,11 +654,11 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Tempah sekurang-kurangnya <b>sehari awal</b></span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Ambil ikut <a class="link" href="#jadual">jadual pasar</a></span></li>
         </ul>
-        <button class="btn btn-chili btn-block" type="button" data-order="borong">Tempah borong</button>
+        <button class="btn btn-red btn-block" type="button" data-order="borong">Tempah borong</button>
       </article>
 
       <article class="kind">
-        <span class="chip chip-green">Kami hantar</span>
+        <span class="chip">Kami hantar</span>
         <h3>Katering majlis</h3>
         <p>Kenduri kahwin, rumah terbuka, mesyuarat atau program sekolah.</p>
         <ul class="ticks">
@@ -643,7 +667,7 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Hantar ke lokasi majlis ikut masa anda</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Kawasan Skudai, Kulai &amp; sekitar</span></li>
         </ul>
-        <button class="btn btn-chili btn-block" type="button" data-order="katering">Tanya pakej katering</button>
+        <button class="btn btn-red btn-block" type="button" data-order="katering">Tanya pakej katering</button>
       </article>
     </div>
     <p class="order-note reveal">Kalau tak pasti nak pilih yang mana, <a href="https://wa.me/60197309787?text=Assalamualaikum%20Dapur%20Ayah%2C%20saya%20nak%20tanya%20pasal%20tempahan%20" target="_blank" rel="noopener">WhatsApp kami dulu</a>, kami boleh bantu.</p>
@@ -651,7 +675,7 @@
 </section>
 
 <!-- ================= ULASAN PELANGGAN ================= -->
-<section id="ulasan" class="reviews-sec">
+<section id="ulasan">
   <div class="wrap">
     <div class="section-head reveal">
       <h2>Kata pelanggan</h2>
@@ -682,7 +706,7 @@
 </section>
 
 <!-- ================= TENTANG KAMI ================= -->
-<section id="tentang">
+<section id="tentang" class="sec-grey">
   <div class="wrap story">
     <div class="story-photos reveal">
       <img src="images/pasartani1.jpg" width="674" height="900" alt="Encik Sapuan dan Cik Noraini berdiri di depan gerai Dapur Ayah yang dihias bendera Malaysia" loading="lazy">
@@ -708,7 +732,7 @@
         <p>Paling cepat melalui WhatsApp. Biasanya kami balas dalam beberapa jam waktu siang. Kalau tengah berniaga, kami balas selepas pasar tutup.</p>
         <a class="foot-tel" href="tel:+60197309787">019-730 9787</a>
         <div class="foot-btns">
-          <a class="btn btn-wa" href="https://wa.me/60197309787?text=Assalamualaikum%20Dapur%20Ayah%2C%20saya%20nak%20tanya%20" target="_blank" rel="noopener">
+          <a class="btn btn-green" href="https://wa.me/60197309787?text=Assalamualaikum%20Dapur%20Ayah%2C%20saya%20nak%20tanya%20" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
             WhatsApp kami
           </a>
@@ -736,7 +760,7 @@
   <a class="btn btn-outline ico" href="https://wa.me/60197309787?text=Assalamualaikum%20Dapur%20Ayah%2C%20saya%20nak%20tanya%20" target="_blank" rel="noopener" aria-label="WhatsApp Dapur Ayah">
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
   </a>
-  <button class="btn btn-chili order" type="button" data-order="biasa">Tempah borong / katering</button>
+  <button class="btn btn-red order" type="button" data-order="biasa">Tempah borong / katering</button>
 </div>
 
 <!-- ================= ORDER MODAL ================= -->
@@ -816,6 +840,8 @@
             <input type="time" id="fTime">
           </div>
         </div>
+        <!-- borong: the market's hours, or a warning when the date isn't a market day -->
+        <p class="pick-hint mode-only" data-for="borong" id="pickHint" aria-live="polite"></p>
       </div>
 
       <!-- common: name + notes (borong + katering) -->
@@ -836,7 +862,7 @@
         <span class="s-total" id="sTotal">RM0<small>0 bungkus</small></span>
       </div>
       <p class="form-err" id="formErr" role="alert" hidden></p>
-      <button class="btn btn-wa btn-block" type="button" id="sendWa">
+      <button class="btn btn-green btn-block" type="button" id="sendWa">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
         Hantar ke WhatsApp
       </button>
@@ -960,15 +986,15 @@
     var st = marketStatus(new Date());
     if(!card || !st) return;
     var m = st.m, title;
-    if(st.state === "open")      title = "Sedang berniaga, sampai " + st.sp.endLabel;
-    else if(st.state === "soon") title = "Hari ini, " + m.time;
-    else                         title = "Jumpa kami " + whenLabel(st.off, m.day) + ", " + m.time;
+    if(st.state === "open")      title = "Sedang berniaga, <span class=\"t\">sampai " + st.sp.endLabel + "</span>";
+    else if(st.state === "soon") title = "Hari ini, <span class=\"t\">" + m.time + "</span>";
+    else                         title = "Jumpa kami " + whenLabel(st.off, m.day) + ", <span class=\"t\">" + m.time + "</span>";
     var sub = m.name;
     card.className = "now is-" + st.state;
     card.href = mapUrl(m);
     card.target = "_blank";
     card.rel = "noopener";
-    card.setAttribute("aria-label", title + ". " + m.name + ", " + m.time + ". Buka arah di Google Maps.");
+    card.setAttribute("aria-label", title.replace(/<[^>]+>/g, "") + ". " + m.name + ", " + m.time + ". Buka arah di Google Maps.");
     card.innerHTML =
       '<span class="dot" aria-hidden="true"></span>' +
       '<span class="tx"><b>' + title + '</b><span>' + sub + '</span></span>' +
@@ -987,7 +1013,7 @@
       var isToday = s.day === TODAY;
       return '<li class="s-row' + (isToday ? ' is-today' : '') + '" data-day="' + s.day + '">' +
         '<div class="s-day"><b>' + s.hari + '</b></div>' +
-        '<div class="s-place">' + s.name + (isToday ? '<span class="chip chip-green">Hari ini</span>' : '') + '</div>' +
+        '<div class="s-place">' + s.name + (isToday ? '<span class="chip chip-yellow">Hari ini</span>' : '') + '</div>' +
         '<div class="s-time">' + s.time + '</div>' +
         '<a class="btn btn-outline btn-sm s-map" href="' + mapUrl(s) + '" target="_blank" rel="noopener" aria-label="Arah ke ' + s.name + ' di Google Maps">' + pin + '<span class="s-map-t">Arah</span></a>' +
       '</li>';
@@ -1052,14 +1078,16 @@
 
       markLastRows();
 
-      var count = document.getElementById("menuCount");
-      if(count){
+      var dayEl = document.getElementById("bhDay"), whereEl = document.getElementById("menuCount");
+      if(dayEl && whereEl){
         var mk = (day===null) ? null : marketOn(day);
         if(mk){
-          var rel = day===TODAY ? " (hari ini)" : (status && status.off===1 && status.m.day===day ? " (esok)" : "");
-          count.innerHTML = '<b>' + DAY_NAMES[day] + rel + '</b> di ' + mk.name + ', ' + mk.time;
+          var rel = day===TODAY ? "hari ini" : (status && status.off===1 && status.m.day===day ? "esok" : "");
+          dayEl.innerHTML = "Menu " + DAY_NAMES[day] + (rel ? "<span>" + rel + "</span>" : "");
+          whereEl.textContent = mk.name + " · " + mk.time;
         } else {
-          count.innerHTML = '<b>Semua menu minggu ini.</b> Ada yang dijual pada hari tertentu sahaja.';
+          dayEl.textContent = "Semua menu";
+          whereEl.textContent = "Ada yang dijual pada hari tertentu sahaja.";
         }
       }
     }
@@ -1128,14 +1156,35 @@
     for(var i=1;i<=7;i++){ var m = marketOn((TODAY+i)%7); if(m) return m; }
     return null;
   })();
-  if(defaultMarket){ fPickup2.value = defaultMarket.name + " (" + defaultMarket.hari + ", " + defaultMarket.time + ")"; }
+  function pickupValue(m){ return m.name + " (" + m.hari + ", " + m.time + ")"; }
+  if(defaultMarket){ fPickup2.value = pickupValue(defaultMarket); }
 
-  /* "tempah sehari awal" — the date picker starts from tomorrow */
-  (function(){
-    var t = new Date(); t.setDate(t.getDate() + 1);
-    var iso = t.getFullYear() + "-" + String(t.getMonth()+1).padStart(2,"0") + "-" + String(t.getDate()).padStart(2,"0");
-    document.getElementById("fDate").min = iso;
-  })();
+  /* ---- borong date and pickup market stay in step ----
+     A borong is collected at the stall, so the date has to be a day we're at
+     that market. Picking a market moves the date to its next day; picking a
+     date selects that day's market, or warns if we don't trade that day. */
+  var fDate = document.getElementById("fDate");
+  var pickHint = document.getElementById("pickHint");
+  var dateAuto = false;   // true while the date is one we filled in, not the customer
+  function isoOf(d){ return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0"); }
+  function dowOfIso(iso){ var p = iso.split("-"); return new Date(+p[0], +p[1]-1, +p[2]).getDay(); }
+  /* "tempah sehari awal": the earliest date is tomorrow */
+  function nextDateFor(dow){
+    var d = new Date(); d.setDate(d.getDate() + 1);
+    while(d.getDay() !== dow) d.setDate(d.getDate() + 1);
+    return isoOf(d);
+  }
+  fDate.min = (function(){ var d = new Date(); d.setDate(d.getDate() + 1); return isoOf(d); })();
+
+  function marketDayNames(){ return andList(SCHEDULE.map(function(s){ return s.hari; })).replace(" & ", " atau "); }
+  function updatePickHint(){
+    var dow = fDate.value ? dowOfIso(fDate.value) : pickupDow();
+    var m = marketOn(dow);
+    pickHint.classList.toggle("is-warn", !m);
+    pickHint.textContent = m
+      ? "Gerai buka " + m.time + " di " + m.name + "."
+      : "Kami tak berniaga hari " + DAY_NAMES[dow] + ". Pilih hari " + marketDayNames() + ".";
+  }
 
   /* ---- item picker (steppers) ---- */
   var qty = {};
@@ -1182,7 +1231,19 @@
     var opt = fPickup2.options[fPickup2.selectedIndex];
     return opt ? parseInt(opt.getAttribute("data-day"), 10) : TODAY;
   }
-  fPickup2.addEventListener("change", function(){ refreshAvailability(pickupDow()); });
+  fPickup2.addEventListener("change", function(){
+    var dow = pickupDow();
+    if(!fDate.value || dowOfIso(fDate.value) !== dow){ fDate.value = nextDateFor(dow); dateAuto = true; }
+    refreshAvailability(dow);
+    updatePickHint();
+  });
+  fDate.addEventListener("change", function(){
+    dateAuto = false;
+    if(mode !== "borong" || !fDate.value) return;
+    var m = marketOn(dowOfIso(fDate.value));
+    if(m){ fPickup2.value = pickupValue(m); refreshAvailability(m.day); }
+    updatePickHint();
+  });
 
   picker.addEventListener("click", function(e){
     var btn = e.target.closest("button[data-act]"); if(!btn) return;
@@ -1262,7 +1323,13 @@
       : "Mesej akan dibuka dalam WhatsApp. Semak dulu sebelum hantar.";
     hideErr();
     modal.querySelector(".m-body").scrollTop = 0;
-    if(m==="borong"){ refreshAvailability(pickupDow()); }
+    if(m==="borong"){
+      if(!fDate.value){ fDate.value = nextDateFor(pickupDow()); dateAuto = true; }
+      refreshAvailability(pickupDow());
+      updatePickHint();
+    } else if(m==="katering" && dateAuto){
+      fDate.value = ""; dateAuto = false;
+    }
   }
 
   var FOCUSABLE = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -1367,6 +1434,9 @@
     if(mode==="biasa"){ return { err:"Sila pilih Borong atau Katering." }; }
 
     // borong — item based
+    if(fDate.value && !marketOn(dowOfIso(fDate.value))){
+      return { err:"Kami tak berniaga hari " + DAY_NAMES[dowOfIso(fDate.value)] + ". Sila pilih tarikh lain.", focus:"fDate" };
+    }
     var t = orderTotals();
     if(t.bungkus===0){ return { err:"Sila pilih sekurang-kurangnya satu menu." }; }
     if(t.bungkus<MIN_BORONG){ return { err:"Borong minimum " + MIN_BORONG + " bungkus. Tambah " + (MIN_BORONG - t.bungkus) + " lagi." }; }

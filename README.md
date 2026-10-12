@@ -6,7 +6,7 @@ Single-page site for Dapur Ayah, a pasar tani food stall in Skudai, Kulai & seki
 
 Plain HTML/CSS/JS — no build step, no dependencies. Everything (styles, markup, and the small script) lives in `index.html`.
 
-The site has one warm off-white theme. There is no dark mode or theme toggle.
+The site has one light theme. There is no dark mode or theme toggle.
 Colours come from the CSS custom properties on `:root` at the top of the
 `<style>` block, so change them there. Fonts come from Google Fonts: **Archivo** for
 headings and prices, **Figtree** for everything else.
@@ -20,7 +20,8 @@ Sections follow what visitors come to find out, in this order:
    The card shows when and which market, and tapping it opens Google Maps.
    Please don't add more here; everything else is one scroll away.
 2. **Menu** (`#menu`) — filtered by market day. It defaults to today's market, or the next
-   one if today's is over or it's a day off.
+   one if today's is over or it's a day off. The red board header names the
+   day, the market and its hours.
 3. **Jadual** (`#jadual`) — the week's markets, each with an **Arah**
    (directions) link.
 4. **Borong & Katering** (`#tempah`) — the page's one red block, because
@@ -42,9 +43,18 @@ uses. Reuse them rather than adding one-off styles:
   questions or slogans. "Semua RM7 je." is the one slogan on the page.
 - **Headings** — one style. h1, h2 and h3 differ only in size.
 - **Text** — four sizes: `--t-lead`, `--t-body`, `--t-sm`, `--t-xs`.
-- **Layout** — plain sections share one background with a hairline between
-  them. Only two sections get colour: the red order block and the beige
-  reviews band. Don't add more, or nothing stands out.
+- **Colour** — taken from the stall's own menu boards (white cards, red
+  scalloped tops, red price tags, a yellow strip). Each colour has one job:
+  - **Red** (`--red`): brand, prices that aren't RM7, and every "order" action.
+  - **Yellow** (`--yellow`): highlight only, i.e. today's market and the order
+    section's background.
+  - **Green** (`--green`): only WhatsApp and "open now".
+  - **Ink, white and light grey**: text and surfaces. Keep them neutral, with no beige.
+- **Brand touches** — "RM7" in the hero is a red price tag, and the menu
+  board has a red scalloped header like the stall's menu cards. Don't add
+  more decoration than that.
+- **Layout** — sections alternate white and light grey (`.sec-grey`). The
+  order section is pale yellow and the footer is dark.
 - **Cards** — for things that belong together: the menu board, the status
   card, the two order options, each review. Everything else sits on the page.
 - **`.chip`** — the only badge (neutral or `.chip-green`). It says who or
@@ -126,6 +136,12 @@ The form builds a formatted WhatsApp message and opens `wa.me`. Nothing is
 stored or sent server-side. Validation errors show inline above the send
 button, and the Borong running total sits in the sheet footer. The date picker
 starts from tomorrow ("tempah sehari awal").
+
+In Borong, the pickup market and the date stay in step. Picking a market
+fills in its next date. Picking a date selects that day's market, or warns
+"Kami tak berniaga hari Isnin" when the stall isn't trading that day. The
+form won't send an order dated on a day off. A line under the date shows the
+stall's hours at that market.
 
 **Single retail orders are paused.** The opening state (`mode==="biasa"`) is
 a chooser that tells walk-in customers to visit the stall instead. To
